@@ -1,0 +1,12 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="$ctrl.cancel()">×</button>
+  <h4 class="modal-title">{{$ctrl.txModalTitle}}</h4>
+</div>
+<div class="modal-body">
+  <base-form ng-if="ctrl.action !== 'DELETE'" fields="$ctrl.fields" model="$ctrl.model"></base-form>
+  <p ng-if="$ctrl.txDeleteMsg">{{$ctrl.txDeleteMsg}}</p>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn" ng-class="$ctrl.btnCancelClass" ng-click="$ctrl.cancel()" ng-disabled="$ctrl.isBtnsDisabled">{{$ctrl.txBtnCancel}}</button>
+  <button type="button" class="btn" ng-class="$ctrl.btnSubmitClass" ng-click="$ctrl.submit()" ng-disabled="$ctrl.isBtnsDisabled">{{$ctrl.txBtnSubmit}}</button>
+</div>

@@ -1,0 +1,18 @@
+<div class="panel">
+  <div class="panel-heading">
+    <span class="panel-title">
+      <a href="" ng-click="$ctrl.toggle()" uib-tooltip="{{$ctrl.txBtnToggle}}">
+        <i ng-class="!$ctrl.isOpen ? 'fas fa-chevron-down' : 'fas fa-chevron-up'"></i>
+        {{$ctrl.txPanelTitle}}
+      </a>
+    </span>
+    <div class="panel-heading-controls">
+      <button class="btn btn-xs btn-primary btn-outline btn-outline-colorless"><i class="fas fa-filter"></i> {{$ctrl.txBtnFilter}}</button>
+      <button class="btn btn-xs btn-default btn-outline btn-outline-colorless"><i class="fas fa-broom"></i> {{$ctrl.txBtnClean}}</button>
+    </div>
+  </div>
+  <div class="panel-collapse collapse" uib-collapse="!$ctrl.isOpen">
+    <div class="panel-body">
+    </div>
+  </div>
+</div>

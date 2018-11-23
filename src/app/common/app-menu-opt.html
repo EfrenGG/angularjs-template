@@ -1,0 +1,10 @@
+<li class="px-nav-item" ng-repeat="option in $ctrl.options" ng-class="!option.bHoja ? 'px-nav-dropdown' : ''">
+  <a href="#{{option.urlMenu}}">
+    <i class="px-nav-icon {{option.iconoCls}}"></i>
+    <span class="px-nav-label">{{option.descMenu}}</span>
+  </a>
+
+  <ul ng-if="!option.bHoja" class="px-nav-dropdown-menu">
+    <app-menu-opt parent="option.cveMenu"></app-menu-opt>
+  </ul>
+</li>
