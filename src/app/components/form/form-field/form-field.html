@@ -1,4 +1,7 @@
-<div class="form-group" ng-class="$ctrl.metadata.sizeClass ">
-  <label class="control-label" for="{{$ctrl.fieldId}}">{{$ctrl.metadata.txEtiqueta}}</label>
-  <input type="text" class="form-control" name="{{$ctrl.metadata.nomCampo}}" id="{{$ctrl.fieldId}}" ng-model="$ctrl.model">
+<div class="form-group form-group-sm" ng-class="[$ctrl.metadata.sizeClass]">
+  <label class="control-label" for="{{$ctrl.metadata.elementId}}">
+    {{$ctrl.metadata.labelText}}
+  </label>
+  <help-icon ng-if="$ctrl.metadata.helpText" class="text-right" help-text="$ctrl.metadata.helpText"></help-icon>
+  <input type="text" class="form-control" name="{{$ctrl.metadata.nomCampo}}" id="{{$ctrl.metadata.elementId}}" ng-model="$ctrl.model" ng-change="$ctrl.updateModel()">
 </div>

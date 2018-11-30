@@ -1,8 +1,7 @@
-function baseFormController($log) {
+function baseFormController() {
     var ctrl = this;
 
     ctrl.$onInit = function() {
-        $log.log('Inicializando formulario básico...');
     };
 
     ctrl.$onChanges = changes => {
@@ -34,7 +33,6 @@ function baseFormController($log) {
             row.push(field);
         });
         if (row.length > 0) ctrl.rowGroups.push(row);
-        $log.log(ctrl.rowGroups);
     }
 
     function getSize(size) {
@@ -49,6 +47,15 @@ function baseFormController($log) {
                 return 6;
         }
     }
+
+    ctrl.updateModel = function(event) {
+        ctrl.model[event.name] = event.value;
+        ctrl.onChange({
+            $event: {
+                model: event
+            }
+        });
+    };
 }
 
 angular
