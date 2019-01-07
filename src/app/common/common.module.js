@@ -3,4 +3,4 @@ angular
         'pascalprecht.translate',
         'ui.bootstrap'
     ])
-    .constant('API_URL', 'http://localhost:5000/');
+    .constant('API_URL', 'https://localhost:5001/api/');

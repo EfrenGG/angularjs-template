@@ -5,7 +5,7 @@ angular
         $routeProvider.when('/', {
             template: '<app-home></app-home>'
         });
-        $routeProvider.when('/catalogo/:baseDatos/:cveForma', {
+        $routeProvider.when('/forma/:cveForma', {
             template: '<crud-window></crud-window>'
         });
         $routeProvider.otherwise({

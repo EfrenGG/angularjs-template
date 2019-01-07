@@ -1,7 +1,7 @@
 angular
     .module('app')
-    .config(function ($translateProvider, BASE_DATOS, DEF_LANG) {
+    .config(function ($translateProvider, INFRA_BASE_URL, CVE_APLICACION, DEF_LANG) {
         $translateProvider.useSanitizeValueStrategy('escape');
-        $translateProvider.useUrlLoader('http://localhost:5000/api/infEtiquetas/getI18N?baseDatos=' + BASE_DATOS + '&cveTipoEntidad=F');
+        $translateProvider.useUrlLoader(INFRA_BASE_URL + 'infEtiqueta/' + CVE_APLICACION);
         $translateProvider.preferredLanguage(DEF_LANG);
     });

@@ -1,21 +1,13 @@
-function appMenuOptController(httpCommonsService, CVE_APLICACION) {
+function appMenuOptController() {
     var ctrl = this;
 
     ctrl.$onInit = function () {
-        getOptions('api/segMenus', {
-            cveAplicacion: CVE_APLICACION,
-            cveMenuP: ctrl.parent
-        });
     };
 
-    function getOptions(url, params) {
-        httpCommonsService.obtenRegistros(url, params)
-            .then(function(response) {
-                ctrl.options = response.datos;
-            })
-            .catch(function(error) {
-                ctrl.error = error;
-            });
+    ctrl.$onChanges = function (changes) {
+        if (changes.option) {
+            ctrl.option = angular.copy(ctrl.option);
+        }
     }
 }
 

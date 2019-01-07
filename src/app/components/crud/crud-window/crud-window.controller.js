@@ -1,9 +1,9 @@
-function crudWindowController($routeParams, $translate, $log, $filter, $uibModal, httpCommonsService) {
+function crudWindowController($routeParams, $translate, $log, $filter, $uibModal, httpCommonsService, CVE_APLICACION) {
     var ctrl = this;
 
     ctrl.$onInit = function() {
         setI18N();
-        setMetadata($routeParams.baseDatos, $routeParams.cveForma);
+        setMetadata($routeParams.cveForma);
         ctrl.gridPaginationOpts = {
             pageNumber: 1,
             pageSize: 10
@@ -77,14 +77,14 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
         });
     }
 
-    function setMetadata(db, form) {
+    function setMetadata(form) {
         ctrl.metadata = null;
-        httpCommonsService.obtenRegistro('api/infFormas', {
-            baseDatos: db,
+        httpCommonsService.obtenRegistro('infForma', {
+            cveAplicacion: CVE_APLICACION,
             cveForma: form
         }).then(function (response) {
             ctrl.metadata = response;
-            if (ctrl.metadata.baseDatos && ctrl.metadata.cveForma) {
+            if (ctrl.metadata.cveForma) {
                 if (ctrl.metadata.bCrea || ctrl.metadata.bEdita || ctrl.metadata.bBorra) {
                     ctrl.metadata.bCrud = true;
                 }
@@ -129,7 +129,6 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
             default:
                 return [];
         }
-
     }
 
     function getData() {
@@ -138,12 +137,11 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
         }
         httpCommonsService.obtenRegistros(ctrl.metadata.urlApiForma, ctrl.filterParams, ctrl.gridPaginationOpts.pageNumber, ctrl.gridPaginationOpts.pageSize)
             .then(function (response) {
-                ctrl.gridData = response.datos;
+                ctrl.gridData = response.data;
                 ctrl.gridTotal = response.total;
             })
             .catch(function (error) {
                 $log.error(error);
-                alert(error.data.result);
             });
     }
 }

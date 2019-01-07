@@ -19,7 +19,7 @@ function httpCommonsService($http, $q, $translate, API_URL) {
     function obtenRegistro(url, params) {
         url = generaUrl(url);
         var deferred = $q.defer();
-        $http.get(url + '/findByKeyAsync', {
+        $http.get(url + '/getByKey', {
             params: params,
             cache: true
         })
@@ -35,7 +35,7 @@ function httpCommonsService($http, $q, $translate, API_URL) {
         url = generaUrl(url);
         var deferred = $q.defer();
         if (params) {
-            url = url + '/find';
+            url = url + '/search';
         }
         if (numPagina && numRegistrosPorPagina) {
             params.numPagina = numPagina;
