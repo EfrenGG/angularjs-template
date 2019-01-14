@@ -1,9 +1,7 @@
-function formFieldController($log, $translate) {
+function formFieldController($translate) {
     var ctrl = this;
 
-    ctrl.$onInit = () => {
-        ctrl.isInvalid = true;
-    };
+    ctrl.$onInit = () => ctrl.isFocused = false;
 
     ctrl.$onChanges = changes => {
         if (changes.metadata) {
@@ -30,12 +28,13 @@ function formFieldController($log, $translate) {
                     translationId => ctrl.metadata.helpText = ctrl.metadata.txAyuda ? ctrl.metadata.txAyuda : translationId);
         }
     }
-
-    ctrl.updateModel = function() {
+    
+    ctrl.updateModel = (event) => {
+        ctrl.isFocused = event.isFocused;
         ctrl.onChange({
             $event: {
-                value: ctrl.model,
-                name: ctrl.metadata.nomCampo
+                name: event.name,
+                value: event.value
             }
         });
     };

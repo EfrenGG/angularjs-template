@@ -1,7 +1,34 @@
-<div class="form-group form-group-sm" ng-class="[$ctrl.metadata.sizeClass]">
+<div class="form-group form-group-sm" ng-class="[$ctrl.metadata.sizeClass, {'has-error' : $ctrl.metadata.hasValidation && $ctrl.formParent[$ctrl.metadata.nomCampo].$invalid}]">
   <label class="control-label" for="{{$ctrl.metadata.elementId}}">
     {{$ctrl.metadata.labelText}}
   </label>
-  <help-icon ng-if="$ctrl.metadata.helpText" class="text-right" help-text="$ctrl.metadata.helpText"></help-icon>
-  <input type="text" class="form-control" name="{{$ctrl.metadata.nomCampo}}" id="{{$ctrl.metadata.elementId}}" ng-model="$ctrl.model" ng-change="$ctrl.updateModel()">
+  <help-icon ng-if="$ctrl.metadata.helpText"
+             help-text="$ctrl.metadata.helpText">
+  </help-icon>
+  <!-- Inputs -->
+  <text-field ng-if="$ctrl.metadata.cveTipoComponente === 'TEXTO'"
+              metadata="$ctrl.metadata"
+              model="$ctrl.model"
+              on-change="$ctrl.updateModel($event)">
+  </text-field>
+  <number-field ng-if="$ctrl.metadata.cveTipoComponente === 'NUMERO'"
+              metadata="$ctrl.metadata"
+              model="$ctrl.model"
+              on-change="$ctrl.updateModel($event)">
+  </number-field>
+  <area-field ng-if="$ctrl.metadata.cveTipoComponente === 'AREA'"
+              metadata="$ctrl.metadata"
+              model="$ctrl.model"
+              on-change="$ctrl.updateModel($event)">
+  </area-field>
+  <switch-field ng-if="$ctrl.metadata.cveTipoComponente === 'SWITCH'"
+              metadata="$ctrl.metadata"
+              model="$ctrl.model"
+              on-change="$ctrl.updateModel($event)">
+  </switch-field>
+
+  <validation-message ng-show="$ctrl.metadata.hasValidation && $ctrl.isFocused"
+                      form-model="$ctrl.formParent[$ctrl.metadata.nomCampo]"
+                      translation-data="$ctrl.metadata">
+  </validation-message>
 </div>

@@ -1,13 +1,7 @@
 function baseFormController() {
     var ctrl = this;
 
-    ctrl.$onInit = function() {
-    };
-
     ctrl.$onChanges = changes => {
-        if (changes.hasValidation) {
-            ctrl.hasValidation = angular.copy(ctrl.hasValidation);
-        }
         if (changes.fields) {
             ctrl.fields = angular.copy(ctrl.fields);
             setRowGroups();
@@ -52,7 +46,7 @@ function baseFormController() {
         ctrl.model[event.name] = event.value;
         ctrl.onChange({
             $event: {
-                model: event
+                model: ctrl.model
             }
         });
     };

@@ -1,7 +1,10 @@
 function appFooterController() {
     var ctrl = this;
 
-    ctrl.txFooter = '© 2018 Cero Uno S. A. de C. V. Todos los derechos reservados.';
+    ctrl.$onInit = function () {
+        const year = new Date().getFullYear();
+        ctrl.txFooter = '© ' + year + ' Cero Uno S. A. de C. V. Todos los derechos reservados.';
+    }
 }
 
 angular

@@ -3,7 +3,10 @@
   <h4 class="modal-title">{{$ctrl.txModalTitle}}</h4>
 </div>
 <div class="modal-body">
-  <base-form ng-if="ctrl.action !== 'DELETE'" fields="$ctrl.fields" model="$ctrl.model"></base-form>
+  <base-form fields="$ctrl.fields"
+             model="$ctrl.model"
+             on-change="$ctrl.updateModel($event)">
+  </base-form>
   <p ng-if="$ctrl.txDeleteMsg">{{$ctrl.txDeleteMsg}}</p>
 </div>
 <div class="modal-footer">

@@ -1,5 +1,10 @@
-<form>
+<form name="$ctrl.formName" novalidate>
   <div class="row" ng-repeat="row in $ctrl.rowGroups">
-    <form-field ng-repeat="field in row" metadata="field" model="$ctrl.model[field.nomCampo]" on-change="$ctrl.updateModel($event)"></form-field>
+    <form-field ng-repeat="field in row"
+                form-parent="$ctrl.formName"
+                metadata="field"
+                model="$ctrl.model[field.nomCampo]"
+                on-change="$ctrl.updateModel($event)">
+    </form-field>
   </div>
 </form>

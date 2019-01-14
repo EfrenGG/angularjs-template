@@ -50,6 +50,7 @@ function gridController($translate) {
         ctrl.columnDefs = fields.map(function (obj) {
             var rObj = {};
             rObj['field'] = obj.nomCampo;
+            rObj['displayName'] = obj.txEtiqueta;
             $translate(obj.cveForma + '.' + obj.cveEtiqueta)
                 .then(function (etiquetaCol) {
                     rObj['displayName'] = etiquetaCol;

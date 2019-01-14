@@ -1,4 +1,4 @@
-function modalFormController($log, $translate) {
+function modalFormController($translate) {
     var ctrl = this;
 
     ctrl.$onInit = function() {
@@ -13,10 +13,13 @@ function modalFormController($log, $translate) {
             ctrl.action = ctrl.resolve.action;
             ctrl.entity = ctrl.resolve.entity;
             ctrl.fields = ctrl.resolve.fields;
+            ctrl.fields.forEach(field => {
+                field.hasValidation = true;
+            });
             setModalAttrs();
         }
     };
-
+    
     ctrl.submit = function() {
         ctrl.isBtnsDisabled = true;
         ctrl.btnSubmitClass += ' btn-loading';
@@ -67,6 +70,8 @@ function modalFormController($log, $translate) {
                 break;
         }
     }
+
+    ctrl.updateModel = event => ctrl.model = event.model;
 }
 
 angular

@@ -2,6 +2,7 @@ const formField = {
     controller: 'formFieldController',
     templateUrl: './form-field.html',
     bindings: {
+        formParent: '=',
         metadata: '<',
         model: '<',
         onChange: '&'

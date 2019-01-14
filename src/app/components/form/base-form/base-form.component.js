@@ -2,7 +2,6 @@ const baseForm = {
     controller: 'baseFormController',
     templateUrl: './base-form.html',
     bindings: {
-        hasValidation: '<',
         fields: '<',
         model: '<',
         onChange: '&'

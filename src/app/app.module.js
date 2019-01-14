@@ -5,6 +5,6 @@ angular
         'components',
         'ngRoute',
     ])
-    .constant('INFRA_BASE_URL', 'https://localhost:5001/api/')
     .constant('CVE_APLICACION', 'INFRA')
+    .constant('INFRA_BASE_URL', 'https:localhost:5001/api/')
     .constant('DEF_LANG', 'es');

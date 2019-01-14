@@ -28,9 +28,8 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
             animation: true,
             backdrop: 'static',
             component: 'modalForm',
-            size: action === 'DELETE' ? 'sm' : 'md',
+            size: action === 'DELETE' ? 'sm' : 'lg',
             resolve: {
-                title: () => 'Titulo',
                 action: () => action,
                 entity: () => ctrl.selectedEntity,
                 fields: () => getFormFields(action)

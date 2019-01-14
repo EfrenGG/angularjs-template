@@ -19,7 +19,7 @@ const paths = {
     modules: [
         'angular/angular.js',
         'angular-animate/angular-animate.js',
-        // 'angular-loading-bar/build/loading-bar.js',
+        'angular-messages/angular-messages.js',
         'angular-route/angular-route.js',
         'angular-sanitize/angular-sanitize.js',
         'angular-translate/dist/angular-translate.js',
@@ -27,6 +27,7 @@ const paths = {
         'angular-ui-bootstrap/dist/ui-bootstrap.js',
         'angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
         'angular-ui-grid/ui-grid.js',
+        // 'angular-loading-bar/build/loading-bar.js',
         'jquery/dist/jquery.js',
         'bootstrap/dist/js/bootstrap.js',
         'jquery/sparkline/jquery.sparkline.js'
