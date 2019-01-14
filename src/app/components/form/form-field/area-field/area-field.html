@@ -1,0 +1,11 @@
+<textarea class="form-control"
+          name="{{$ctrl.metadata.nomCampo}}"
+          id="{{$ctrl.metadata.elementId}}"
+          ng-model="$ctrl.model"
+          ng-required="$ctrl.metadata.bRequerido"
+          ng-minlength="$ctrl.metadata.numLongMin"
+          ng-maxlength="$ctrl.metadata.numLongMax"
+          ng-change="$ctrl.updateModel()"
+          ng-focus="$ctrl.toggleFocus(true)"
+          ng-blur="$ctrl.toggleFocus(false)">
+</textarea>
