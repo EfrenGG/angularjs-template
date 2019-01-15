@@ -3,13 +3,13 @@ function selectFieldController($log, httpCommonsService, $translate) {
 
     ctrl.$onInit = () => {
         ctrl.isFocused = false;
-        $translate('APP.DEF_COMBO_TEXT')
+        $translate('APP.DEF_SELECT_TEXT')
             .then(translation => ctrl.defaultText = translation,
                 translationId => {
                     ctrl.defaultText = 'Seleccione una opción...';
-                    $log.error('No se pudo cargar la traducción para ' + translationId);
+                    $log.warn('No se pudo cargar la traducción para ' + translationId);
                 });
-        cargaOpciones();
+        loadData();
     };
 
     ctrl.$onChanges = changes => {
@@ -36,7 +36,7 @@ function selectFieldController($log, httpCommonsService, $translate) {
         });
     };
 
-    function cargaOpciones () {
+    function loadData () {
         httpCommonsService.obtenRegistros(ctrl.metadata.urlApi)
             .then(function (response) {
                 ctrl.selectData = response.data;

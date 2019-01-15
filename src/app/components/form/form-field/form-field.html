@@ -36,6 +36,12 @@
               on-change="$ctrl.updateModel($event)">
   </select-field>
 
+  <typeahead-field ng-if="$ctrl.metadata.cveTipoComponente === 'TYPEAHEAD'"
+              metadata="$ctrl.metadata"
+              model="$ctrl.model"
+              on-change="$ctrl.updateModel($event)">
+  </typeahead-field>
+
   <validation-message ng-show="$ctrl.metadata.hasValidation && $ctrl.isFocused"
                       form-model="$ctrl.formParent[$ctrl.metadata.nomCampo]"
                       translation-data="$ctrl.metadata">
