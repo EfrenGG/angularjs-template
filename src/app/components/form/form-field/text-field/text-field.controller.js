@@ -10,12 +10,12 @@ function textFieldController() {
         if (changes.model) {
             ctrl.model = angular.copy(ctrl.model);
         }
-    }
+    };
     
     ctrl.toggleFocus = isFocused => {
         ctrl.isFocused = isFocused;
         ctrl.updateModel();
-    }
+    };
 
     ctrl.updateModel = () => {
         ctrl.onChange({

@@ -17,19 +17,12 @@ function numberFieldController() {
         if (changes.model) {
             ctrl.model = angular.copy(ctrl.model);
         }
-    }
-
-    function getStep(decimals) {
-        if (decimals === 0) {
-            return '1';
-        }
-        return '0.' + '1'.padStart(decimals, '0');
-    }
+    };
     
     ctrl.toggleFocus = isFocused => {
         ctrl.isFocused = isFocused;
         ctrl.updateModel();
-    }
+    };
 
     ctrl.updateModel = () => {
         ctrl.onChange({
@@ -40,6 +33,13 @@ function numberFieldController() {
             }
         });
     };
+
+    function getStep(decimals) {
+        if (decimals === 0) {
+            return '1';
+        }
+        return '0.' + '1'.padStart(decimals, '0');
+    }
 }
 
 angular
