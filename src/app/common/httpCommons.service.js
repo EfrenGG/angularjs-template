@@ -1,9 +1,9 @@
 function httpCommonsService($http, $q, $translate, API_URL) {
 
-    var generaUrl = url => API_URL + url;
+    var getUrl = url => API_URL + url;
 
     function obten(url, params) {
-        url = generaUrl(url);
+        url = getUrl(url);
         var deferred = $q.defer();
         $http.get(url, {
             params: params
@@ -17,7 +17,7 @@ function httpCommonsService($http, $q, $translate, API_URL) {
     }
 
     function obtenRegistro(url, params) {
-        url = generaUrl(url);
+        url = getUrl(url);
         var deferred = $q.defer();
         $http.get(url + '/getByKey', {
             params: params,
@@ -32,7 +32,7 @@ function httpCommonsService($http, $q, $translate, API_URL) {
     }
 
     function obtenRegistros(url, params, numPagina, numRegistrosPorPagina) {
-        url = generaUrl(url);
+        url = getUrl(url);
         var deferred = $q.defer();
         if (params) {
             url = url + '/search';
@@ -53,8 +53,8 @@ function httpCommonsService($http, $q, $translate, API_URL) {
         return deferred.promise;
     }
 
-    function guardarRegistro(url, registro) {
-        url = generaUrl(url);
+    function save(url, registro) {
+        url = getUrl(url);
         if ($translate.use())
             url = url + '?lang=' + $translate.use();
         var deferred = $q.defer();
@@ -67,8 +67,8 @@ function httpCommonsService($http, $q, $translate, API_URL) {
         return deferred.promise;
     }
 
-    function editarRegistro(url, registro) {
-        url = generaUrl(url);
+    function update(url, registro) {
+        url = getUrl(url);
         if ($translate.use())
             url = url + '?lang=' + $translate.use();
         var deferred = $q.defer();
@@ -81,8 +81,8 @@ function httpCommonsService($http, $q, $translate, API_URL) {
         return deferred.promise;
     }
 
-    function eliminarRegistro(url, registro) {
-        url = generaUrl(url);
+    function remove(url, registro) {
+        url = getUrl(url);
         if ($translate.use())
             url = url + '?lang=' + $translate.use();
         var deferred = $q.defer();
@@ -104,9 +104,9 @@ function httpCommonsService($http, $q, $translate, API_URL) {
         obten: obten,
         obtenRegistro: obtenRegistro,
         obtenRegistros: obtenRegistros,
-        guardarRegistro: guardarRegistro,
-        editarRegistro: editarRegistro,
-        eliminarRegistro: eliminarRegistro
+        save: save,
+        update: update,
+        remove: remove
     };
 }
 

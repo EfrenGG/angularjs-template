@@ -2,6 +2,7 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
     var ctrl = this;
 
     ctrl.$onInit = function() {
+        ctrl.action = 'READ';
         setI18N();
         setMetadata($routeParams.cveForma);
         ctrl.gridPaginationOpts = {
@@ -23,27 +24,47 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
         ctrl.selectedEntity = angular.copy(event.entity);
     };
 
-    ctrl.openModal = function(action) {
-        $uibModal.open({
-            animation: true,
-            backdrop: 'static',
-            component: 'modalForm',
-            size: action === 'DELETE' ? 'sm' : 'lg',
-            resolve: {
-                action: () => action,
-                entity: () => ctrl.selectedEntity,
-                fields: () => getFormFields(action)
-            }
-        }).result
-            .then(event => onModalClose(action, event), event => onModalDismiss(action, event));
-    };
+    ctrl.openModal = action => $uibModal.open({
+        animation: true,
+        backdrop: 'static',
+        component: 'modalForm',
+        size: action === 'DELETE' ? 'sm' : 'lg',
+        resolve: {
+            action: () => action,
+            entity: () => ctrl.selectedEntity,
+            unsavedEntity: () => action === ctrl.unsavedAction ? ctrl.unsavedModel : undefined,
+            fields: () => getFormFields(action)
+        }
+    }).result
+        .then(event => onModalClose(action, event),
+            event => onModalDismiss(action, event));
 
     function onModalClose(action, event) {
-        $log.log(action, event);
+        ctrl.unsavedModel = event.model;
+        let methodName;
+        switch (action) {
+            case 'CREATE':
+                methodName = 'save';
+                break;
+            case 'UPDATE':
+                methodName = 'update';
+                break;
+            case 'DELETE':
+                methodName = 'remove';
+                break;
+            default:
+                break;
+        }
+        $log.log('Unsaved model: ', ctrl.unsavedModel);
+        if (methodName) {
+            httpCommonsService[methodName](ctrl.metadata.urlApiForma, ctrl.unsavedModel)
+                .then(response => $log.log(response)).catch(error => $log.error(error));
+        }
     }
 
     function onModalDismiss(action, event) {
-        $log.error(action, event);
+        ctrl.unsavedAction = action;
+        ctrl.unsavedModel = event.model;
     }
 
     function setI18N() {
