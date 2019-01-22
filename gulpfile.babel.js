@@ -27,15 +27,13 @@ const paths = {
         'angular-ui-bootstrap/dist/ui-bootstrap.js',
         'angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
         'angular-ui-grid/ui-grid.js',
-        // 'angular-loading-bar/build/loading-bar.js',
         'jquery/dist/jquery.js',
         'bootstrap/dist/js/bootstrap.js',
-        'jquery/sparkline/jquery.sparkline.js'
+        'toastr/toastr.js'
     ],
     css_modules: [
         'bootstrap/dist/css/bootstrap.min.css',
         'angular-ui-grid/ui-grid.min.css',
-        // 'angular-loading-bar/build/loading-bar.min.css',
         '@fortawesome/fontawesome-free/css/all.min.css'
     ],
     static: [
