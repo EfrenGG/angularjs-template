@@ -36,11 +36,9 @@ const paths = {
         'angular-ui-grid/ui-grid.min.css',
         '@fortawesome/fontawesome-free/css/all.min.css'
     ],
+    pixeladmin_theme: 'candy-cyan',
     static: [
         `${root}/index.html`,
-        `${root}/css/**/*`,
-        `${root}/js/**/*`,
-        `${root}/webfonts/**/*`,
         `${root}/img/**/*`
     ]
 };
@@ -48,17 +46,22 @@ server.create();
 
 gulp.task('clean', done => del(paths.dist + '**/*', done));
 
+gulp.task('grid_fonts', ['clean'], () =>
+    gulp.src('node_modules/angular-ui-grid/fonts/**/*')
+        .pipe(gulp.dest(`${paths.dist}css/fonts/`))
+);
+
 gulp.task('fontawesome', () =>
     gulp.src('node_modules/@fortawesome/fontawesome-free/webfonts/**/*')
-        .pipe(gulp.dest('src/webfonts'))
+        .pipe(gulp.dest(`${paths.dist}webfonts/`))
 );
 
-gulp.task('gridFonts', () =>
-    gulp.src('node_modules/angular-ui-grid/fonts/**/*')
-        .pipe(gulp.dest('src/css/fonts'))
-);
+gulp.task('fonts', [
+    'grid_fonts',
+    'fontawesome',
+]);
 
-gulp.task('copy', ['clean', 'fontawesome', 'gridFonts'], () =>
+gulp.task('copy', ['fonts'], () =>
     gulp.src(paths.static, { base: 'src' })
         .pipe(gulp.dest(paths.dist))
 );
@@ -71,11 +74,13 @@ gulp.task('templates', () =>
             standalone: true,
             transformUrl: url => url.replace(path.dirname(url), '.')
         }))
-        .pipe(gulp.dest('./'))
+        .pipe(gulp.dest(`${root}/app/`))
 );
 
 gulp.task('modules', ['templates'], () =>
-    gulp.src(paths.modules.map(item => 'node_modules/' + item))
+    gulp.src([
+        ...paths.modules.map(item => 'node_modules/' + item),
+        `${root}/pixeladmin/js/**/*.js`])
         .pipe(concat('vendor.js'))
         .pipe(gulp.dest(paths.dist + 'js/'))
 );
@@ -84,8 +89,7 @@ gulp.task('scripts', ['modules'], () =>
     gulp.src([
         `!${root}/app/**/*.spec.js`,
         `${root}/app/**/*.module.js`,
-        ...paths.scripts,
-        './templates.js'
+        ...paths.scripts
     ])
         .pipe(sourcemaps.init())
         .pipe(babel({
@@ -97,13 +101,19 @@ gulp.task('scripts', ['modules'], () =>
         .pipe(gulp.dest(paths.dist + 'js/'))
 );
 
-gulp.task('styles', () =>
-    gulp.src(paths.css_modules.map(item => 'node_modules/' + item))
-        .pipe(concat('vendor.css'))
-        .pipe(gulp.dest(paths.dist + 'css/'))
+gulp.task('vendor_css', () => gulp.src([
+    ...paths.css_modules.map(item => 'node_modules/' + item),
+    `${root}/pixeladmin/css/*.css`,
+    `${root}/pixeladmin/css/themes/${paths.pixeladmin_theme}.min.css`])
+    .pipe(concat('vendor.css'))
+    .pipe(gulp.dest(paths.dist + 'css/'))
 );
 
-gulp.task('serve', () => server.init({
+gulp.task('styles', [
+    'vendor_css',
+]);
+
+gulp.task('serve', ['styles', 'scripts'], () => server.init({
     files: [`${paths.dist}/**`],
     port: 4000,
     server: {
@@ -111,7 +121,7 @@ gulp.task('serve', () => server.init({
     }
 }));
 
-gulp.task('watch', ['styles', 'scripts', 'serve'], () => {
+gulp.task('watch', ['serve'], () => {
     gulp.watch([paths.scripts, paths.templates], ['scripts']);
     gulp.watch(paths.styles, ['styles']);
 });
