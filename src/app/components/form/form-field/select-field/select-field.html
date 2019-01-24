@@ -1,11 +1,13 @@
-<select class="form-control custom-select"
-        name="{{$ctrl.metadata.nomCampo}}"
-        id="{{$ctrl.metadata.elementId}}"
-        ng-model="$ctrl.model"
-        ng-options="option[$ctrl.metadata.nomCampoValor] as option[$ctrl.metadata.nomCampoEtiqueta] for option in $ctrl.selectData"
-        ng-required="$ctrl.metadata.bRequerido"
-        ng-change="$ctrl.updateModel();"
-        ng-focus="$ctrl.toggleFocus(true);"
-        ng-blur="$ctrl.toggleFocus(false);">
+<select
+  class="form-control custom-select"
+  name="{{$ctrl.metadata.nomCampo}}"
+  id="{{$ctrl.metadata.elementId}}"
+  ng-model="$ctrl.model"
+  ng-options="option[$ctrl.metadata.nomCampoValor] as option[$ctrl.metadata.nomCampoEtiqueta] for option in $ctrl.selectData"
+  ng-required="$ctrl.metadata.bRequerido"
+  ng-change="$ctrl.updateModel();"
+  ng-focus="$ctrl.toggleFocus(true);"
+  ng-blur="$ctrl.toggleFocus(false);"
+  ng-disabled="$ctrl.metadata.isDisabled">
   <option value="">{{$ctrl.defaultText}}</option>
 </select>

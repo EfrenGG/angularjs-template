@@ -13,6 +13,7 @@
       <base-form
         fields="$ctrl.groups[key]"
         model="$ctrl.model"
+        is-disabled="$ctrl.isFinished"
         on-change="$ctrl.updateModel($event)">
       </base-form>
 

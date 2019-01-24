@@ -1,6 +1,9 @@
 const crudWindow = {
     templateUrl: './crud-window.html',
-    controller: 'crudWindowController'
+    controller: 'crudWindowController',
+    bindings: {
+        formKey: '<'
+    }
 };
 
 angular

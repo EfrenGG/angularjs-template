@@ -14,9 +14,6 @@ function modalFormController($translate) {
             ctrl.unsavedEntity = ctrl.resolve.unsavedEntity;
             ctrl.fields = ctrl.resolve.fields;
             ctrl.formType = ctrl.resolve.formType;
-            ctrl.fields.forEach(field => {
-                field.hasValidation = true;
-            });
             setModalAttrs();
             setGroups(ctrl.fields);
         }

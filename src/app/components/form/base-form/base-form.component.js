@@ -4,6 +4,7 @@ const baseForm = {
     bindings: {
         fields: '<',
         model: '<',
+        isDisabled: '<',
         onChange: '&'
     }
 };

@@ -1,4 +1,7 @@
-<div class="form-group form-group-sm" ng-class="[$ctrl.metadata.sizeClass, {'has-error' : $ctrl.metadata.hasValidation && $ctrl.formParent[$ctrl.metadata.nomCampo].$invalid}]">
+<div
+  ng-if="$ctrl.metadata.hasLabel"
+  class="form-group form-group-sm"
+  ng-class="[$ctrl.metadata.sizeClass, {'has-error' : $ctrl.metadata.hasValidation && $ctrl.formParent[$ctrl.metadata.nomCampo].$invalid}]">
   <label class="control-label" for="{{$ctrl.metadata.elementId}}">
     {{$ctrl.metadata.labelText}}
   </label>

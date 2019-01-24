@@ -1,6 +1,8 @@
 function formFieldController($translate) {
     var ctrl = this;
 
+    const unlabeledFields = ['OCULTO', 'RELACION'];
+
     ctrl.$onInit = () => ctrl.isFocused = false;
 
     ctrl.$onChanges = changes => {
@@ -17,6 +19,8 @@ function formFieldController($translate) {
         ctrl.metadata.elementId = ctrl.metadata.cveForma + ctrl.metadata.nomCampo;
         // get translated data
         let namespace = ctrl.metadata.cveForma;
+        // label
+        ctrl.metadata.hasLabel = !(unlabeledFields.indexOf(ctrl.metadata.cveTipoComponente) > -1);
         // get label
         $translate(namespace + ctrl.metadata.cveEtiqueta)
             .then(translation => ctrl.metadata.labelText = translation,

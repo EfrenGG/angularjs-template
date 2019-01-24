@@ -4,7 +4,7 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
     ctrl.$onInit = () => {
         ctrl.action = 'READ';
         setI18N();
-        setMetadata($routeParams.cveForma);
+        setMetadata(ctrl.formKey || $routeParams.cveForma);
         ctrl.gridPaginationOpts = {
             pageNumber: 1,
             pageSize: 10
@@ -148,12 +148,38 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
 
     function setFields(details) {
         ctrl.fields = $filter('orderBy')(details, 'numOrden');
-        ctrl.filterFields = $filter('filter')(angular.copy(ctrl.fields), { bFiltra: true });
-        ctrl.gridFields = $filter('filter')(angular.copy(ctrl.fields), { bGrid: true });
-        ctrl.reportFields = $filter('filter')(angular.copy(ctrl.fields), { bReporta: true });
-        ctrl.createFields = $filter('filter')(angular.copy(ctrl.fields), { bCrea: true });
-        ctrl.editFields = $filter('filter')(angular.copy(ctrl.fields), { bEdita: true });
-        ctrl.pkFields = $filter('filter')(angular.copy(ctrl.fields), { bPk: true });
+        ctrl.gridFields = [];
+        ctrl.filterFields = [];
+        ctrl.pkFields = [];
+        ctrl.createFields = [];
+        ctrl.editFields = [];
+        ctrl.fields.forEach(field => {
+            field.hasValidation = true;
+            field.isDisabled = false;
+            if (field.bGrid) {
+                ctrl.gridFields.push(field);
+            }
+            if (field.bFiltra) {
+                let newField = angular.copy(field);
+                newField.hasValidation = false;
+                ctrl.filterFields.push(newField);
+            }
+            if (field.bPk) {
+                let newField = angular.copy(field);
+                newField.cveTipoComponente = 'OCULTO';
+                ctrl.pkFields.push(newField);
+            }
+            if (field.bCrea) {
+                ctrl.createFields.push(field);
+            }
+            if (field.bEdita) {
+                let newField = angular.copy(field);
+                if (newField.bPk) {
+                    newField.isDisabled = true;
+                }
+                ctrl.editFields.push(newField);
+            }
+        });
     }
 
     function getFormFields(action) {
