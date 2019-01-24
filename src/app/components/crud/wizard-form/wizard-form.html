@@ -1,0 +1,53 @@
+<px-wizard class="wizard">
+  <div class="wizard-wrapper">
+    <ul class="wizard-steps">
+      <li ng-repeat="(i, key) in $ctrl.groupKeys" data-target="#wizard-example-step-{{i + 1}}">
+        <span class="wizard-step-number">{{key}}</span>
+        <span class="wizard-step-complete border-success"><i class="fa fa-check text-success"></i></span>
+      </li>
+    </ul>
+  </div>
+  <div class="wizard-content">
+    <div ng-repeat="(i, key) in $ctrl.groupKeys" class="wizard-pane" id="wizard-example-step-{{i + 1}}">
+
+      <base-form
+        fields="$ctrl.groups[key]"
+        model="$ctrl.model"
+        on-change="$ctrl.updateModel($event)">
+      </base-form>
+
+      <div ng-show="!$ctrl.isFinished">
+        <button
+          ng-if="!$first"
+          type="button"
+          class="btn btn-outline btn-rounded"
+          data-wizard-action="prev">
+          <span class="btn-label-icon left fas fa-chevron-left"></span>
+          Anterior
+        </button>
+
+        <button
+          ng-if="!$last"
+          ng-disabled="!$ctrl.isValid"
+          type="button"
+          class="btn btn-outline btn-rounded"
+          data-wizard-action="next">
+          <span class="btn-label-icon right fas fa-chevron-right"></span>
+          Siguiente
+        </button>
+
+        <button
+          ng-if="$last"
+          ng-disabled="!$ctrl.isValid"
+          type="button"
+          class="btn btn-rounded"
+          ng-class="$ctrl.btnClass"
+          data-wizard-action="finish"
+          ng-click="$ctrl.finished();">
+          <span class="btn-label-icon right fas fa-check-double"></span>
+          Terminar
+        </button>
+      </div>
+    </div>
+  </div>
+</px-wizard>

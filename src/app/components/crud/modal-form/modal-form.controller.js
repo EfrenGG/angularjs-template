@@ -2,7 +2,6 @@ function modalFormController($translate) {
     var ctrl = this;
 
     ctrl.$onInit = function() {
-        ctrl.isBtnsDisabled = false;
         $translate('APP.BTN_CANCEL')
             .then(translation => ctrl.txBtnCancel = translation, () => ctrl.txBtnCancel = 'Cancelar');
     };
@@ -12,11 +11,14 @@ function modalFormController($translate) {
             ctrl.resolve = angular.copy(ctrl.resolve);
             ctrl.action = ctrl.resolve.action;
             ctrl.entity = ctrl.resolve.entity;
+            ctrl.unsavedEntity = ctrl.resolve.unsavedEntity;
             ctrl.fields = ctrl.resolve.fields;
+            ctrl.formType = ctrl.resolve.formType;
             ctrl.fields.forEach(field => {
                 field.hasValidation = true;
             });
             setModalAttrs();
+            setGroups(ctrl.fields);
         }
     };
     
@@ -32,7 +34,7 @@ function modalFormController($translate) {
 
     ctrl.cancel = function() {
         ctrl.isBtnsDisabled = true;
-        ctrl.btnCancelClass = 'btn-loading';
+        ctrl.btnCancelClass += 'btn-loading';
         ctrl.dismiss({
             $value: {
                 model: ctrl.model
@@ -41,9 +43,10 @@ function modalFormController($translate) {
     };
 
     function setModalAttrs() {
+        ctrl.isBtnsDisabled = true;
         switch(ctrl.action) {
             case 'CREATE':
-                ctrl.model = {};
+                ctrl.model = ctrl.unsavedEntity || {};
                 $translate('APP.TIT_MOD_CREATE')
                     .then(translation => ctrl.txModalTitle = translation, () => ctrl.txBtnSubmit = 'Crear nuevo registro');
                 $translate('APP.BTN_CREATE')
@@ -51,7 +54,7 @@ function modalFormController($translate) {
                 ctrl.btnSubmitClass = 'btn-success';
                 break;
             case 'UPDATE':
-                ctrl.model = ctrl.entity;
+                ctrl.model = ctrl.unsavedEntity || ctrl.entity;
                 $translate('APP.TIT_MOD_EDIT')
                     .then(translation => ctrl.txModalTitle = translation, () => ctrl.txBtnSubmit = 'Modificar registro');
                 $translate('APP.BTN_UPDATE')
@@ -61,6 +64,7 @@ function modalFormController($translate) {
             case 'DELETE':
                 ctrl.model = ctrl.entity;
                 ctrl.btnSubmitClass = 'btn-danger';
+                ctrl.isBtnsDisabled = false;
                 $translate('APP.TIT_MOD_DELETE')
                     .then(translation => ctrl.txModalTitle = translation, () => ctrl.txBtnSubmit = 'Eliminar registro');
                 $translate('APP.MSG_MOD_DELETE')
@@ -71,7 +75,25 @@ function modalFormController($translate) {
         }
     }
 
-    ctrl.updateModel = event => ctrl.model = event.model;
+    const setGroups = fields => {
+        let groups = {};
+        fields.forEach(field => {
+            let groupName = field.numGrupo;
+            if (!groups[groupName]) {
+                groups[groupName] = [];
+            }
+            groups[groupName].push(field);            
+        });
+        ctrl.groups = groups;
+    };
+
+    ctrl.updateModel = event => {
+        ctrl.model = event.model;
+        ctrl.isBtnsDisabled = event.invalid;
+        if (event.isFinished) {
+            ctrl.isFinished = event.isFinished;
+        }
+    };
 }
 
 angular

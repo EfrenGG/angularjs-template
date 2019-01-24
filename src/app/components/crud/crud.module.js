@@ -7,5 +7,6 @@ angular
         'ui.grid.pagination',
         'ui.grid.selection',
         'ui.grid.autoResize',
-        'components.form'
+        'components.form',
+        'px-wizard'
     ]);

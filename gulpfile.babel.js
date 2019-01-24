@@ -17,6 +17,7 @@ const paths = {
     styles: `${root}/sass/*.scss`,
     templates: `${root}/app/**/*.html`,
     modules: [
+        'jquery/dist/jquery.js',
         'angular/angular.js',
         'angular-animate/angular-animate.js',
         'angular-messages/angular-messages.js',
@@ -27,7 +28,6 @@ const paths = {
         'angular-ui-bootstrap/dist/ui-bootstrap.js',
         'angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
         'angular-ui-grid/ui-grid.js',
-        'jquery/dist/jquery.js',
         'bootstrap/dist/js/bootstrap.js',
         'toastr/toastr.js'
     ],

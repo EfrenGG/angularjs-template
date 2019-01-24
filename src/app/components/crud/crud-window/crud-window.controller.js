@@ -1,7 +1,7 @@
-function crudWindowController($routeParams, $translate, $log, $filter, $uibModal, httpCommonsService, CVE_APLICACION) {
+function crudWindowController($routeParams, $translate, $log, $filter, $uibModal, httpCommonsService, toastrService, CVE_APLICACION) {
     var ctrl = this;
 
-    ctrl.$onInit = function() {
+    ctrl.$onInit = () => {
         ctrl.action = 'READ';
         setI18N();
         setMetadata($routeParams.cveForma);
@@ -11,17 +11,19 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
         };
     };
 
-    ctrl.setPage = function(event) {
+    ctrl.setPage = event => {
         ctrl.gridPaginationOpts = angular.copy(event.params);
         getData();
     };
 
-    ctrl.setFilterParams = function(event) {
+    ctrl.setFilterParams = event => {
         ctrl.filterParams = angular.copy(event.params);
     };
 
-    ctrl.setEntity = function(event) {
+    ctrl.setEntity = event => {
         ctrl.selectedEntity = angular.copy(event.entity);
+        ctrl.unsavedModel = undefined;
+        ctrl.unsavedAction = undefined;
     };
 
     ctrl.openModal = action => $uibModal.open({
@@ -31,6 +33,7 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
         size: action === 'DELETE' ? 'sm' : 'lg',
         resolve: {
             action: () => action,
+            formType: () => ctrl.metadata.cveTipoForma,
             entity: () => ctrl.selectedEntity,
             unsavedEntity: () => action === ctrl.unsavedAction ? ctrl.unsavedModel : undefined,
             fields: () => getFormFields(action)
@@ -40,7 +43,11 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
             event => onModalDismiss(action, event));
 
     function onModalClose(action, event) {
+        if (!action) {
+            throw new Error('action cannot be null.');
+        }
         ctrl.unsavedModel = event.model;
+        ctrl.unsavedAction = action;
         let methodName;
         switch (action) {
             case 'CREATE':
@@ -55,12 +62,26 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
             default:
                 break;
         }
-        $log.log('Unsaved model: ', ctrl.unsavedModel);
         if (methodName) {
             httpCommonsService[methodName](ctrl.metadata.urlApiForma, ctrl.unsavedModel)
-                .then(response => $log.log(response)).catch(error => $log.error(error));
+                .then(response => onSuccessResponse(response)).catch(error => onErrorResponse(action, error));
         }
     }
+
+    const onSuccessResponse = response => {
+        if (response) $log.log(response);
+        ctrl.selectedEntity = undefined;
+        getData();
+        toastrService.success('Los cambios fueron salvados correctamente', 'Éxito');
+        ctrl.unsavedModel = undefined;
+        ctrl.unsavedAction = undefined;
+    };
+
+    const onErrorResponse = (action, error) => {
+        $log.error(error);
+        toastrService.error('Ocurrió un error inesperado, contacte a su administrador', 'Error');
+        ctrl.openModal(action);
+    };
 
     function onModalDismiss(action, event) {
         ctrl.unsavedAction = action;
@@ -139,7 +160,7 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
         if (!action) {
             throw new Error('action cannot be null.');
         }
-        switch(action) {
+        switch (action) {
             case 'CREATE':
                 return ctrl.createFields;
             case 'UPDATE':
@@ -151,7 +172,7 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
         }
     }
 
-    function getData() {
+    const getData = () => {
         if (!ctrl.filterParams) {
             ctrl.filterParams = {};
         }
@@ -163,7 +184,7 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
             .catch(function (error) {
                 $log.error(error);
             });
-    }
+    };
 }
 
 angular

@@ -46,7 +46,8 @@ function baseFormController() {
         ctrl.model[event.name] = event.value;
         ctrl.onChange({
             $event: {
-                model: ctrl.model
+                model: ctrl.model,
+                invalid: ctrl.formName.$invalid
             }
         });
     };
