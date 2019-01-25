@@ -6,7 +6,7 @@ function gridController($translate) {
             columnDefs: ctrl.columnDefs,
             enableFullRowSelection: true,
             paginationPageSizes: [5, 10, 25, 50, 100],
-            paginationPageSize: 10,
+            paginationPageSize: ctrl.paginationOptions.pageSize || 10,
             useExternalPagination: true,
             onRegisterApi: gridApi => {
                 ctrl.gridApi = gridApi;
@@ -61,6 +61,9 @@ function gridController($translate) {
     };
 
     function setDefCols(fields) {
+        if (!fields) {
+            return;
+        }
         let columnFields = fields.length > 2 && ctrl.screenWidth < 700 ? fields.slice(0, 2) : fields;
         ctrl.columnDefs = columnFields.map(function (obj) {
             var rObj = {};
@@ -74,6 +77,9 @@ function gridController($translate) {
                 });
             return rObj;
         });
+        if (ctrl.gridConfig) {
+            ctrl.gridConfig.columnDefs = ctrl.columnDefs;
+        }
     }
 
     function selectRow(entity) {

@@ -50,3 +50,11 @@
                       translation-data="$ctrl.metadata">
   </validation-message>
 </div>
+
+<relationship-field
+  ng-if="$ctrl.metadata.cveTipoComponente === 'RELACION'"
+  parent-model="$ctrl.parentModel"
+  metadata="$ctrl.metadata"
+  model="$ctrl.model"
+  on-change="$ctrl.updateModel($event)">
+</relationship-field>

@@ -3,6 +3,7 @@ const formField = {
     templateUrl: './form-field.html',
     bindings: {
         formParent: '=',
+        parentModel: '=',
         metadata: '<',
         model: '<',
         onChange: '&'
