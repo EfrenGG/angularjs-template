@@ -40,6 +40,7 @@
     "angular-messages": "^1.6.10",
     "angular-route": "^1.6.10",
     "angular-sanitize": "^1.6.10",
+    "angular-touch": "^1.6.10",
     "angular-translate": "^2.18.1",
     "angular-translate-loader-url": "^2.18.1",
     "angular-ui-bootstrap": "^2.5.6",

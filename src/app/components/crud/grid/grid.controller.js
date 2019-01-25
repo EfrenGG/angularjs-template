@@ -8,7 +8,7 @@ function gridController($translate) {
             paginationPageSizes: [5, 10, 25, 50, 100],
             paginationPageSize: 10,
             useExternalPagination: true,
-            onRegisterApi: function(gridApi) {
+            onRegisterApi: gridApi => {
                 ctrl.gridApi = gridApi;
                 ctrl.gridApi.pagination.on.paginationChanged(null, function (newPage, pageSize) {
                     ctrl.paginationOptions.pageNumber = newPage;
@@ -21,7 +21,6 @@ function gridController($translate) {
                 });
             }
         };
-        ctrl.gridHeight = '25px';
     };
 
     ctrl.$onChanges = function(changes) {
@@ -37,6 +36,7 @@ function gridController($translate) {
             if (ctrl.gridConfig) {
                 ctrl.gridConfig.data = ctrl.data;
             }
+            setGridHeight(ctrl.data.length);
         }
         if (changes.total) {
             ctrl.total = angular.copy(ctrl.total);
@@ -44,6 +44,17 @@ function gridController($translate) {
                 ctrl.gridConfig.totalItems = ctrl.total;
             }
         }
+    };
+
+    const setGridHeight = dataLenght => {
+        let height = 0;
+        if (!dataLenght) {
+            height = '25px';
+            return;
+        } else {
+            height = (ctrl.data.length * 30) + 32 + 42;
+        }
+        ctrl.gridHeight = height + 'px';
     };
 
     function setDefCols(fields) {

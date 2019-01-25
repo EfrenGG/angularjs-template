@@ -23,6 +23,7 @@ const paths = {
         'angular-messages/angular-messages.js',
         'angular-route/angular-route.js',
         'angular-sanitize/angular-sanitize.js',
+        'angular-touch/angular-touch.js',
         'angular-translate/dist/angular-translate.js',
         'angular-translate-loader-url/angular-translate-loader-url.js',
         'angular-ui-bootstrap/dist/ui-bootstrap.js',
@@ -36,7 +37,7 @@ const paths = {
         'angular-ui-grid/ui-grid.min.css',
         '@fortawesome/fontawesome-free/css/all.min.css'
     ],
-    pixeladmin_theme: 'candy-cyan',
+    pixeladmin_theme: 'candy-blue',
     static: [
         `${root}/index.html`,
         `${root}/img/**/*`

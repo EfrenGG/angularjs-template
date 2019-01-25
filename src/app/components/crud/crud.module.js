@@ -2,6 +2,7 @@ angular
     .module('components.crud', [
         'ngAnimate',
         'ngRoute',
+        'ngTouch',
         'ui.bootstrap',
         'ui.grid',
         'ui.grid.pagination',

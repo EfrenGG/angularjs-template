@@ -31,15 +31,15 @@ function httpCommonsService($http, $q, $translate, API_URL) {
         return deferred.promise;
     }
 
-    function obtenRegistros(url, params, numPagina, numRegistrosPorPagina) {
+    function obtenRegistros(url, params, pageNumber, pageSize) {
         url = getUrl(url);
         var deferred = $q.defer();
         if (params) {
             url = url + '/search';
         }
-        if (numPagina && numRegistrosPorPagina) {
-            params.numPagina = numPagina;
-            params.numRegistrosPorPagina = numRegistrosPorPagina;
+        if (pageNumber && pageSize) {
+            params.pageNumber = pageNumber;
+            params.pageSize = pageSize;
         }
 
         $http.get(url, {

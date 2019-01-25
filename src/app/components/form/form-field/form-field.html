@@ -14,19 +14,19 @@
               model="$ctrl.model"
               on-change="$ctrl.updateModel($event)">
   </text-field>
-  
+
   <number-field ng-if="$ctrl.metadata.cveTipoComponente === 'NUMERO'"
               metadata="$ctrl.metadata"
               model="$ctrl.model"
               on-change="$ctrl.updateModel($event)">
   </number-field>
-  
+
   <area-field ng-if="$ctrl.metadata.cveTipoComponente === 'AREA'"
               metadata="$ctrl.metadata"
               model="$ctrl.model"
               on-change="$ctrl.updateModel($event)">
   </area-field>
-  
+
   <switch-field ng-if="$ctrl.metadata.cveTipoComponente === 'SWITCH'"
               metadata="$ctrl.metadata"
               model="$ctrl.model"
