@@ -1,7 +1,7 @@
 function gridController($translate) {
     var ctrl = this;
 
-    ctrl.$onInit = function() {
+    ctrl.$onInit = function () {
         ctrl.gridConfig = {
             columnDefs: ctrl.columnDefs,
             enableFullRowSelection: true,
@@ -23,7 +23,7 @@ function gridController($translate) {
         };
     };
 
-    ctrl.$onChanges = function(changes) {
+    ctrl.$onChanges = function (changes) {
         if (changes.fields) {
             ctrl.fields = angular.copy(ctrl.fields);
             setDefCols(ctrl.fields);
@@ -35,8 +35,8 @@ function gridController($translate) {
             ctrl.data = angular.copy(ctrl.data);
             if (ctrl.gridConfig) {
                 ctrl.gridConfig.data = ctrl.data;
+                setGridHeight(ctrl.data.length);
             }
-            setGridHeight(ctrl.data.length);
         }
         if (changes.total) {
             ctrl.total = angular.copy(ctrl.total);
@@ -46,19 +46,23 @@ function gridController($translate) {
         }
     };
 
-    const setGridHeight = dataLenght => {
+    const setGridHeight = dataLength => {
         let height = 0;
-        if (!dataLenght) {
+        if (!dataLength) {
             height = '25px';
             return;
         } else {
-            height = (ctrl.data.length * 30) + 32 + 42;
+            height = (dataLength * 30) + 32 + 42;
+            if (ctrl.screenWidth < 700) {
+                height += 42;
+            }
         }
         ctrl.gridHeight = height + 'px';
     };
 
     function setDefCols(fields) {
-        ctrl.columnDefs = fields.map(function (obj) {
+        let columnFields = fields.length > 2 && ctrl.screenWidth < 700 ? fields.slice(0, 2) : fields;
+        ctrl.columnDefs = columnFields.map(function (obj) {
             var rObj = {};
             rObj['field'] = obj.nomCampo;
             rObj['displayName'] = obj.txEtiqueta;

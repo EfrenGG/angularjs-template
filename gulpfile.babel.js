@@ -37,7 +37,7 @@ const paths = {
         'angular-ui-grid/ui-grid.min.css',
         '@fortawesome/fontawesome-free/css/all.min.css'
     ],
-    pixeladmin_theme: 'candy-blue',
+    pixeladmin_theme: 'candy-cyan',
     static: [
         `${root}/index.html`,
         `${root}/img/**/*`
