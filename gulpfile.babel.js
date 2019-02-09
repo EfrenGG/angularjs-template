@@ -32,8 +32,6 @@ const paths = {
         'angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
         'angular-ui-grid/ui-grid.js',
         'bootstrap/dist/js/bootstrap.js',
-        'bootstrap-datepicker⁩/dist⁩/js⁩/bootstrap-datepicker.js',
-        'bootstrap-datepicker⁩/dist⁩/js⁩/locales/bootstrap-datepicker.es.min.js',
         'toastr/toastr.js'
     ],
     css_modules: [

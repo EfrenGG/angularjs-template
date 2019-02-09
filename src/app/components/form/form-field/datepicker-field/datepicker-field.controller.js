@@ -1,4 +1,5 @@
-function datePickerFieldController(uibDateParser, DEF_DATE_FORMAT) {
+
+function datepickerFieldController(uibDateParser, DEF_DATE_FORMAT) {
     var ctrl = this;
 
     const availableDateFormats = [
@@ -55,4 +56,4 @@ function datePickerFieldController(uibDateParser, DEF_DATE_FORMAT) {
 
 angular
     .module('components.form')
-    .controller('datePickerFieldController', datePickerFieldController);
+    .controller('datepickerFieldController', datepickerFieldController);

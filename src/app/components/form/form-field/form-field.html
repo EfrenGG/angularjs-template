@@ -27,11 +27,11 @@
               on-change="$ctrl.updateModel($event)">
   </area-field>
 
-  <date-picker-field ng-if="$ctrl.metadata.cveTipoComponente === 'FECHA'"
+  <datepicker-field ng-if="$ctrl.metadata.cveTipoComponente === 'FECHA'"
               metadata="$ctrl.metadata"
               model="$ctrl.model"
               on-change="$ctrl.updateModel($event)">
-  </date-picker-field>
+  </datepicker-field>
 
   <lookup-field ng-if="$ctrl.metadata.cveTipoComponente === 'LOOKUP'"
               metadata="$ctrl.metadata"
