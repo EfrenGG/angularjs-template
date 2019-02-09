@@ -1,9 +1,11 @@
-function gridController($translate) {
+function gridController($translate, $timeout) {
     var ctrl = this;
 
     ctrl.$onInit = function () {
+        ctrl.isLoading = true;
         ctrl.gridConfig = {
             columnDefs: ctrl.columnDefs,
+            enableColumnResizing: true,
             enableFullRowSelection: true,
             paginationPageSizes: [5, 10, 25, 50, 100],
             paginationPageSize: ctrl.paginationOptions.pageSize || 10,
@@ -34,8 +36,11 @@ function gridController($translate) {
         if (changes.data) {
             ctrl.data = angular.copy(ctrl.data);
             if (ctrl.gridConfig) {
-                ctrl.gridConfig.data = ctrl.data;
                 setGridHeight(ctrl.data.length);
+                $timeout(() => {
+                    ctrl.gridConfig.data = ctrl.data;
+                    ctrl.isLoading = false;
+                }, 1000);
             }
         }
         if (changes.total) {
@@ -64,11 +69,11 @@ function gridController($translate) {
         if (!fields) {
             return;
         }
-        let columnFields = fields.length > 2 && ctrl.screenWidth < 700 ? fields.slice(0, 2) : fields;
-        ctrl.columnDefs = columnFields.map(function (obj) {
+        ctrl.columnDefs = fields.map(function (obj) {
             var rObj = {};
             rObj['field'] = obj.nomCampo;
             rObj['displayName'] = obj.txEtiqueta;
+            rObj['minWidth'] = getMinWidth(obj.cveTamanoCampo);
             $translate(obj.cveForma + '.' + obj.cveEtiqueta)
                 .then(function (etiquetaCol) {
                     rObj['displayName'] = etiquetaCol;
@@ -81,6 +86,18 @@ function gridController($translate) {
             ctrl.gridConfig.columnDefs = ctrl.columnDefs;
         }
     }
+
+    const getMinWidth = sizeKey => {
+        switch (sizeKey) {
+            case 'LG':
+                return 300;
+            case 'SM':
+            case 'XS':
+                return 150;
+            default:
+                return 200;
+        }
+    };
 
     function selectRow(entity) {
         ctrl.onRowSelection({

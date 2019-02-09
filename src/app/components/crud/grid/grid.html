@@ -1,9 +1,11 @@
 <div
+  ng-show="!$ctrl.isLoading"
   ui-grid="$ctrl.gridConfig"
   ui-grid-pagination
   ui-grid-selection
   ui-grid-auto-resize
-  ng-style="{'height': $ctrl.gridHeight}">
+  ui-grid-resize-columns
+  ng-style="{'height': $ctrl.gridHeight || '25px'}">
 </div>
 
 <screen-size

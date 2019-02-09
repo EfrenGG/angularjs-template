@@ -8,6 +8,7 @@ angular
         'ui.grid.pagination',
         'ui.grid.selection',
         'ui.grid.autoResize',
+        'ui.grid.resizeColumns',
         'components.form',
         'px-wizard'
     ]);
