@@ -1,0 +1,19 @@
+<div class="input-group input-group-sm">
+  <input
+    name="{{$ctrl.metadata.nomCampo}}"
+    type="text"
+    class="form-control"
+    placeholder="Comienza a escribir..."
+    ng-model="$ctrl.model"
+    ng-required="$ctrl.metadata.bRequerido"
+    ng-keypress="$ctrl.startCountDown()"
+    ng-focus="$ctrl.toggleFocus(true)"
+    ng-blur="$ctrl.toggleFocus(false)"
+    ng-disabled="$ctrl.metadata.isDisabled"
+    ng-readonly="$ctrl.loading">
+  <div class="input-group-btn">
+    <button type="button" class="btn btn-primary" ng-class="{'btn-loading' : $ctrl.loading}" ng-click="$ctrl.openModal();">
+      <i class="fas fa-search"></i>
+    </button>
+  </div>
+</div>
