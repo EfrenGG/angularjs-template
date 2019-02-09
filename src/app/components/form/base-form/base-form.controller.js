@@ -4,7 +4,7 @@ function baseFormController() {
     ctrl.$onChanges = changes => {
         if (changes.fields) {
             ctrl.fields = angular.copy(ctrl.fields);
-            setRowGroups();
+            if (ctrl.fields) { setRowGroups(); }
         }
         if (changes.model) {
             ctrl.model = angular.copy(ctrl.model);

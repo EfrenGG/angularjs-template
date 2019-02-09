@@ -2,24 +2,6 @@
   <button type="button" class="close" ng-click="$ctrl.cancel()">×</button>
   <h4 class="modal-title">{{$ctrl.txModalTitle}}</h4>
 </div>
-<!-- Wizard -->
-<wizard-form
-  ng-if="$ctrl.formType === 'ASISTENTE' && $ctrl.action !== 'DELETE'"
-  fields="$ctrl.fields"
-  model="$ctrl.model"
-  btn-class="$ctrl.btnSubmitClass"
-  on-change="$ctrl.updateModel($event)"
-  on-finish="$ctrl.submit()">
-</wizard-form>
-
-<!-- Window -->
-<div class="modal-body" ng-if="$ctrl.formType === 'VENTANA'">
-  <base-form
-    fields="$ctrl.fields"
-    model="$ctrl.model"
-    on-change="$ctrl.updateModel($event)">
-  </base-form>
-</div>
 
 <!-- Delete Windows-->
 <div class="modal-body" ng-if="$ctrl.action === 'DELETE'">
@@ -31,6 +13,25 @@
   <p ng-if="$ctrl.txDeleteMsg">{{$ctrl.txDeleteMsg}}</p>
 </div>
 
+<!-- Window -->
+<div class="modal-body" ng-if="$ctrl.formType === 'VENTANA'">
+  <base-form
+    fields="$ctrl.fields"
+    model="$ctrl.model"
+    on-change="$ctrl.updateModel($event)">
+  </base-form>
+</div>
+
+<!-- Wizard -->
+<wizard-form
+  ng-if="$ctrl.formType === 'ASISTENTE' && $ctrl.action !== 'DELETE'"
+  fields="$ctrl.fields"
+  model="$ctrl.model"
+  action="$ctrl.action"
+  on-change="$ctrl.updateModel($event)"
+  on-finish="$ctrl.submit()">
+</wizard-form>
+
 
 <div class="modal-footer">
 
@@ -41,9 +42,9 @@
     ng-click="$ctrl.cancel()">
     {{$ctrl.txBtnCancel}}
   </button>
-  
+
   <button
-    ng-if="$ctrl.formType === 'VENTANA' || $ctrl.isFinished || $ctrl.action === 'DELETE'"
+    ng-if="$ctrl.formType === 'VENTANA' || $ctrl.action === 'DELETE'"
     type="button" class="btn"
     ng-class="$ctrl.btnSubmitClass"
     ng-click="$ctrl.submit()"

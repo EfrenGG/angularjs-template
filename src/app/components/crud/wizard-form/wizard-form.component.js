@@ -4,7 +4,7 @@ const wizardForm = {
     bindings: {
         fields: '<',
         model: '<',
-        btnClass: '<',
+        action: '<',
         onChange: '&',
         onFinish: '&'
     }

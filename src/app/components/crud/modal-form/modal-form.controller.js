@@ -18,7 +18,7 @@ function modalFormController($translate) {
             setGroups(ctrl.fields);
         }
     };
-    
+
     ctrl.submit = function() {
         ctrl.isBtnsDisabled = true;
         ctrl.btnSubmitClass += ' btn-loading';
@@ -57,6 +57,7 @@ function modalFormController($translate) {
                 $translate('APP.BTN_UPDATE')
                     .then(translation => ctrl.txBtnSubmit = translation, () => ctrl.txBtnSubmit = 'Actualizar');
                 ctrl.btnSubmitClass = 'btn-info';
+                ctrl.isBtnsDisabled = false;
                 break;
             case 'DELETE':
                 ctrl.model = ctrl.entity;
@@ -79,7 +80,7 @@ function modalFormController($translate) {
             if (!groups[groupName]) {
                 groups[groupName] = [];
             }
-            groups[groupName].push(field);            
+            groups[groupName].push(field);
         });
         ctrl.groups = groups;
     };
@@ -87,9 +88,6 @@ function modalFormController($translate) {
     ctrl.updateModel = event => {
         ctrl.model = event.model;
         ctrl.isBtnsDisabled = event.invalid;
-        if (event.isFinished) {
-            ctrl.isFinished = event.isFinished;
-        }
     };
 }
 

@@ -1,8 +1,7 @@
-function wizardFormController() {
+function wizardFormController($timeout) {
     var ctrl = this;
 
     ctrl.$onInit = () => {
-        ctrl.isValid = false;
         ctrl.isFinished = false;
     };
 
@@ -15,6 +14,10 @@ function wizardFormController() {
         if (changes.model) {
             ctrl.model = angular.copy(ctrl.model);
         }
+        if (changes.action) {
+            ctrl.isValid = ctrl.action === 'UPDATE' ? true : false;
+            ctrl.btnSubmitClass = ctrl.action === 'UPDATE' ? 'btn-info' : 'btn-success';
+        }
     };
 
     ctrl.finished = () => {
@@ -22,10 +25,10 @@ function wizardFormController() {
         ctrl.onChange({
             $event: {
                 model: ctrl.model,
-                invalid: !ctrl.isValid,
-                isFinished: ctrl.isFinished
+                invalid: !ctrl.isValid
             }
         });
+        $timeout(ctrl.onFinish, 1000);
     };
 
     ctrl.updateModel = event => {
