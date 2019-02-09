@@ -6,5 +6,5 @@
     <small ng-message="number" class="form-message light">{{ 'APP.ERR_NUM' | translate: $ctrl.translationData }}</small>
     <small ng-message="maxIntegers" class="form-message light">{{ 'APP.ERR_NUM_INT' | translate: $ctrl.translationData }}</small>
     <small ng-message="maxDecimals" class="form-message light">{{ 'APP.ERR_NUM_DEC' | translate: $ctrl.translationData }}</small>
-    <small ng-message="date" class="form-message light">{{ 'APP.ERR_DATE' | translate: $ctrl.translationData }}</small>
+    <small ng-message="parse" ng-if="$ctrl.translationData.cveTipoComponente === 'FECHA'" class="form-message light">{{ 'APP.ERR_DATE' | translate: $ctrl.translationData }}</small>
 </div>

@@ -4,7 +4,7 @@
   id="{{$ctrl.metadata.elementId}}"
   ng-model="$ctrl.model"
   ng-options="option[$ctrl.metadata.nomCampoValor] as option[$ctrl.metadata.nomCampoEtiqueta] for option in $ctrl.selectData"
-  ng-required="$ctrl.metadata.bRequerido"
+  ng-required="$ctrl.metadata.hasValidation && $ctrl.metadata.bRequerido"
   ng-change="$ctrl.updateModel();"
   ng-focus="$ctrl.toggleFocus(true);"
   ng-blur="$ctrl.toggleFocus(false);"

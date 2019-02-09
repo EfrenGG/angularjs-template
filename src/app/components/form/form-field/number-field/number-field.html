@@ -5,7 +5,7 @@
     id="{{$ctrl.metadata.elementId}}"
     step="{{$ctrl.step}}"
     ng-model="$ctrl.model"
-    ng-required="$ctrl.metadata.bRequerido"
+    ng-required="$ctrl.metadata.hasValidation && $ctrl.metadata.bRequerido"
     max-integers="{{$ctrl.metadata.numEnteros}}"
     max-decimals="{{$ctrl.metadata.numDecimales}}"
     ng-change="$ctrl.updateModel();"

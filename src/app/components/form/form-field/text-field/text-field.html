@@ -1,10 +1,10 @@
-<input 
+<input
     type="text"
     class="form-control"
     name="{{$ctrl.metadata.nomCampo}}"
     id="{{$ctrl.metadata.elementId}}"
     ng-model="$ctrl.model"
-    ng-required="$ctrl.metadata.bRequerido"
+    ng-required="$ctrl.metadata.hasValidation && $ctrl.metadata.bRequerido"
     ng-minlength="$ctrl.metadata.numLongMin"
     ng-maxlength="$ctrl.metadata.numLongMax"
     ng-pattern="$ctrl.metadata.txRegex"
