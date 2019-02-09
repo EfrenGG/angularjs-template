@@ -16,7 +16,14 @@ function filterPanelController($translate) {
             ctrl.txBtnClean = 'Limpiar';
         });
         ctrl.isOpen = false;
+        ctrl.clearModel();
         setBtnText();
+    };
+
+    ctrl.$onChanges = changes => {
+        if (changes.fields) {
+            ctrl.fields = angular.copy(ctrl.fields);
+        }
     };
 
     ctrl.toggle = function() {
@@ -24,9 +31,25 @@ function filterPanelController($translate) {
         setBtnText();
     };
 
-    function setBtnText() {
+    ctrl.clearModel = () => {
+        ctrl.model = {};
+    };
+
+    ctrl.filter = () => {
+        ctrl.onFilter({
+            $event: {
+                filterParams: ctrl.model
+            }
+        });
+    };
+
+    ctrl.updateModel = event => {
+        ctrl.model = event.model;
+    };
+
+    const setBtnText = () => {
         ctrl.txBtnToggle = ctrl.isOpen ? ctrl.txCollapse : ctrl.txExpand;
-    }
+    };
 }
 
 angular

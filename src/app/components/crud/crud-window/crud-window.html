@@ -28,7 +28,10 @@
   </div>
 
   <div ng-if="$ctrl.metadata.bFiltra">
-    <filter-panel></filter-panel>
+    <filter-panel
+      fields="$ctrl.filterFields"
+      on-filter="$ctrl.filterData($event)"
+    ></filter-panel>
   </div>
 
   <div ng-if="$ctrl.metadata.bGrid">

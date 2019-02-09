@@ -1,6 +1,10 @@
 const filterPanel = {
     templateUrl: './filter-panel.html',
-    controller: 'filterPanelController'
+    controller: 'filterPanelController',
+    bindings: {
+        fields: '<',
+        onFilter: '&',
+    }
 };
 
 angular

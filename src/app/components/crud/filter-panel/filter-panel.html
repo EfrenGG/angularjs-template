@@ -7,12 +7,25 @@
       </a>
     </span>
     <div class="panel-heading-controls">
-      <button class="btn btn-xs btn-primary btn-outline btn-outline-colorless"><i class="fas fa-filter"></i> {{$ctrl.txBtnFilter}}</button>
-      <button class="btn btn-xs btn-default btn-outline btn-outline-colorless"><i class="fas fa-broom"></i> {{$ctrl.txBtnClean}}</button>
+      <button
+        class="btn btn-xs btn-primary btn-outline btn-outline-colorless"
+        ng-click="$ctrl.filter()"
+      ><i class="fas fa-filter"></i>
+        {{$ctrl.txBtnFilter}}</button>
+      <button
+        class="btn btn-xs btn-default btn-outline btn-outline-colorless"
+        ng-click="$ctrl.clearModel()"
+      ><i class="fas fa-broom"></i>
+        {{$ctrl.txBtnClean}}</button>
     </div>
   </div>
   <div class="panel-collapse collapse" uib-collapse="!$ctrl.isOpen">
     <div class="panel-body">
+      <base-form
+        fields="$ctrl.fields"
+        model="$ctrl.model"
+        on-change="$ctrl.updateModel($event)">
+      </base-form>
     </div>
   </div>
 </div>

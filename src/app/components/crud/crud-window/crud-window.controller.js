@@ -3,6 +3,7 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
 
     ctrl.$onInit = () => {
         ctrl.action = 'READ';
+        ctrl.filterParams = {};
         setI18N();
         setMetadata(ctrl.formKey || $routeParams.cveForma);
         ctrl.gridPaginationOpts = {
@@ -162,6 +163,7 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
             if (field.bFiltra) {
                 let newField = angular.copy(field);
                 newField.hasValidation = false;
+                newField.cveTamanoCampo = 'SM';
                 ctrl.filterFields.push(newField);
             }
             if (field.bPk) {
@@ -198,19 +200,17 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
         }
     }
 
-    const getData = () => {
-        if (!ctrl.filterParams) {
-            ctrl.filterParams = {};
-        }
-        httpCommonsService.obtenRegistros(ctrl.metadata.urlApiForma, ctrl.filterParams, ctrl.gridPaginationOpts.pageNumber, ctrl.gridPaginationOpts.pageSize)
-            .then(function (response) {
-                ctrl.gridData = response.data;
-                ctrl.gridTotal = response.total;
-            })
-            .catch(function (error) {
-                $log.error(error);
-            });
+    ctrl.filterData = event => {
+        ctrl.filterParams = event.filterParams;
+        getData();
     };
+
+    const getData = () => httpCommonsService.obtenRegistros(ctrl.metadata.urlApiForma, ctrl.filterParams, ctrl.gridPaginationOpts.pageNumber, ctrl.gridPaginationOpts.pageSize)
+        .then(response => {
+            ctrl.gridData = response.data;
+            ctrl.gridTotal = response.total;
+        })
+        .catch(error => $log.error(error));
 }
 
 angular
