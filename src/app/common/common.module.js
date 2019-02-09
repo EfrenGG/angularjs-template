@@ -4,4 +4,4 @@ angular
         'px-footer',
         'ui.bootstrap'
     ])
-    .constant('API_URL', 'https:localhost:5001/api/');
+    .constant('API_URL', 'http://indiepals-infra-dev.us-east-2.elasticbeanstalk.com/api/');

@@ -1,17 +1,19 @@
 const gulp = require('gulp');
 const del = require('del');
 const htmlmin = require('gulp-htmlmin');
+const ngAnnotate = require('gulp-ng-annotate');
 const templateCache = require('gulp-angular-templatecache');
 const path = require('path');
 const sourcemaps = require('gulp-sourcemaps');
 const babel = require('gulp-babel');
 const concat = require('gulp-concat');
 const wrap = require('gulp-wrap');
+const uglify = require('gulp-uglify');
 const server = require('browser-sync');
 
-const root = 'src/';
+const root = 'src';
 const paths = {
-    dist: './dist/',
+    dist: './dist',
     scripts: [`${root}/app/**/*.js`, `!${root}/app/**/*.spec.js`],
     tests: `${root}/app/**/*.spec.js`,
     styles: `${root}/sass/*.scss`,
@@ -30,6 +32,8 @@ const paths = {
         'angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
         'angular-ui-grid/ui-grid.js',
         'bootstrap/dist/js/bootstrap.js',
+        'bootstrap-datepicker⁩/dist⁩/js⁩/bootstrap-datepicker.js',
+        'bootstrap-datepicker⁩/dist⁩/js⁩/locales/bootstrap-datepicker.es.min.js',
         'toastr/toastr.js'
     ],
     css_modules: [
@@ -37,33 +41,40 @@ const paths = {
         'angular-ui-grid/ui-grid.min.css',
         '@fortawesome/fontawesome-free/css/all.min.css'
     ],
+    fonts: [
+        { src: 'angular-ui-grid/fonts/**/*', dest: 'css/fonts/' },
+        { src: 'bootstrap/dist/fonts/**/*', dest: 'fonts/' },
+        { src: '@fortawesome/fontawesome-free/webfonts/**/*', dest: 'webfonts/' },
+    ],
     pixeladmin_theme: 'candy-cyan',
     static: [
-        `${root}/index.html`,
-        `${root}/img/**/*`
+        'index.html',
+        'img/**/*',
     ]
 };
+
+
 server.create();
 
-gulp.task('clean', done => del(paths.dist + '**/*', done));
+gulp.task('clean', done => del(`${paths.dist}/**/*`, done));
 
-gulp.task('grid_fonts', ['clean'], () =>
-    gulp.src('node_modules/angular-ui-grid/fonts/**/*')
-        .pipe(gulp.dest(`${paths.dist}css/fonts/`))
+gulp.task('fonts', () => {
+    paths.fonts.forEach(font => {
+        gulp.src(`node_modules/${font.src}`)
+            .pipe(gulp.dest(`${paths.dist}/${font.dest}`));
+    });
+});
+
+gulp.task('vendor-css', ['fonts'], () => gulp.src([
+    ...paths.css_modules.map(item => 'node_modules/' + item),
+    `${root}/pixeladmin/css/*.css`,
+    `${root}/pixeladmin/css/themes/${paths.pixeladmin_theme}.min.css`])
+    .pipe(concat('vendor.css'))
+    .pipe(gulp.dest(`${paths.dist}/css/`))
 );
 
-gulp.task('fontawesome', () =>
-    gulp.src('node_modules/@fortawesome/fontawesome-free/webfonts/**/*')
-        .pipe(gulp.dest(`${paths.dist}webfonts/`))
-);
-
-gulp.task('fonts', [
-    'grid_fonts',
-    'fontawesome',
-]);
-
-gulp.task('copy', ['fonts'], () =>
-    gulp.src(paths.static, { base: 'src' })
+gulp.task('copy', ['vendor-css'], () =>
+    gulp.src(paths.static.map(item => `${root}/${item}`), { base: 'src' })
         .pipe(gulp.dest(paths.dist))
 );
 
@@ -78,12 +89,13 @@ gulp.task('templates', () =>
         .pipe(gulp.dest(`${root}/app/`))
 );
 
-gulp.task('modules', ['templates'], () =>
+gulp.task('modules', ['copy', 'templates'], () =>
     gulp.src([
-        ...paths.modules.map(item => 'node_modules/' + item),
+        ...paths.modules.map(item => `node_modules/${item}`),
         `${root}/pixeladmin/js/**/*.js`])
         .pipe(concat('vendor.js'))
-        .pipe(gulp.dest(paths.dist + 'js/'))
+        // .pipe(uglify())
+        .pipe(gulp.dest(`${paths.dist}/js/`))
 );
 
 gulp.task('scripts', ['modules'], () =>
@@ -98,23 +110,13 @@ gulp.task('scripts', ['modules'], () =>
         }))
         .pipe(wrap('(function(angular){\n<%= contents %>})(window.angular);'))
         .pipe(concat('app.js'))
+        .pipe(ngAnnotate())
+        // .pipe(uglify())
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest(paths.dist + 'js/'))
+        .pipe(gulp.dest(`${paths.dist}/js/`))
 );
 
-gulp.task('vendor_css', () => gulp.src([
-    ...paths.css_modules.map(item => 'node_modules/' + item),
-    `${root}/pixeladmin/css/*.css`,
-    `${root}/pixeladmin/css/themes/${paths.pixeladmin_theme}.min.css`])
-    .pipe(concat('vendor.css'))
-    .pipe(gulp.dest(paths.dist + 'css/'))
-);
-
-gulp.task('styles', [
-    'vendor_css',
-]);
-
-gulp.task('serve', ['styles', 'scripts'], () => server.init({
+gulp.task('serve', ['scripts'], () => server.init({
     files: [`${paths.dist}/**`],
     port: 4000,
     server: {
@@ -128,6 +130,5 @@ gulp.task('watch', ['serve'], () => {
 });
 
 gulp.task('default', [
-    'copy',
-    'watch'
+    'watch',
 ]);

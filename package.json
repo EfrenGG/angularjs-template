@@ -29,7 +29,9 @@
     "gulp-babel": "^7.0.1",
     "gulp-concat": "^2.6.1",
     "gulp-htmlmin": "^5.0.1",
+    "gulp-ng-annotate": "^2.1.0",
     "gulp-sourcemaps": "^2.6.4",
+    "gulp-uglify": "^3.0.1",
     "gulp-wrap": "^0.14.0",
     "path": "^0.12.7"
   },
@@ -46,6 +48,7 @@
     "angular-ui-bootstrap": "^2.5.6",
     "angular-ui-grid": "^4.6.4",
     "bootstrap": "^3.3.7",
+    "bootstrap-datepicker": "^1.8.0",
     "jquery": "^3.3.1",
     "toastr": "^2.1.4"
   }
