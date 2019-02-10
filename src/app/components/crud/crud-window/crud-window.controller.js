@@ -90,7 +90,7 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
     }
 
     function setI18N() {
-        $translate(['APP.BTN_ADD', 'APP.BTN_EDIT', 'APP.BTN_CANCEL', 'APP.BTN_EXPORT', 'APP.BTN_CREATE', 'APP.BTN_UPDATE', 'APP.BTN_DELETE', 'APP.BTN_READ', 'APP.TIT_MOD_CREATE', 'APP.TIT_MOD_EDIT', 'APP.TIT_MOD_DELETE', 'APP.MSG_MOD_DELETE']).then(function (translations) {
+        $translate(['APP.BTN_ADD', 'APP.BTN_EDIT', 'APP.BTN_CANCEL', 'APP.BTN_EXPORT', 'APP.BTN_CREATE', 'APP.BTN_UPDATE', 'APP.BTN_DELETE', 'APP.BTN_READ', 'APP.TIT_MOD_CREATE', 'APP.TIT_MOD_EDIT', 'APP.TIT_MOD_DELETE', 'APP.MSG_MOD_DELETE', 'APP.MSG_NO_METADATA']).then(function (translations) {
             ctrl.txBtnAdd = translations['APP.BTN_ADD'];
             ctrl.txBtnEdit = translations['APP.BTN_EDIT'];
             ctrl.txBtnCancelar = translations['APP.BTN_CANCEL'];
@@ -103,6 +103,7 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
             ctrl.titModalEditar = translations['APP.TIT_MOD_EDIT'];
             ctrl.titModalEliminar = translations['APP.TIT_MOD_DELETE'];
             ctrl.txDelModalMsg = translations['APP.MSG_MOD_DELETE'];
+            ctrl.txNoMetadata = translations['APP.MSG_NO_METADATA'];
         }, function () {
             ctrl.txBtnAdd = 'Agregar';
             ctrl.txBtnEdit = 'Editar';
@@ -116,6 +117,7 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
             ctrl.titModalEditar = 'Editar registro';
             ctrl.titModalEliminar = 'Eliminar registro';
             ctrl.txDelModalMsg = 'Está seguro que desea eliminar el registro seleccionado?';
+            ctrl.txNoMetadata = 'No existen metadatos para generar la forma';
         });
     }
 
@@ -205,12 +207,15 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
         getData();
     };
 
-    const getData = () => httpCommonsService.obtenRegistros(ctrl.metadata.urlApiForma, ctrl.filterParams, ctrl.gridPaginationOpts.pageNumber, ctrl.gridPaginationOpts.pageSize)
-        .then(response => {
-            ctrl.gridData = response.data;
-            ctrl.gridTotal = response.total;
-        })
-        .catch(error => $log.error(error));
+    const getData = () => {
+        ctrl.isLoading = true;
+        httpCommonsService.obtenRegistros(ctrl.metadata.urlApiForma, ctrl.filterParams, ctrl.gridPaginationOpts.pageNumber, ctrl.gridPaginationOpts.pageSize)
+            .then(response => {
+                ctrl.gridData = response.data;
+                ctrl.gridTotal = response.total;
+            }).catch(error => $log.error(error))
+            .finally(() => ctrl.isLoading = false);
+    };
 }
 
 angular

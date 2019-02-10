@@ -1,4 +1,5 @@
 angular
     .module('components', [
-        'components.crud'
+        'components.crud',
+        'components.utils',
     ]);

@@ -1,8 +1,8 @@
-<div ng-if="!$ctrl.metadata" class="note note-warning">
-  <h3>Alerta <i class="fas fa-exclamation-triangle"></i>
-  </h3>
-  <p>No existen metadatos para construir la forma.</p>
-</div>
+<note
+  ng-if="!$ctrl.metadata"
+  type="'WARN'"
+  description="$ctrl.txNoMetadata">
+</note>
 
 <div ng-if="$ctrl.metadata">
   <div class="page-header">
@@ -30,6 +30,7 @@
   <div ng-if="$ctrl.metadata.bFiltra">
     <filter-panel
       fields="$ctrl.filterFields"
+      is-loading="$ctrl.isLoading"
       on-filter="$ctrl.filterData($event)"
     ></filter-panel>
   </div>
@@ -37,6 +38,7 @@
   <div ng-if="$ctrl.metadata.bGrid">
     <grid
       fields="$ctrl.gridFields"
+      is-loading="$ctrl.isLoading"
       pagination-options="$ctrl.gridPaginationOpts"
       data="$ctrl.gridData"
       total="$ctrl.gridTotal"
