@@ -5,6 +5,9 @@
     placeholder={{$ctrl.dateFormat}}
     uib-datepicker-popup="{{$ctrl.dateFormat}}"
     is-open="$ctrl.isCalendarOpen"
+    clear-text="{{$ctrl.clearText}}"
+    close-text="{{$ctrl.closeText}}"
+    current-text="{{$ctrl.currentText}}"
     ng-model="$ctrl.model"
     ng-required="$ctrl.metadata.bRequerido"
     ng-change="$ctrl.updateModel()"

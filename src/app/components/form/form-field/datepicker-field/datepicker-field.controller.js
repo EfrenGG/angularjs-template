@@ -1,5 +1,5 @@
 
-function datepickerFieldController(uibDateParser, DEF_DATE_FORMAT) {
+function datepickerFieldController($translate, uibDateParser, DEF_DATE_FORMAT) {
     var ctrl = this;
 
     const availableDateFormats = [
@@ -49,9 +49,20 @@ function datepickerFieldController(uibDateParser, DEF_DATE_FORMAT) {
         });
     };
 
-    const getIsoDate = date => `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${(date.getDate()).toString().padStart(2, '0')}`;
+    ctrl.openCalendar = () => {
+        if (!ctrl.clearText) {
+            loadTranslations();
+        }
+        ctrl.isCalendarOpen = true;
+    };
 
-    ctrl.openCalendar = () => ctrl.isCalendarOpen = true;
+    const loadTranslations = () => {
+        $translate('APP.BTN_CLEAR').then(translation => ctrl.clearText = translation, () => ctrl.clearText = 'Borrar');
+        $translate('APP.BTN_CLOSE').then(translation => ctrl.closeText = translation, () => ctrl.closeText = 'Cerrar');
+        $translate('APP.BTN_TODAY').then(translation => ctrl.currentText = translation, () => ctrl.currentText = 'Hoy');
+    };
+
+    const getIsoDate = date => `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${(date.getDate()).toString().padStart(2, '0')}`;
 }
 
 angular
