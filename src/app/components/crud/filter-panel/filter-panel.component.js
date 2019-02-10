@@ -3,6 +3,7 @@ const filterPanel = {
     controller: 'filterPanelController',
     bindings: {
         fields: '<',
+        isLoading: '<',
         onFilter: '&',
     }
 };

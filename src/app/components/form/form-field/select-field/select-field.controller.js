@@ -1,15 +1,9 @@
-function selectFieldController($log, httpCommonsService, $translate) {
+function selectFieldController($log, $translate, $timeout, httpCommonsService) {
     var ctrl = this;
 
     ctrl.$onInit = () => {
         ctrl.isFocused = false;
-        $translate('APP.DEF_SELECT_TEXT')
-            .then(translation => ctrl.defaultText = translation,
-                translationId => {
-                    ctrl.defaultText = 'Seleccione una opción...';
-                    $log.warn('No se pudo cargar la traducción para ' + translationId);
-                });
-        loadData();
+        loadTranslations();
     };
 
     ctrl.$onChanges = changes => {
@@ -18,15 +12,22 @@ function selectFieldController($log, httpCommonsService, $translate) {
         }
         if (changes.model) {
             ctrl.model = angular.copy(ctrl.model);
+            if (ctrl.model && !ctrl.modelUpdated) {
+                ctrl.loadData();
+            }
         }
     };
-    
+
     ctrl.toggleFocus = isFocused => {
         ctrl.isFocused = isFocused;
+        if (ctrl.isFocused && !ctrl.selectData) {
+            ctrl.loadData();
+        }
         ctrl.updateModel();
     };
 
     ctrl.updateModel = () => {
+        ctrl.modelUpdated = true;
         ctrl.onChange({
             $event: {
                 value: ctrl.model,
@@ -36,15 +37,18 @@ function selectFieldController($log, httpCommonsService, $translate) {
         });
     };
 
-    function loadData () {
-        httpCommonsService.obtenRegistros(ctrl.metadata.urlApi)
-            .then(function (response) {
-                ctrl.selectData = response.data;
-            })
-            .catch(function (error) {
-                $log.error(error);
-            });
-    }
+    ctrl.loadData = () => {
+        ctrl.isLoading = true;
+        $timeout(() => httpCommonsService.obtenRegistros(ctrl.metadata.urlApi)
+            .then(response => ctrl.selectData = response.data)
+            .catch(error => $log.error(error))
+            .finally(() => ctrl.isLoading = false), 500);
+    };
+
+    const loadTranslations = () => {
+        $translate('APP.DEF_SELECT_TEXT').then(translation => ctrl.defaultText = translation).catch(() => ctrl.defaultText = 'Seleccione una opción...');
+        $translate('APP.BTN_RELOAD').then(translation => ctrl.txBtnReload = translation).catch(() => ctrl.txBtnReload = 'Recargar');
+    };
 }
 
 angular

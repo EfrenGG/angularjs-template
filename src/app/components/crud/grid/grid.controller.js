@@ -1,8 +1,8 @@
-function gridController($translate, $timeout) {
+function gridController($translate) {
     var ctrl = this;
 
     ctrl.$onInit = function () {
-        ctrl.isLoading = true;
+        $translate('APP.MSG_NO_DATA').then(trans => ctrl.txNoMetadata = trans). catch(() => ctrl.txNoMetadata = 'No hay datos');
         ctrl.gridConfig = {
             columnDefs: ctrl.columnDefs,
             enableColumnResizing: true,
@@ -37,10 +37,7 @@ function gridController($translate, $timeout) {
             ctrl.data = angular.copy(ctrl.data);
             if (ctrl.gridConfig) {
                 setGridHeight(ctrl.data.length);
-                $timeout(() => {
-                    ctrl.gridConfig.data = ctrl.data;
-                    ctrl.isLoading = false;
-                }, 1000);
+                ctrl.gridConfig.data = ctrl.data;
             }
         }
         if (changes.total) {
@@ -59,6 +56,7 @@ function gridController($translate, $timeout) {
         } else {
             height = (dataLength * 30) + 32 + 42;
             if (ctrl.screenWidth < 700) {
+                ctrl.gridConfig.enableFullRowSelection = false;
                 height += 42;
             }
         }
@@ -74,12 +72,7 @@ function gridController($translate, $timeout) {
             rObj['field'] = obj.nomCampo;
             rObj['displayName'] = obj.txEtiqueta;
             rObj['minWidth'] = getMinWidth(obj.cveTamanoCampo);
-            $translate(obj.cveForma + '.' + obj.cveEtiqueta)
-                .then(function (etiquetaCol) {
-                    rObj['displayName'] = etiquetaCol;
-                }, function () {
-                    rObj['displayName'] = obj.txEtiqueta;
-                });
+            $translate(obj.cveForma + '.' + obj.cveEtiqueta).then(trans => rObj['displayName'] = trans). catch(() => rObj['displayName'] = obj.txEtiqueta);
             return rObj;
         });
         if (ctrl.gridConfig) {

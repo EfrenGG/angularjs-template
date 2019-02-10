@@ -1,13 +1,26 @@
-<select
-  class="form-control custom-select"
-  name="{{$ctrl.metadata.nomCampo}}"
-  id="{{$ctrl.metadata.elementId}}"
-  ng-model="$ctrl.model"
-  ng-options="option[$ctrl.metadata.nomCampoValor] as option[$ctrl.metadata.nomCampoEtiqueta] for option in $ctrl.selectData"
-  ng-required="$ctrl.metadata.hasValidation && $ctrl.metadata.bRequerido"
-  ng-change="$ctrl.updateModel();"
-  ng-focus="$ctrl.toggleFocus(true);"
-  ng-blur="$ctrl.toggleFocus(false);"
-  ng-disabled="$ctrl.metadata.isDisabled">
-  <option value="">{{$ctrl.defaultText}}</option>
-</select>
+<div class="input-group input-group-sm">
+  <select
+    class="form-control custom-select"
+    name="{{$ctrl.metadata.nomCampo}}"
+    id="{{$ctrl.metadata.elementId}}"
+    ng-model="$ctrl.model"
+    ng-options="option[$ctrl.metadata.nomCampoValor] as option[$ctrl.metadata.nomCampoEtiqueta] for option in $ctrl.selectData"
+    ng-required="$ctrl.metadata.hasValidation && $ctrl.metadata.bRequerido"
+    ng-change="$ctrl.updateModel();"
+    ng-focus="$ctrl.toggleFocus(true);"
+    ng-blur="$ctrl.toggleFocus(false);"
+    ng-disabled="$ctrl.metadata.isDisabled"
+    ng-readonly="$ctrl.isLoading">
+    <option value="">{{$ctrl.defaultText}}</option>
+  </select>
+  <div class="input-group-btn">
+    <button
+      type="button"
+      class="btn btn-default"
+      uib-tooltip="{{$ctrl.txBtnReload}}"
+      ng-disabled="$ctrl.metadata.isDisabled || $ctrl.isLoading"
+      ng-click="$ctrl.loadData();">
+      <i class="fas fa-sync-alt" ng-class="{'fa-spin' : $ctrl.isLoading}"></i>
+    </button>
+  </div>
+</div>

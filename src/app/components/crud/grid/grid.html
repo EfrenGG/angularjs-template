@@ -1,14 +1,22 @@
-<div
-  ng-show="!$ctrl.isLoading"
-  ui-grid="$ctrl.gridConfig"
-  ui-grid-pagination
-  ui-grid-selection
-  ui-grid-auto-resize
-  ui-grid-resize-columns
-  ng-style="{'height': $ctrl.gridHeight || '25px'}">
+<div ng-show="$ctrl.total > 0">
+  <div
+    ng-show="!$ctrl.isLoading"
+    ui-grid="$ctrl.gridConfig"
+    ui-grid-pagination
+    ui-grid-selection
+    ui-grid-auto-resize
+    ui-grid-resize-columns
+    ng-style="{'height': $ctrl.gridHeight || '25px'}">
+  </div>
+
+  <screen-size
+    screen-width="$ctrl.screenWidth"
+    screen-height="$ctrl.screenHeight">
+  </screen-size>
 </div>
 
-<screen-size
-  screen-width="$ctrl.screenWidth"
-  screen-height="$ctrl.screenHeight">
-</screen-size>
+<note ng-show="!$ctrl.total"
+  ng-if="!$ctrl.metadata"
+  type="'INFO'"
+  description="$ctrl.txNoMetadata">
+</note>

@@ -4,6 +4,7 @@ const grid = {
     bindings: {
         fields: '<',
         paginationOptions: '<',
+        isLoading: '<',
         data: '<',
         total: '<',
         onRowSelection: '&',

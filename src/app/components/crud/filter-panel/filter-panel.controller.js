@@ -1,22 +1,11 @@
 function filterPanelController($translate) {
+
     var ctrl = this;
 
     ctrl.$onInit = function() {
-        $translate(['APP.TIT_FILTER', 'APP.BTN_COLLAPSE', 'APP.BTN_EXPAND', 'APP.BTN_FILTER', 'APP.BTN_CLEAN']).then(function (translations) {
-            ctrl.txPanelTitle = translations['APP.TIT_FILTER'];
-            ctrl.txCollapse = translations['APP.BTN_COLLAPSE'];
-            ctrl.txExpand = translations['APP.BTN_EXPAND'];
-            ctrl.txBtnFilter = translations['APP.BTN_FILTER'];
-            ctrl.txBtnClean = translations['APP.BTN_CLEAN'];
-        }, function () {
-            ctrl.txPanelTitle = 'Filtros';
-            ctrl.txCollapse = 'Colapsar';
-            ctrl.txExpand = 'Expandir';
-            ctrl.txBtnFilter = 'Filtrar';
-            ctrl.txBtnClean = 'Limpiar';
-        });
         ctrl.isOpen = false;
         ctrl.clearModel();
+        loadTranslations();
         setBtnText();
     };
 
@@ -26,7 +15,7 @@ function filterPanelController($translate) {
         }
     };
 
-    ctrl.toggle = function() {
+    ctrl.toggle = () => {
         ctrl.isOpen = !ctrl.isOpen;
         setBtnText();
     };
@@ -47,9 +36,15 @@ function filterPanelController($translate) {
         ctrl.model = event.model;
     };
 
-    const setBtnText = () => {
-        ctrl.txBtnToggle = ctrl.isOpen ? ctrl.txCollapse : ctrl.txExpand;
+    const loadTranslations = () => {
+        $translate('APP.TIT_FILTER').then(translation => ctrl.txPanelTitle = translation).catch(ctrl.txPanelTitle = 'Filtros');
+        $translate('APP.BTN_COLLAPSE').then(translation => ctrl.txCollapse = translation).catch(ctrl.txCollapse = 'Colapsar');
+        $translate('APP.BTN_EXPAND').then(translation => ctrl.txExpand = translation).catch(ctrl.txExpand = 'Expandir');
+        $translate('APP.BTN_FILTER').then(translation => ctrl.txBtnFilter = translation).catch(ctrl.txBtnFilter = 'Filtrar');
+        $translate('APP.BTN_CLEAN').then(translation => ctrl.txBtnClean = translation).catch(ctrl.txBtnClean = 'Limpiar');
     };
+
+    const setBtnText = () => ctrl.txBtnToggle = ctrl.isOpen ? ctrl.txCollapse : ctrl.txExpand;
 }
 
 angular
