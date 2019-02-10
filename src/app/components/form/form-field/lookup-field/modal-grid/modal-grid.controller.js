@@ -1,4 +1,4 @@
-function modalGridController($log, $filter, $translate, $timeout, httpCommonsService, CVE_APLICACION) {
+function modalGridController($log, $filter, $translate, httpCommonsService, CVE_APLICACION) {
 
     var ctrl = this;
 
@@ -35,6 +35,11 @@ function modalGridController($log, $filter, $translate, $timeout, httpCommonsSer
         ctrl.hasSelection = !(event.entity === undefined);
     };
 
+    ctrl.setPage = event => {
+        ctrl.gridPaginationOpts = angular.copy(event.params);
+        getData();
+    };
+
     ctrl.filterData = event => {
         ctrl.filterParams = event.filterParams;
         getData();
@@ -58,8 +63,7 @@ function modalGridController($log, $filter, $translate, $timeout, httpCommonsSer
             if (ctrl.modalMetadata.cveForma) {
                 setFields(ctrl.modalMetadata.detallesForma);
                 if (ctrl.data && ctrl.data.total > 0) {
-                    $log.log('Carga datos previos...', ctrl.data);
-                    $timeout(setData, 1000);
+                    setData(ctrl.data);
                 } else {
                     getData(ctrl.modalMetadata.urlApiForma);
                 }
@@ -76,9 +80,11 @@ function modalGridController($log, $filter, $translate, $timeout, httpCommonsSer
         });
     };
 
-    const setData = () => {
-        ctrl.gridData = ctrl.data.data;
-        ctrl.gridTotal = ctrl.data.total;
+    const setData = data => {
+        $log.log('setData()', data);
+        ctrl.gridData = data.data;
+        ctrl.gridTotal = data.total;
+
     };
 
     const setFields = details => {
@@ -99,12 +105,11 @@ function modalGridController($log, $filter, $translate, $timeout, httpCommonsSer
     };
 
     const getData = () => {
+        ctrl.isLoading = true;
         httpCommonsService.obtenRegistros(ctrl.modalMetadata.urlApiForma, ctrl.filterParams, ctrl.gridPaginationOpts.pageNumber, ctrl.gridPaginationOpts.pageSize)
-            .then(response => {
-                ctrl.data = response;
-                $timeout(setData, 1000);
-            })
-            .catch(error => $log.error(error));
+            .then(response => setData(response))
+            .catch(error => $log.error(error))
+            .finally(() => ctrl.isLoading = false);
     };
 }
 

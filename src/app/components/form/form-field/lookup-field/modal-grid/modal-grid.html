@@ -7,17 +7,21 @@
 
   <filter-panel
     fields="$ctrl.filterFields"
+    is-loading="$ctrl.isLoading"
     on-filter="$ctrl.filterData($event)">
   </filter-panel>
 
   <grid
     fields="$ctrl.gridFields"
+    is-loading="$ctrl.isLoading"
     pagination-options="$ctrl.gridPaginationOpts"
     data="$ctrl.gridData"
     total="$ctrl.gridTotal"
     on-row-selection="$ctrl.setSelectedRow($event)"
     on-page-changed="$ctrl.setPage($event)">
   </grid>
+
+  <pre>{{$ctrl.gridData | json}}</pre>
 </div>
 
 <div class="modal-footer">
