@@ -32,6 +32,15 @@
   on-finish="$ctrl.submit()">
 </wizard-form>
 
+<!-- Tabs -->
+<tab-form
+  ng-if="$ctrl.formType === 'TABS' && $ctrl.action !== 'DELETE'"
+  fields="$ctrl.fields"
+  model="$ctrl.model"
+  action="$ctrl.action"
+  on-change="$ctrl.updateModel($event)">
+</tab-form>
+
 
 <div class="modal-footer">
 
@@ -44,7 +53,7 @@
   </button>
 
   <button
-    ng-if="$ctrl.formType === 'VENTANA' || $ctrl.action === 'DELETE'"
+    ng-if="$ctrl.formType === 'VENTANA' || $ctrl.formType === 'TABS' || $ctrl.action === 'DELETE'"
     type="button" class="btn"
     ng-class="$ctrl.btnSubmitClass"
     ng-click="$ctrl.submit()"

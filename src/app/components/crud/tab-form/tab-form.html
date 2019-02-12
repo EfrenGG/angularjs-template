@@ -1,0 +1,24 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-transparent">
+      <div class="panel-body">
+        <uib-tabset class="nav-justified">
+          <uib-tab ng-repeat="(i, groupKey) in $ctrl.groupKeys">
+            <uib-tab-heading>
+              {{$ctrl.groups[groupKey].txGroupName || groupKey}}
+              <span ng-show="!$ctrl.groups[groupKey].isValid" class="pull-right label label-danger">
+                <i class="fas fa-exclamation"></i>
+              </span>
+            </uib-tab-heading>
+            <base-form
+              fields="$ctrl.groups[groupKey].fields"
+              model="$ctrl.model"
+              is-disabled="false"
+              on-change="$ctrl.updateModel($event, groupKey)">
+            </base-form>
+          </uib-tab>
+        </uib-tabset>
+      </div>
+    </div>
+  </div>
+</div>

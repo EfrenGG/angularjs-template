@@ -1,17 +1,21 @@
 <px-wizard class="wizard">
   <div class="wizard-wrapper">
     <ul class="wizard-steps">
-      <li ng-repeat="(i, key) in $ctrl.groupKeys" data-target="#wizard-example-step-{{i + 1}}">
-        <span class="wizard-step-number">{{key}}</span>
+      <li ng-repeat="(i, key) in $ctrl.groupKeys" data-target="#wizard-step-{{i + 1}}">
+          <span ng-if="$ctrl.groups[key].iconClass" class="wizard-step-number">
+            <i class="{{$ctrl.groups[key].iconClass}}"></i>
+          </span>
+        <span ng-if="!$ctrl.groups[key].iconClass" class="wizard-step-number">{{key}}</span>
         <span class="wizard-step-complete border-success"><i class="fa fa-check text-success"></i></span>
+        <span class="wizard-step-caption">{{$ctrl.groups[key].txGroupName}}</span>
       </li>
     </ul>
   </div>
   <div class="wizard-content">
-    <div ng-repeat="(i, key) in $ctrl.groupKeys" class="wizard-pane" id="wizard-example-step-{{i + 1}}">
+    <div ng-repeat="(i, key) in $ctrl.groupKeys" class="wizard-pane" id="wizard-step-{{i + 1}}">
 
       <base-form
-        fields="$ctrl.groups[key]"
+        fields="$ctrl.groups[key].fields"
         model="$ctrl.model"
         is-disabled="$ctrl.isFinished"
         on-change="$ctrl.updateModel($event)">
@@ -24,7 +28,7 @@
           class="btn btn-outline btn-rounded"
           data-wizard-action="prev">
           <span class="btn-label-icon left fas fa-chevron-left"></span>
-          Anterior
+          {{$ctrl.txBtnPrevious}}
         </button>
 
         <button
@@ -34,7 +38,7 @@
           class="btn btn-outline btn-rounded"
           data-wizard-action="next">
           <span class="btn-label-icon right fas fa-chevron-right"></span>
-          Siguiente
+          {{$ctrl.txBtnNext}}
         </button>
 
         <button
@@ -46,7 +50,7 @@
           data-wizard-action="finish"
           ng-click="$ctrl.finished();">
           <span class="btn-label-icon right fas fa-check"></span>
-          Terminar
+          {{$ctrl.txBtnFinish}}
         </button>
       </div>
     </div>

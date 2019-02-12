@@ -1,14 +1,9 @@
-function wizardFormController($translate, $timeout) {
+function tabFormController($translate) {
+
     var ctrl = this;
 
     ctrl.$onInit = () => {
-        ctrl.isFinished = false;
-        $translate('APP.BTN_PREVIOUS')
-            .then(trans => ctrl.txBtnPrevious = trans).catch(() => ctrl.txBtnPrevious = 'Anterior');
-        $translate('APP.BTN_NEXT')
-            .then(trans => ctrl.txBtnNext = trans).catch(() => ctrl.txBtnNext = 'Siguiente');
-        $translate('APP.BTN_FINISH')
-            .then(trans => ctrl.txBtnFinish = trans).catch(() => ctrl.txBtnFinish = 'Terminar');
+        ctrl.isValid = false;
     };
 
     ctrl.$onChanges = changes => {
@@ -23,27 +18,24 @@ function wizardFormController($translate, $timeout) {
         if (changes.action) {
             ctrl.isValid = ctrl.action === 'UPDATE' ? true : false;
             ctrl.btnSubmitClass = ctrl.action === 'UPDATE' ? 'btn-info' : 'btn-success';
+            setGroups(ctrl.fields);
         }
     };
 
-    ctrl.finished = () => {
-        ctrl.isFinished = true;
+    ctrl.updateModel = (event, key) => {
+        ctrl.model = event.model;
+        ctrl.groups[key].isValid = !event.invalid;
+        for (let subformKey of ctrl.groupKeys) {
+            if (!ctrl.groups[subformKey].isValid) {
+                ctrl.isValid = false;
+                break;
+            }
+            ctrl.isValid = true;
+        }
         ctrl.onChange({
             $event: {
                 model: ctrl.model,
                 invalid: !ctrl.isValid
-            }
-        });
-        $timeout(ctrl.onFinish, 1000);
-    };
-
-    ctrl.updateModel = event => {
-        ctrl.isValid = !event.invalid;
-        ctrl.model = event.model;
-        ctrl.onChange({
-            $event: {
-                model: ctrl.model,
-                invalid: event.invalid
             }
         });
     };
@@ -54,9 +46,13 @@ function wizardFormController($translate, $timeout) {
         fields.forEach(field => {
             let groupName = field.numGrupo || 1;
             if (!groups[groupName]) {
+                $translate(`${field.cveForma}.${field.cveNomGrupo}`)
+                    .then(trans => ctrl.txGroupName[groupName] = trans)
+                    .catch(() => ctrl.txGroupName[groupName] = field.txNomGrupo || groupName);
                 groups[groupName] = {
                     fields: [],
                     iconClass: field.iconoClsGrupo,
+                    isValid: ctrl.isValid
                 };
                 $translate(`${field.cveForma}.${field.cveNomGrupo}`)
                     .then(trans => groups[groupName].txGroupName = trans)
@@ -70,4 +66,4 @@ function wizardFormController($translate, $timeout) {
 
 angular
     .module('components.crud')
-    .controller('wizardFormController', wizardFormController);
+    .controller('tabFormController', tabFormController);
