@@ -2,13 +2,16 @@
   <div class="col-md-12">
     <div class="panel panel-transparent">
       <div class="panel-body">
-        <uib-tabset class="nav-justified">
+        <uib-tabset class="nav-lg">
           <uib-tab ng-repeat="(i, groupKey) in $ctrl.groupKeys">
             <uib-tab-heading>
               {{$ctrl.groups[groupKey].txGroupName || groupKey}}
-              <span ng-show="!$ctrl.groups[groupKey].isValid" class="pull-right label label-danger">
-                <i class="fas fa-exclamation"></i>
-              </span>
+              <i
+                ng-show="!$ctrl.groups[groupKey].isValid"
+                uib-tooltip="{{$ctrl.txErrorMessage}}"
+                tooltip-class="tooltip-danger"
+                class="text-danger fas fa-exclamation-circle">
+              </i>
             </uib-tab-heading>
             <base-form
               fields="$ctrl.groups[groupKey].fields"
