@@ -22,17 +22,17 @@ function formFieldController($translate) {
         // label
         ctrl.metadata.hasLabel = !(unlabeledFields.indexOf(ctrl.metadata.cveTipoComponente) > -1);
         // get label
-        $translate(namespace + ctrl.metadata.cveEtiqueta)
-            .then(translation => ctrl.metadata.labelText = translation,
-                translationId => ctrl.metadata.labelText = ctrl.metadata.txEtiqueta ? ctrl.metadata.txEtiqueta : translationId);
+        $translate(`${namespace}.${ctrl.metadata.cveEtiqueta}`)
+            .then(trans => ctrl.metadata.labelText = trans,
+                transId => ctrl.metadata.labelText = ctrl.metadata.txEtiqueta || transId);
         // get help
         if (ctrl.metadata.cveAyuda || ctrl.metadata.txAyuda) {
-            $translate(namespace + ctrl.metadata.cveAyuda)
-                .then(translation => ctrl.metadata.helpText = translation,
-                    translationId => ctrl.metadata.helpText = ctrl.metadata.txAyuda ? ctrl.metadata.txAyuda : translationId);
+            $translate(`${namespace}.${ctrl.metadata.cveAyuda}`, {}, undefined, undefined, false, 'sce')
+                .then(trans => ctrl.metadata.helpText = trans)
+                .catch(transId => ctrl.metadata.helpText = ctrl.metadata.txAyuda || transId);
         }
     }
-    
+
     ctrl.updateModel = (event) => {
         ctrl.isFocused = event.isFocused;
         ctrl.onChange({
