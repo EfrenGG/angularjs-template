@@ -44,7 +44,7 @@ const paths = {
         { src: 'bootstrap/dist/fonts/**/*', dest: 'fonts/' },
         { src: '@fortawesome/fontawesome-free/webfonts/**/*', dest: 'webfonts/' },
     ],
-    pixeladmin_theme: 'candy-cyan',
+    pixeladmin_theme: 'clean',
     static: [
         'index.html',
         'img/**/*',
@@ -91,8 +91,11 @@ gulp.task('modules', ['copy', 'templates'], () =>
     gulp.src([
         ...paths.modules.map(item => `node_modules/${item}`),
         `${root}/pixeladmin/js/**/*.js`])
+        .pipe(babel({
+            presets: ['env']
+        }))
         .pipe(concat('vendor.js'))
-        // .pipe(uglify())
+        .pipe(uglify())
         .pipe(gulp.dest(`${paths.dist}/js/`))
 );
 
@@ -109,7 +112,7 @@ gulp.task('scripts', ['modules'], () =>
         .pipe(wrap('(function(angular){\n<%= contents %>})(window.angular);'))
         .pipe(concat('app.js'))
         .pipe(ngAnnotate())
-        // .pipe(uglify())
+        .pipe(uglify())
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(`${paths.dist}/js/`))
 );
