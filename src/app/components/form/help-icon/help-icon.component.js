@@ -1,5 +1,4 @@
 const helpIcon = {
-    controller: 'helpIconController',
     templateUrl: './help-icon.html',
     bindings: {
         helpText: '<',
