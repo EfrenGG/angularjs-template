@@ -70,3 +70,9 @@
   model="$ctrl.model"
   on-change="$ctrl.updateModel($event)">
 </relationship-field>
+
+<form-section
+  ng-if="$ctrl.metadata.cveTipoComponente === 'SECCION'"
+  title="$ctrl.metadata.labelText"
+  subtitle="$ctrl.metadata.helpText">
+</form-section>

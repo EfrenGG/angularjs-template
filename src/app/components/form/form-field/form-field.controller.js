@@ -1,7 +1,7 @@
 function formFieldController($translate) {
     var ctrl = this;
 
-    const unlabeledFields = ['OCULTO', 'RELACION'];
+    const unlabeledFields = ['OCULTO', 'RELACION', 'SECCION'];
 
     ctrl.$onInit = () => ctrl.isFocused = false;
 
