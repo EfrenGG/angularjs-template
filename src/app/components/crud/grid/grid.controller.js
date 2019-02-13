@@ -1,12 +1,13 @@
 function gridController($translate, $timeout) {
     var ctrl = this;
 
-    ctrl.$onInit = function () {
+    ctrl.$onInit = () => {
         ctrl.lang = $translate.use();
         $translate('APP.MSG_NO_DATA')
             .then(trans => ctrl.txNoMetadata = trans)
             .catch(id => ctrl.txNoMetadata = id);
         ctrl.gridConfig = {
+            // columns
             columnDefs: ctrl.columnDefs,
             enableColumnResizing: true,
             // pagination
@@ -43,16 +44,13 @@ function gridController($translate, $timeout) {
         };
     };
 
-    ctrl.$onChanges = function (changes) {
+    ctrl.$onChanges = changes => {
         if (changes.fields) {
             ctrl.fields = angular.copy(ctrl.fields);
             setDefCols(ctrl.fields);
         }
         if (changes.paginationOptions) {
             ctrl.paginationOptions = angular.copy(ctrl.paginationOptions);
-            if (!ctrl.paginationOptions) {
-                enablePagination: false
-            }
         }
         if (changes.data) {
             ctrl.data = angular.copy(ctrl.data);
