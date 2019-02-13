@@ -10,7 +10,10 @@ const concat = require('gulp-concat');
 const wrap = require('gulp-wrap');
 const uglify = require('gulp-uglify');
 const server = require('browser-sync');
+const yargs = require('yargs');
+const gulpif = require('gulp-if');
 
+const argv = yargs.argv;
 const root = 'src';
 const paths = {
     dist: './dist',
@@ -56,7 +59,7 @@ server.create();
 
 gulp.task('clean', done => del(`${paths.dist}/**/*`, done));
 
-gulp.task('fonts', () => {
+gulp.task('fonts', ['clean'], () => {
     paths.fonts.forEach(font => {
         gulp.src(`node_modules/${font.src}`)
             .pipe(gulp.dest(`${paths.dist}/${font.dest}`));
@@ -91,11 +94,11 @@ gulp.task('modules', ['copy', 'templates'], () =>
     gulp.src([
         ...paths.modules.map(item => `node_modules/${item}`),
         `${root}/pixeladmin/js/**/*.js`])
-        .pipe(babel({
+        .pipe(gulpif(argv.deploy, babel({
             presets: ['env']
-        }))
+        })))
         .pipe(concat('vendor.js'))
-        .pipe(uglify())
+        .pipe(gulpif(argv.deploy, uglify()))
         .pipe(gulp.dest(`${paths.dist}/js/`))
 );
 
@@ -105,17 +108,16 @@ gulp.task('scripts', ['modules'], () =>
         `${root}/app/**/*.module.js`,
         ...paths.scripts
     ])
-        .pipe(sourcemaps.init())
+        .pipe(gulpif(!argv.deploy, sourcemaps.init()))
         .pipe(babel({
             presets: ['env']
         }))
         .pipe(wrap('(function(angular){\n<%= contents %>})(window.angular);'))
         .pipe(concat('app.js'))
         .pipe(ngAnnotate())
-        .pipe(uglify())
-        .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest(`${paths.dist}/js/`))
-);
+        .pipe(gulpif(argv.deploy, uglify()))
+        .pipe(gulpif(!argv.deploy, sourcemaps.write('./')))
+        .pipe(gulp.dest(`${paths.dist}/js/`)));
 
 gulp.task('serve', ['scripts'], () => server.init({
     files: [`${paths.dist}/**`],
@@ -132,4 +134,8 @@ gulp.task('watch', ['serve'], () => {
 
 gulp.task('default', [
     'watch',
+]);
+
+gulp.task('bundle', [
+    'scripts'
 ]);
