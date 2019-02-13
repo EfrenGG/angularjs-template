@@ -1,22 +1,20 @@
-<div ng-show="$ctrl.isLoading" class="text-center">
+<div ng-show="$ctrl.isLoading || $ctrl.isResizing" class="text-center">
   <i class="fas fa-spinner fa-spin fa-8x text-center"></i>
 </div>
 
-<div ng-show="!$ctrl.isLoading">
-  <div ng-show="$ctrl.total > 0">
+<div ng-show="!$ctrl.isLoading && !$ctrl.isResizing">
+
+  <div
+    ng-show="$ctrl.total > 0"
+    ui-i18n="{{$ctrl.lang}}">
     <div
       ui-grid="$ctrl.gridConfig"
       ui-grid-pagination
       ui-grid-selection
       ui-grid-auto-resize
       ui-grid-resize-columns
-      ng-style="{'height': $ctrl.gridHeight || '25px'}">
+      ng-style="{'height': $ctrl.gridHeight + 'px' || '25px'}">
     </div>
-
-    <screen-size
-      screen-width="$ctrl.screenWidth"
-      screen-height="$ctrl.screenHeight">
-    </screen-size>
   </div>
 
   <note ng-show="!$ctrl.total"
@@ -24,4 +22,5 @@
     type="'INFO'"
     description="$ctrl.txNoMetadata">
   </note>
+
 </div>

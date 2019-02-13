@@ -1,25 +1,43 @@
-function gridController($translate) {
+function gridController($translate, $timeout) {
     var ctrl = this;
 
     ctrl.$onInit = function () {
-        $translate('APP.MSG_NO_DATA').then(trans => ctrl.txNoMetadata = trans). catch(() => ctrl.txNoMetadata = 'No hay datos');
+        ctrl.lang = $translate.use();
+        $translate('APP.MSG_NO_DATA')
+            .then(trans => ctrl.txNoMetadata = trans)
+            .catch(id => ctrl.txNoMetadata = id);
         ctrl.gridConfig = {
             columnDefs: ctrl.columnDefs,
             enableColumnResizing: true,
-            enableFullRowSelection: true,
-            paginationPageSizes: [5, 10, 25, 50, 100],
-            paginationPageSize: ctrl.paginationOptions.pageSize || 10,
+            // pagination
             useExternalPagination: true,
+            paginationPageSizes: [5, 10, 25, 50, 100],
+            paginationPageSize: ctrl.paginationOptions.pageSize || 5,
+            // selection
+            enableFullRowSelection: true,
             onRegisterApi: gridApi => {
-                ctrl.gridApi = gridApi;
-                ctrl.gridApi.pagination.on.paginationChanged(null, function (newPage, pageSize) {
+                gridApi.pagination.on.paginationChanged(null, function (newPage, pageSize) {
                     ctrl.paginationOptions.pageNumber = newPage;
                     ctrl.paginationOptions.pageSize = pageSize;
                     changePage(ctrl.paginationOptions);
                 });
-                ctrl.gridApi.selection.setMultiSelect(false);
-                ctrl.gridApi.selection.on.rowSelectionChanged(null, function (row) {
+                gridApi.selection.setMultiSelect(false);
+                gridApi.selection.on.rowSelectionChanged(null, function (row) {
                     selectRow(row.isSelected ? row.entity : undefined);
+                });
+                gridApi.core.on.gridDimensionChanged(null, (oldGridHeight, oldGridWidth, newGridHeight, newGridWidth) => {
+                    if (oldGridWidth !== newGridWidth && ctrl.gridWidth !== newGridWidth) {
+                        let previousFooterHeight = ctrl.gridFooterHeight;
+                        ctrl.gridWidth = newGridWidth;
+                        ctrl.gridFooterHeight = ctrl.gridWidth < 575 ? 84 : 42;
+                        if (!previousFooterHeight) { return; }
+                        if (previousFooterHeight !== ctrl.gridFooterHeight) {
+                            if (ctrl.resizingTimeOut) { $timeout.cancel(ctrl.resizingTimeOut); }
+                            ctrl.isResizing = true;
+                            ctrl.resizingTimeOut = $timeout(setGridHeight, 500);
+
+                        }
+                    }
                 });
             }
         };
@@ -32,12 +50,15 @@ function gridController($translate) {
         }
         if (changes.paginationOptions) {
             ctrl.paginationOptions = angular.copy(ctrl.paginationOptions);
+            if (!ctrl.paginationOptions) {
+                enablePagination: false
+            }
         }
         if (changes.data) {
             ctrl.data = angular.copy(ctrl.data);
             if (ctrl.gridConfig) {
-                setGridHeight(ctrl.data.length);
                 ctrl.gridConfig.data = ctrl.data;
+                setGridHeight();
             }
         }
         if (changes.total) {
@@ -48,19 +69,14 @@ function gridController($translate) {
         }
     };
 
-    const setGridHeight = dataLength => {
-        let height = 0;
-        if (!dataLength) {
-            height = '25px';
+    const setGridHeight = () => {
+        if (!ctrl.data.length) {
+            ctrl.gridHeight = 0;
             return;
         } else {
-            height = (dataLength * 30) + 32 + 42;
-            if (ctrl.screenWidth < 700) {
-                ctrl.gridConfig.enableFullRowSelection = false;
-                height += 42;
-            }
+            ctrl.gridHeight = (ctrl.data.length * 30) + 32 + (ctrl.gridFooterHeight || 42);
         }
-        ctrl.gridHeight = height + 'px';
+        ctrl.isResizing = false;
     };
 
     function setDefCols(fields) {
@@ -72,7 +88,7 @@ function gridController($translate) {
             rObj['field'] = obj.nomCampo;
             rObj['displayName'] = obj.txEtiqueta;
             rObj['minWidth'] = getMinWidth(obj.cveTamanoCampo);
-            $translate(obj.cveForma + '.' + obj.cveEtiqueta).then(trans => rObj['displayName'] = trans). catch(() => rObj['displayName'] = obj.txEtiqueta);
+            $translate(obj.cveForma + '.' + obj.cveEtiqueta).then(trans => rObj['displayName'] = trans).catch(() => rObj['displayName'] = obj.txEtiqueta);
             return rObj;
         });
         if (ctrl.gridConfig) {
