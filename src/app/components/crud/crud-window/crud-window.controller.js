@@ -40,47 +40,61 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
             fields: () => getFormFields(action)
         }
     }).result
-        .then(event => onModalClose(action, event),
+        .then(event => persistData(action, event),
             event => onModalDismiss(action, event));
 
-    function onModalClose(action, event) {
+    const persistData = (action, event) => {
         if (!action) {
             throw new Error('action cannot be null.');
         }
         ctrl.unsavedModel = event.model;
         ctrl.unsavedAction = action;
         let methodName;
+        let message;
         switch (action) {
             case 'CREATE':
                 methodName = 'save';
+                message = ctrl.txMsgCreated;
                 break;
             case 'UPDATE':
                 methodName = 'update';
+                message = ctrl.txMsgUpdated;
                 break;
             case 'DELETE':
                 methodName = 'remove';
+                message = ctrl.txMsgDeleted;
+                break;
+            case 'RESTORE':
+                methodName = 'save';
+                message = ctrl.txMsgRestored;
                 break;
             default:
                 break;
         }
         if (methodName) {
             httpCommonsService[methodName](ctrl.metadata.urlApiForma, ctrl.unsavedModel)
-                .then(response => onSuccessResponse(response)).catch(error => onErrorResponse(action, error));
+                .then(response => onSuccessResponse(response, action, message))
+                .catch(error => onErrorResponse(action, error));
         }
-    }
+    };
 
-    const onSuccessResponse = response => {
-        if (response) $log.log(response);
-        ctrl.selectedEntity = undefined;
+    const onSuccessResponse = (response, action, message) => {
+        if (action === 'DELETE') {
+            toastrService.warning(message, null, {
+                onclick: () => persistData('RESTORE', { model: response }),
+                timeOut: 10000
+            });
+        } else {
+            toastrService.success(message, null);
+        }
         getData();
-        toastrService.success('Los cambios fueron salvados correctamente', 'Éxito');
+        ctrl.selectedEntity = undefined;
         ctrl.unsavedModel = undefined;
         ctrl.unsavedAction = undefined;
     };
 
-    const onErrorResponse = (action, error) => {
-        $log.error(error);
-        toastrService.error('Ocurrió un error inesperado, contacte a su administrador', 'Error');
+    const onErrorResponse = action => {
+        toastrService.error(ctrl.txMsgUnexpectedError);
         ctrl.openModal(action);
     };
 
@@ -204,6 +218,24 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
         $translate('APP.MSG_NO_METADATA')
             .then(trans => ctrl.txNoMetadata = trans)
             .catch(id => ctrl.txNoMetadata = id);
+        $translate('APP.MSG_CREATED')
+            .then(trans => ctrl.txMsgCreated = trans)
+            .catch(id => ctrl.txMsgCreated = id);
+        $translate('APP.MSG_UPDATED')
+            .then(trans => ctrl.txMsgUpdated = trans)
+            .catch(id => ctrl.txMsgUpdated = id);
+        $translate('APP.MSG_DELETED')
+            .then(trans => ctrl.txMsgDeleted = trans)
+            .catch(id => ctrl.txMsgDeleted = id);
+        $translate('APP.MSG_RESTORED')
+            .then(trans => ctrl.txMsgRestored = trans)
+            .catch(id => ctrl.txMsgRestored = id);
+        $translate('APP.MSG_UNEX_ERR')
+            .then(trans => ctrl.txMsgUnexpectedError = trans)
+            .catch(id => ctrl.txMsgUnexpectedError = id);
+        $translate('APP.MSG_UNEX_ERR_CODE')
+            .then(trans => ctrl.txMsgUnexpectedErrorCode = trans)
+            .catch(id => ctrl.txMsgUnexpectedErrorCode = id);
     };
 }
 
