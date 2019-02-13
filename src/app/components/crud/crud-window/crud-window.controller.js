@@ -165,7 +165,7 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
             if (field.bFiltra) {
                 let newField = angular.copy(field);
                 newField.hasValidation = false;
-                newField.cveTamanoCampo = 'SM';
+                newField.cveTamanoCampo = 'XS';
                 ctrl.filterFields.push(newField);
             }
             if (field.bPk) {

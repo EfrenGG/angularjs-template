@@ -25,6 +25,7 @@ function filterPanelController($translate) {
     };
 
     ctrl.filter = () => {
+        if (ctrl.isOpen) { ctrl.toggle(); }
         ctrl.onFilter({
             $event: {
                 filterParams: ctrl.model
