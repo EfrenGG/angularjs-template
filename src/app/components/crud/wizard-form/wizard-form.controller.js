@@ -4,11 +4,14 @@ function wizardFormController($translate, $timeout) {
     ctrl.$onInit = () => {
         ctrl.isFinished = false;
         $translate('APP.BTN_PREVIOUS')
-            .then(trans => ctrl.txBtnPrevious = trans).catch(() => ctrl.txBtnPrevious = 'Anterior');
+            .then(trans => ctrl.txBtnPrevious = trans)
+            .catch(id => ctrl.txBtnPrevious = id);
         $translate('APP.BTN_NEXT')
-            .then(trans => ctrl.txBtnNext = trans).catch(() => ctrl.txBtnNext = 'Siguiente');
+            .then(trans => ctrl.txBtnNext = trans)
+            .catch(id => ctrl.txBtnNext = id);
         $translate('APP.BTN_FINISH')
-            .then(trans => ctrl.txBtnFinish = trans).catch(() => ctrl.txBtnFinish = 'Terminar');
+            .then(trans => ctrl.txBtnFinish = trans)
+            .catch(id => ctrl.txBtnFinish = id);
     };
 
     ctrl.$onChanges = changes => {

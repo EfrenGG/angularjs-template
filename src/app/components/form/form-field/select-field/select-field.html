@@ -11,7 +11,7 @@
     ng-blur="$ctrl.toggleFocus(false);"
     ng-disabled="$ctrl.metadata.isDisabled"
     ng-readonly="$ctrl.isLoading">
-    <option value="">{{$ctrl.defaultText}}</option>
+    <option value="" ng-disabled="$ctrl.metadata.hasValidation && $ctrl.metadata.bRequerido">{{$ctrl.defaultText}}</option>
   </select>
   <div class="input-group-btn">
     <button

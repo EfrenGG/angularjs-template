@@ -57,9 +57,15 @@ function datepickerFieldController($translate, uibDateParser, DEF_DATE_FORMAT) {
     };
 
     const loadTranslations = () => {
-        $translate('APP.BTN_CLEAR').then(translation => ctrl.clearText = translation, () => ctrl.clearText = 'Borrar');
-        $translate('APP.BTN_CLOSE').then(translation => ctrl.closeText = translation, () => ctrl.closeText = 'Cerrar');
-        $translate('APP.BTN_TODAY').then(translation => ctrl.currentText = translation, () => ctrl.currentText = 'Hoy');
+        $translate('APP.BTN_CLEAR')
+            .then(trans => ctrl.clearText = trans)
+            .catch(id => ctrl.clearText = id);
+        $translate('APP.BTN_CLOSE')
+            .then(trans => ctrl.closeText = trans)
+            .catch(id => ctrl.closeText = id);
+        $translate('APP.BTN_TODAY')
+            .then(trans => ctrl.currentText = trans)
+            .catch(id => ctrl.currentText = id);
     };
 
     const getIsoDate = date => `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${(date.getDate()).toString().padStart(2, '0')}`;

@@ -3,12 +3,9 @@ function typeaheadFieldController($log, $translate, $filter, httpCommonsService)
 
     ctrl.$onInit = () => {
         ctrl.isFocused = false;
-        $translate('APP.DEF_TYPEAHEAD_TEXT')
-            .then(translation => ctrl.defaultText = translation,
-                translationId => {
-                    ctrl.defaultText = 'Comience a escribir...';
-                    $log.warn('No se pudo cargar la traducción para ' + translationId);
-                });
+        $translate('APP.DEF_TYPE_TEXT')
+            .then(trans => ctrl.defaultText = trans)
+            .catch(id => ctrl.defaultText = id);
         loadData();
     };
 
@@ -22,7 +19,7 @@ function typeaheadFieldController($log, $translate, $filter, httpCommonsService)
             ctrl.model = angular.copy(ctrl.model);
         }
     };
-    
+
     ctrl.toggleFocus = isFocused => {
         ctrl.isFocused = isFocused;
     };

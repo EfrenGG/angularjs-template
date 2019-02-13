@@ -4,7 +4,7 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
     ctrl.$onInit = () => {
         ctrl.action = 'READ';
         ctrl.filterParams = {};
-        setI18N();
+        loadTranslations();
         setMetadata(ctrl.formKey || $routeParams.cveForma);
         ctrl.gridPaginationOpts = {
             pageNumber: 1,
@@ -87,38 +87,6 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
     function onModalDismiss(action, event) {
         ctrl.unsavedAction = action;
         ctrl.unsavedModel = event.model;
-    }
-
-    function setI18N() {
-        $translate(['APP.BTN_ADD', 'APP.BTN_EDIT', 'APP.BTN_CANCEL', 'APP.BTN_EXPORT', 'APP.BTN_CREATE', 'APP.BTN_UPDATE', 'APP.BTN_DELETE', 'APP.BTN_READ', 'APP.TIT_MOD_CREATE', 'APP.TIT_MOD_EDIT', 'APP.TIT_MOD_DELETE', 'APP.MSG_MOD_DELETE', 'APP.MSG_NO_METADATA']).then(function (translations) {
-            ctrl.txBtnAdd = translations['APP.BTN_ADD'];
-            ctrl.txBtnEdit = translations['APP.BTN_EDIT'];
-            ctrl.txBtnCancelar = translations['APP.BTN_CANCEL'];
-            ctrl.txBtnExportar = translations['APP.BTN_EXPORT'];
-            ctrl.txBtnCrear = translations['APP.BTN_CREATE'];
-            ctrl.txBtnActualizar = translations['APP.BTN_UPDATE'];
-            ctrl.txBtnDelete = translations['APP.BTN_DELETE'];
-            ctrl.txBtnVer = translations['APP.BTN_READ'];
-            ctrl.titModalCrear = translations['APP.TIT_MOD_CREATE'];
-            ctrl.titModalEditar = translations['APP.TIT_MOD_EDIT'];
-            ctrl.titModalEliminar = translations['APP.TIT_MOD_DELETE'];
-            ctrl.txDelModalMsg = translations['APP.MSG_MOD_DELETE'];
-            ctrl.txNoMetadata = translations['APP.MSG_NO_METADATA'];
-        }, function () {
-            ctrl.txBtnAdd = 'Agregar';
-            ctrl.txBtnEdit = 'Editar';
-            ctrl.txBtnCancelar = 'Cancelar';
-            ctrl.txBtnExportar = 'Exportar';
-            ctrl.txBtnCrear = 'Crear';
-            ctrl.txBtnActualizar = 'Actualizar';
-            ctrl.txBtnDelete = 'Eliminar';
-            ctrl.txBtnVer = 'Ver';
-            ctrl.titModalCrear = 'Crear registro';
-            ctrl.titModalEditar = 'Editar registro';
-            ctrl.titModalEliminar = 'Eliminar registro';
-            ctrl.txDelModalMsg = 'Está seguro que desea eliminar el registro seleccionado?';
-            ctrl.txNoMetadata = 'No existen metadatos para generar la forma';
-        });
     }
 
     function setMetadata(form) {
@@ -215,6 +183,27 @@ function crudWindowController($routeParams, $translate, $log, $filter, $uibModal
                 ctrl.gridTotal = response.total;
             }).catch(error => $log.error(error))
             .finally(() => ctrl.isLoading = false);
+    };
+
+    const loadTranslations = () => {
+        $translate('APP.BTN_ADD')
+            .then(trans => ctrl.txBtnAdd = trans)
+            .catch(id => ctrl.txBtnAdd = id);
+        $translate('APP.BTN_EDIT')
+            .then(trans => ctrl.txBtnEdit = trans)
+            .catch(id => ctrl.txBtnEdit = id);
+        $translate('APP.BTN_EXPORT')
+            .then(trans => ctrl.txBtnExport = trans)
+            .catch(id => ctrl.txBtnExport = id);
+        $translate('APP.BTN_DELETE')
+            .then(trans => ctrl.txBtnDelete = trans)
+            .catch(id => ctrl.txBtnDelete = id);
+        $translate('APP.BTN_READ')
+            .then(trans => ctrl.txBtnVer = trans)
+            .catch(id => ctrl.txBtnVer = id);
+        $translate('APP.MSG_NO_METADATA')
+            .then(trans => ctrl.txNoMetadata = trans)
+            .catch(id => ctrl.txNoMetadata = id);
     };
 }
 

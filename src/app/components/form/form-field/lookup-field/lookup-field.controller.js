@@ -1,9 +1,12 @@
-function lookupFieldController($uibModal, $timeout, $log, httpCommonsService) {
+function lookupFieldController($translate, $uibModal, $timeout, $log, httpCommonsService) {
 
     var ctrl = this;
 
     ctrl.$onInit = () => {
         ctrl.isFocused = false;
+        $translate('APP.DEF_TYPE_TEXT')
+            .then(trans => ctrl.defaultText = trans)
+            .catch(id => ctrl.defaultText = id);
         ctrl.timer = null;
         ctrl.loading = false;
     };
@@ -36,6 +39,7 @@ function lookupFieldController($uibModal, $timeout, $log, httpCommonsService) {
         if (event.entity) {
             ctrl.model = event.entity[ctrl.metadata.nomCampoDependiente];
         }
+        ctrl.updateModel();
         ctrl.loading = false;
     };
 

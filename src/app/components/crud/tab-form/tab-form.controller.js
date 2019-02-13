@@ -4,7 +4,9 @@ function tabFormController($translate) {
 
     ctrl.$onInit = () => {
         ctrl.isValid = false;
-        $translate('APP.MSG_ERROR').then(trans => ctrl.txErrorMessage = trans).catch(() => ctrl.txErrorMessage = 'Existen uno o más errores');
+        $translate('APP.MSG_ERROR')
+            .then(trans => ctrl.txErrorMessage = trans)
+            .catch(id => ctrl.txErrorMessage = id);
     };
 
     ctrl.$onChanges = changes => {

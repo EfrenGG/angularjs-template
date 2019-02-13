@@ -3,7 +3,7 @@
     name="{{$ctrl.metadata.nomCampo}}"
     type="text"
     class="form-control"
-    placeholder="Comienza a escribir..."
+    placeholder="{{$ctrl.defaultText}}"
     ng-model="$ctrl.model"
     ng-required="$ctrl.metadata.bRequerido"
     ng-keypress="$ctrl.startCountDown()"

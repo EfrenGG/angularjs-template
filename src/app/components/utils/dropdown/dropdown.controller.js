@@ -26,18 +26,17 @@ function dropdownController($translate) {
     };
 
     const setProps = () => {
+        $translate(ctrl.labelId)
+            .then(trans => ctrl.labelText = trans)
+            .catch(() => ctrl.labelText = ctrl.label);
         switch (ctrl.type) {
             case 'NAV':
                 ctrl.labelClass = !ctrl.icon ? null : 'px-navbar-icon-label';
                 ctrl.element = 'li';
-                $translate(ctrl.labelId)
-                    .then(trans => ctrl.labelText = trans)
-                    .catch(() => ctrl.labelText = ctrl.label);
                 break;
             default:
-                ctrl.noteClass = 'note-info';
-                ctrl.iconClass = 'fas fa-info-circle';
-                $translate('APP.MSG_INFO').then(trans => ctrl.defaultTitle = trans).catch(() => ctrl.defaultTitle = 'Información');
+                ctrl.labelClass = !ctrl.icon ? null : 'px-navbar-icon-label';
+                ctrl.element = 'li';
                 break;
         }
     };

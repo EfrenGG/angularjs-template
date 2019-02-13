@@ -38,11 +38,21 @@ function filterPanelController($translate) {
     };
 
     const loadTranslations = () => {
-        $translate('APP.TIT_FILTER').then(translation => ctrl.txPanelTitle = translation).catch(ctrl.txPanelTitle = 'Filtros');
-        $translate('APP.BTN_COLLAPSE').then(translation => ctrl.txCollapse = translation).catch(ctrl.txCollapse = 'Colapsar');
-        $translate('APP.BTN_EXPAND').then(translation => ctrl.txExpand = translation).catch(ctrl.txExpand = 'Expandir');
-        $translate('APP.BTN_FILTER').then(translation => ctrl.txBtnFilter = translation).catch(ctrl.txBtnFilter = 'Filtrar');
-        $translate('APP.BTN_CLEAN').then(translation => ctrl.txBtnClean = translation).catch(ctrl.txBtnClean = 'Limpiar');
+        $translate('APP.TIT_FILTER')
+            .then(trans => ctrl.txPanelTitle = trans)
+            .catch(id => ctrl.txPanelTitle = id);
+        $translate('APP.BTN_COLLAPSE')
+            .then(trans => ctrl.txCollapse = trans)
+            .catch(id => ctrl.txCollapse = id);
+        $translate('APP.BTN_EXPAND')
+            .then(trans => ctrl.txExpand = trans)
+            .catch(id => ctrl.txExpand = id);
+        $translate('APP.BTN_FILTER')
+            .then(trans => ctrl.txBtnFilter = trans)
+            .catch(id => ctrl.txBtnFilter = id);
+        $translate('APP.BTN_CLEAN')
+            .then(trans => ctrl.txBtnClean = trans)
+            .catch(id => ctrl.txBtnClean = id);
     };
 
     const setBtnText = () => ctrl.txBtnToggle = ctrl.isOpen ? ctrl.txCollapse : ctrl.txExpand;

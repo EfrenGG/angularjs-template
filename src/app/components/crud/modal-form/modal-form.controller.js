@@ -3,7 +3,8 @@ function modalFormController($translate) {
 
     ctrl.$onInit = function() {
         $translate('APP.BTN_CANCEL')
-            .then(translation => ctrl.txBtnCancel = translation, () => ctrl.txBtnCancel = 'Cancelar');
+            .then(translation => ctrl.txBtnCancel = translation)
+            .catch(id => ctrl.txBtnCancel = id);
     };
 
     ctrl.$onChanges = function(changes) {
@@ -44,31 +45,38 @@ function modalFormController($translate) {
         switch(ctrl.action) {
             case 'CREATE':
                 ctrl.model = ctrl.unsavedEntity || {};
-                $translate('APP.TIT_MOD_CREATE')
-                    .then(translation => ctrl.txModalTitle = translation, () => ctrl.txBtnSubmit = 'Crear nuevo registro');
-                $translate('APP.BTN_CREATE')
-                    .then(translation => ctrl.txBtnSubmit = translation, () => ctrl.txBtnSubmit = 'Crear');
                 ctrl.btnSubmitClass = 'btn-success';
+                $translate('APP.TIT_MOD_CREATE')
+                    .then(trans => ctrl.txModalTitle = trans)
+                    .catch(id => ctrl.txModalTitle = id);
+                $translate('APP.BTN_CREATE')
+                    .then(trans => ctrl.txBtnSubmit = trans)
+                    .catch(id => ctrl.txBtnSubmit = id);
                 break;
             case 'UPDATE':
                 ctrl.model = ctrl.unsavedEntity || ctrl.entity;
-                $translate('APP.TIT_MOD_EDIT')
-                    .then(translation => ctrl.txModalTitle = translation, () => ctrl.txBtnSubmit = 'Modificar registro');
-                $translate('APP.BTN_UPDATE')
-                    .then(translation => ctrl.txBtnSubmit = translation, () => ctrl.txBtnSubmit = 'Actualizar');
                 ctrl.btnSubmitClass = 'btn-info';
                 ctrl.isBtnsDisabled = false;
+                $translate('APP.TIT_MOD_EDIT')
+                    .then(trans => ctrl.txModalTitle = trans)
+                    .catch(id => ctrl.txModalTitle = id);
+                $translate('APP.BTN_UPDATE')
+                    .then(trans => ctrl.txBtnSubmit = trans)
+                    .catch(id => ctrl.txBtnSubmit = id);
                 break;
             case 'DELETE':
                 ctrl.model = ctrl.entity;
                 ctrl.btnSubmitClass = 'btn-danger';
                 ctrl.isBtnsDisabled = false;
                 $translate('APP.TIT_MOD_DELETE')
-                    .then(translation => ctrl.txModalTitle = translation, () => ctrl.txBtnSubmit = 'Eliminar registro');
+                    .then(trans => ctrl.txModalTitle = trans)
+                    .catch(id => ctrl.txModalTitle = id);
                 $translate('APP.MSG_MOD_DELETE')
-                    .then(translation => ctrl.txDeleteMsg = translation, () => ctrl.txDeleteMsg = 'Está seguro que desea eliminar el registro seleccionado?');
+                    .then(trans => ctrl.txDeleteMsg = trans)
+                    .catch(id => ctrl.txDeleteMsg = id);
                 $translate('APP.BTN_DELETE')
-                    .then(translation => ctrl.txBtnSubmit = translation, () => ctrl.txBtnSubmit = 'Eliminar');
+                    .then(trans => ctrl.txBtnSubmit = trans)
+                    .catch(id => ctrl.txBtnSubmit = id);
                 break;
         }
     }

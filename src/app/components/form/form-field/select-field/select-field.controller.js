@@ -46,8 +46,12 @@ function selectFieldController($log, $translate, $timeout, httpCommonsService) {
     };
 
     const loadTranslations = () => {
-        $translate('APP.DEF_SELECT_TEXT').then(translation => ctrl.defaultText = translation).catch(() => ctrl.defaultText = 'Seleccione una opción...');
-        $translate('APP.BTN_RELOAD').then(translation => ctrl.txBtnReload = translation).catch(() => ctrl.txBtnReload = 'Recargar');
+        $translate('APP.DEF_SELECT_TEXT')
+            .then(translation => ctrl.defaultText = translation)
+            .catch(id => ctrl.defaultText = id);
+        $translate('APP.BTN_RELOAD')
+            .then(translation => ctrl.txBtnReload = translation)
+            .catch(id => ctrl.txBtnReload = id);
     };
 }
 

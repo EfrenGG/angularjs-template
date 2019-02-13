@@ -8,22 +8,30 @@ function noteController($translate) {
                 case 'SUCCESS':
                     ctrl.noteClass = 'note-success';
                     ctrl.iconClass = 'fas fa-check-circle';
-                    $translate('APP.MSG_SUCCESS').then(trans => ctrl.defaultTitle = trans).catch(() => ctrl.defaultTitle = 'Éxito');
+                    $translate('APP.MSG_SUCCESS')
+                        .then(trans => ctrl.defaultTitle = trans)
+                        .catch(id => ctrl.defaultTitle = id);
                     break;
                 case 'WARN':
                     ctrl.noteClass = 'note-warning';
                     ctrl.iconClass = 'fas fa-exclamation-circle';
-                    $translate('APP.MSG_WARNING').then(trans => ctrl.defaultTitle = trans).catch(() => ctrl.defaultTitle = 'Alerta');
+                    $translate('APP.MSG_WARNING')
+                        .then(trans => ctrl.defaultTitle = trans)
+                        .catch(id => ctrl.defaultTitle = id);
                     break;
                 case 'DANGER':
                     ctrl.noteClass = 'note-danger';
                     ctrl.iconClass = 'fas fa-radiation-alt';
-                    $translate('APP.MSG_DANGER').then(trans => ctrl.defaultTitle = trans).catch(() => ctrl.defaultTitle = 'Peligro');
+                    $translate('APP.MSG_DANGER')
+                        .then(trans => ctrl.defaultTitle = trans)
+                        .catch(id => ctrl.defaultTitle = id);
                     break;
                 default:
                     ctrl.noteClass = 'note-info';
                     ctrl.iconClass = 'fas fa-info-circle';
-                    $translate('APP.MSG_INFO').then(trans => ctrl.defaultTitle = trans).catch(() => ctrl.defaultTitle = 'Información');
+                    $translate('APP.MSG_INFO')
+                        .then(trans => ctrl.defaultTitle = trans)
+                        .catch(id => ctrl.defaultTitle = id);
                     break;
             }
         }
