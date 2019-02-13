@@ -1,7 +1,12 @@
 <ul class="px-nav-content">
   <div class="px-nav-box p-y-2 p-x-3 b-b-1">
-    <span class="font-size-16 font-weight-light"><strong>{{$ctrl.txMenu}}</strong></span>
+    <span class="font-size-16 font-weight-light"><strong>{{$ctrl.title}}</strong></span>
   </div>
 
-  <app-menu-opt ng-repeat="child in $ctrl.root.menusHijo" option="child" class="px-nav-item" ng-class="!child.bHoja ? 'px-nav-dropdown' : ''"></app-menu-opt>
+  <app-menu-opt
+    ng-repeat="child in $ctrl.root.menusHijo"
+    option="child"
+    class="px-nav-item"
+    ng-class="!child.bHoja ? 'px-nav-dropdown' : ''"
+  ></app-menu-opt>
 </ul>

@@ -1,24 +1,23 @@
-function appMenuController(httpCommonsService, CVE_APLICACION) {
+function appMenuController($translate, httpCommonsService) {
     var ctrl = this;
 
-    ctrl.$onInit = function () {
-        ctrl.txMenu = 'Menú';
-        ctrl.menuRoot = 'MN_ROOT';
-        getMenuOpts('infSegMenu', {
-            cveAplicacion: CVE_APLICACION,
-            cveMenu: ctrl.menuRoot
-        });
+    ctrl.$onInit = () => {
+        $translate('APP.TIT_MENU')
+            .then(trans => ctrl.txMenu = trans)
+            .catch(id => ctrl.txMenu = id);
     };
 
-    function getMenuOpts(url, params) {
-        httpCommonsService.obtenRegistro(url, params)
-            .then(function(response) {
-                ctrl.root = response;
-            })
-            .catch(function(error) {
-                ctrl.error = error;
-            });
-    }
+    ctrl.$onChanges = changes => {
+        if (changes.title) {
+            if (ctrl.appKey || ctrl.menuRootKey) {
+                httpCommonsService.obtenRegistro('infSegMenu', {
+                    cveAplicacion: ctrl.appKey,
+                    cveMenu: ctrl.menuRootKey
+                }).then(response => ctrl.root = response)
+                    .catch(error => ctrl.error = error);
+            }
+        }
+    };
 }
 
 angular
