@@ -2,6 +2,7 @@ function appNavbarController($translate, $route, httpCommonsService, toastrServi
     var ctrl = this;
 
     ctrl.$onInit = () => {
+        loadTranslations();
         httpCommonsService.obtenRegistros('infCatCatalogo', {
             cveAplicacion: CVE_APLICACION,
             cveCatalogo: 'IDIOMA'
@@ -15,16 +16,26 @@ function appNavbarController($translate, $route, httpCommonsService, toastrServi
             .catch(() => ctrl.langOptions = []);
     };
 
-    ctrl.changeLang = event => {
-        $translate.use(event.key)
-            .then(() => $route.reload())
-            .catch(() => toastrService.error('Ocurrió un error inesperado, contacte a su administrador', 'Error'));
-    };
-
     ctrl.$onChanges = changes => {
         if (changes.title) {
             ctrl.title = angular.copy(ctrl.title);
+            loadTranslations();
         }
+    };
+
+    ctrl.changeLang = option => {
+        $translate.use(option.key)
+            .then(() => $route.reload())
+            .catch(() => toastrService.error(ctrl.txMsgUnexpectedError));
+    };
+
+    const loadTranslations = () => {
+        $translate('APP.BTN_LANG')
+            .then(trans => ctrl.txBtnLang = trans)
+            .catch(id => ctrl.txBtnLang = id);
+        $translate('APP.MSG_UNEX_ERR')
+            .then(trans => ctrl.txMsgUnexpectedError = trans)
+            .catch(id => ctrl.txMsgUnexpectedError = id);
     };
 }
 
