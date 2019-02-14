@@ -18,6 +18,9 @@ function appController($rootScope, $translate, CVE_APLICACION) {
         $translate('APP.TIT_MENU')
             .then(trans => ctrl.menuTitle = trans)
             .catch(id => ctrl.menuTitle = id);
+        $translate('APP.MSG_WELCOME')
+            .then(trans => ctrl.welcomeMessage = trans)
+            .catch(id => ctrl.welcomeMessage = id);
     };
 
     $rootScope.$on('$translateChangeSuccess', getTranslations);

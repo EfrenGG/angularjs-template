@@ -4,7 +4,8 @@ const appMenu = {
     bindings: {
         appKey: '<',
         menuRootKey: '<',
-        title: '<'
+        menuTitle: '<',
+        welcomeMsg: '<'
     }
 };
 
