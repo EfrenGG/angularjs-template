@@ -5,6 +5,7 @@
   "scripts": {
     "start": "gulp",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "develop": "gulp watch",
     "bundle": "gulp bundle --deploy"
   },
   "keywords": [
@@ -32,6 +33,7 @@
     "gulp-htmlmin": "^5.0.1",
     "gulp-if": "^2.0.2",
     "gulp-ng-annotate": "^2.1.0",
+    "gulp-sass": "^4.0.2",
     "gulp-sourcemaps": "^2.6.4",
     "gulp-uglify": "^3.0.1",
     "gulp-wrap": "^0.14.0",

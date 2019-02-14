@@ -12,6 +12,7 @@ const uglify = require('gulp-uglify');
 const server = require('browser-sync');
 const yargs = require('yargs');
 const gulpif = require('gulp-if');
+const sass = require('gulp-sass');
 
 const argv = yargs.argv;
 const root = 'src';
@@ -19,7 +20,7 @@ const paths = {
     dist: './dist',
     scripts: [`${root}/app/**/*.js`, `!${root}/app/**/*.spec.js`],
     tests: `${root}/app/**/*.spec.js`,
-    styles: `${root}/sass/*.scss`,
+    styles: `${root}/styles/sass/*.scss`,
     templates: `${root}/app/**/*.html`,
     modules: [
         'jquery/dist/jquery.js',
@@ -79,18 +80,7 @@ gulp.task('copy', ['vendor-css'], () =>
         .pipe(gulp.dest(paths.dist))
 );
 
-gulp.task('templates', () =>
-    gulp.src(paths.templates)
-        .pipe(htmlmin({ collapseWhitespace: true }))
-        .pipe(templateCache({
-            root: 'app',
-            standalone: true,
-            transformUrl: url => url.replace(path.dirname(url), '.')
-        }))
-        .pipe(gulp.dest(`${root}/app/`))
-);
-
-gulp.task('modules', ['copy', 'templates'], () =>
+gulp.task('modules', ['copy'], () =>
     gulp.src([
         ...paths.modules.map(item => `node_modules/${item}`),
         `${root}/pixeladmin/js/**/*.js`])
@@ -102,7 +92,23 @@ gulp.task('modules', ['copy', 'templates'], () =>
         .pipe(gulp.dest(`${paths.dist}/js/`))
 );
 
-gulp.task('scripts', ['modules'], () =>
+gulp.task('styles', () => gulp.src(paths.styles)
+    .pipe(sass({outputStyle: 'compressed'}))
+    .pipe(gulp.dest(`${paths.dist}/css/`))
+);
+
+gulp.task('templates', () =>
+    gulp.src(paths.templates)
+        .pipe(htmlmin({ collapseWhitespace: true }))
+        .pipe(templateCache({
+            root: 'app',
+            standalone: true,
+            transformUrl: url => url.replace(path.dirname(url), '.')
+        }))
+        .pipe(gulp.dest(`${root}/app/`))
+);
+
+gulp.task('scripts', ['templates'], () =>
     gulp.src([
         `!${root}/app/**/*.spec.js`,
         `${root}/app/**/*.module.js`,
@@ -119,7 +125,7 @@ gulp.task('scripts', ['modules'], () =>
         .pipe(gulpif(!argv.deploy, sourcemaps.write('./')))
         .pipe(gulp.dest(`${paths.dist}/js/`)));
 
-gulp.task('serve', ['scripts'], () => server.init({
+gulp.task('serve', ['scripts', 'styles'], () => server.init({
     files: [`${paths.dist}/**`],
     port: 4000,
     server: {
@@ -133,9 +139,12 @@ gulp.task('watch', ['serve'], () => {
 });
 
 gulp.task('default', [
+    'modules',
     'watch',
 ]);
 
 gulp.task('bundle', [
-    'scripts'
+    'modules',
+    'scripts',
+    'styles',
 ]);
