@@ -3,11 +3,10 @@ const filterPanel = {
     controller: 'filterPanelController',
     bindings: {
         fields: '<',
+        params: '<',
         isLoading: '<',
-        onFilter: '&',
+        onFilter: '&'
     }
 };
 
-angular
-    .module('components.crud')
-    .component('filterPanel', filterPanel);
+angular.module('components.crud').component('filterPanel', filterPanel);
