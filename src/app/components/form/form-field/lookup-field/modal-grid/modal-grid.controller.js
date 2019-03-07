@@ -1,24 +1,35 @@
-function modalGridController($log, $filter, $translate, httpCommonsService, CVE_APLICACION) {
-
+function modalGridController(
+    $log,
+    $filter,
+    $timeout,
+    $translate,
+    httpCommonsService
+) {
     var ctrl = this;
 
     ctrl.$onInit = () => {
         ctrl.hasSelection = false;
-        ctrl.filterParams = {};
-        ctrl.gridPaginationOpts = {
-            pageNumber: 1,
-            pageSize: 5
-        };
-        ctrl.txModalTitle = 'Buscar';
-        ctrl.txBtnCancel = 'Cancelar';
-        ctrl.txBtnSelect = 'Seleccionar';
+        loadTranslations();
     };
 
     ctrl.$onChanges = changes => {
+        if (!ctrl.gridPaginationOpts) {
+            ctrl.gridPaginationOpts = {
+                pageNumber: 1,
+                pageSize: 5
+            };
+        }
         if (changes.resolve) {
-            ctrl.formKey = angular.copy(ctrl.resolve.formKey);
+            setModalMetadata(angular.copy(ctrl.resolve.metadata));
             ctrl.data = angular.copy(ctrl.resolve.data);
-            setModalMetadata(ctrl.formKey);
+            ctrl.filterParams = angular.copy(ctrl.resolve.params) || {};
+            if (ctrl.data && ctrl.data.total > 0) {
+                ctrl.isLoading = true;
+                $timeout(() => setData(ctrl.data), 1000);
+                ctrl.isLoading = false;
+            } else {
+                getData(ctrl.modalMetadata.urlApiForma);
+            }
         }
     };
 
@@ -41,7 +52,7 @@ function modalGridController($log, $filter, $translate, httpCommonsService, CVE_
     };
 
     ctrl.filterData = event => {
-        ctrl.filterParams = event.filterParams;
+        ctrl.filterParams = event.filterParams || {};
         getData();
     };
 
@@ -53,38 +64,39 @@ function modalGridController($log, $filter, $translate, httpCommonsService, CVE_
         });
     };
 
-    const setModalMetadata = form => {
-        ctrl.modalMetadata = null;
-        httpCommonsService.obtenRegistro('infForma', {
-            cveAplicacion: CVE_APLICACION,
-            cveForma: form
-        }).then(function (response) {
-            ctrl.modalMetadata = response;
-            if (ctrl.modalMetadata.cveForma) {
-                setFields(ctrl.modalMetadata.detallesForma);
-                if (ctrl.data && ctrl.data.total > 0) {
-                    setData(ctrl.data);
-                } else {
-                    getData(ctrl.modalMetadata.urlApiForma);
-                }
+    const loadTranslations = () => {
+        $translate('APP.TIT_MOD_SEARCH')
+            .then(trans => (ctrl.txModalTitle = trans))
+            .catch(id => (ctrl.txModalTitle = id));
+        $translate('APP.BTN_CANCEL')
+            .then(trans => (ctrl.txBtnCancel = trans))
+            .catch(id => (ctrl.txBtnCancel = id));
+        $translate('APP.BTN_SELECT')
+            .then(trans => (ctrl.txBtnSelect = trans))
+            .catch(id => (ctrl.txBtnSelect = id));
+    };
+
+    const setModalMetadata = metadata => {
+        ctrl.modalMetadata = metadata;
+        setFields(ctrl.modalMetadata.detallesForma);
+        // get i18n
+        $translate(
+            `${ctrl.modalMetadata.cveForma}.${
+                ctrl.modalMetadata.cveTituloForma
+            }`
+        ).then(
+            function(trans) {
+                ctrl.txTitForm = trans;
+            },
+            function() {
+                ctrl.txTitForm = ctrl.modalMetadata.txTituloForma;
             }
-            // get i18n
-            $translate(ctrl.modalMetadata.cveForma + '.' + ctrl.modalMetadata.cveTituloForma)
-                .then(function (etiquetaCol) {
-                    ctrl.txTitForm = etiquetaCol;
-                }, function () {
-                    ctrl.txTitForm = ctrl.modalMetadata.txTituloForma;
-                });
-        }).catch(function (error) {
-            $log.error(error);
-        });
+        );
     };
 
     const setData = data => {
-        $log.log('setData()', data);
         ctrl.gridData = data.data;
         ctrl.gridTotal = data.total;
-
     };
 
     const setFields = details => {
@@ -106,10 +118,16 @@ function modalGridController($log, $filter, $translate, httpCommonsService, CVE_
 
     const getData = () => {
         ctrl.isLoading = true;
-        httpCommonsService.obtenRegistros(ctrl.modalMetadata.urlApiForma, ctrl.filterParams, ctrl.gridPaginationOpts.pageNumber, ctrl.gridPaginationOpts.pageSize)
+        httpCommonsService
+            .obtenRegistros(
+                ctrl.modalMetadata.urlApiForma,
+                ctrl.filterParams || {},
+                ctrl.gridPaginationOpts.pageNumber,
+                ctrl.gridPaginationOpts.pageSize
+            )
             .then(response => setData(response))
             .catch(error => $log.error(error))
-            .finally(() => ctrl.isLoading = false);
+            .finally(() => (ctrl.isLoading = false));
     };
 }
 

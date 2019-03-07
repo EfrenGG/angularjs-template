@@ -8,6 +8,4 @@ const modalGrid = {
     }
 };
 
-angular
-    .module('components.form')
-    .component('modalGrid', modalGrid);
+angular.module('components.form').component('modalGrid', modalGrid);

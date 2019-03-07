@@ -8,6 +8,4 @@ const lookupField = {
     }
 };
 
-angular
-    .module('components.form')
-    .component('lookupField', lookupField);
+angular.module('components.form').component('lookupField', lookupField);
