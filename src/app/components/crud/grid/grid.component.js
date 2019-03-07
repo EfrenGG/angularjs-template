@@ -12,6 +12,4 @@ const grid = {
     }
 };
 
-angular
-    .module('components.crud')
-    .component('grid', grid);
+angular.module('components.crud').component('grid', grid);

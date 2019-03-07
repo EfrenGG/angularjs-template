@@ -3,24 +3,22 @@
 </div>
 
 <div ng-show="!$ctrl.isLoading && !$ctrl.isResizing">
-
-  <div
-    ng-show="$ctrl.total > 0"
-    ui-i18n="{{$ctrl.lang}}">
+  <div ng-show="$ctrl.total > 0" ui-i18n="{{ $ctrl.lang }}">
     <div
       ui-grid="$ctrl.gridConfig"
       ui-grid-pagination
       ui-grid-selection
       ui-grid-auto-resize
       ui-grid-resize-columns
-      ng-style="{'height': $ctrl.gridHeight + 'px' || '25px'}">
-    </div>
+      ng-style="{'height': $ctrl.gridHeight + 'px' || '25px'}"
+    ></div>
   </div>
 
-  <note ng-show="!$ctrl.total"
+  <note
+    ng-show="!$ctrl.total"
     ng-if="!$ctrl.metadata"
     type="'INFO'"
-    description="$ctrl.txNoMetadata">
+    description="$ctrl.txNoMetadata"
+  >
   </note>
-
 </div>

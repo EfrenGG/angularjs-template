@@ -4,8 +4,8 @@ function gridController($translate, $timeout) {
     ctrl.$onInit = () => {
         ctrl.lang = $translate.use();
         $translate('APP.MSG_NO_DATA')
-            .then(trans => ctrl.txNoMetadata = trans)
-            .catch(id => ctrl.txNoMetadata = id);
+            .then(trans => (ctrl.txNoMetadata = trans))
+            .catch(id => (ctrl.txNoMetadata = id));
         ctrl.gridConfig = {
             // columns
             columnDefs: ctrl.columnDefs,
@@ -17,29 +17,57 @@ function gridController($translate, $timeout) {
             // selection
             enableFullRowSelection: true,
             onRegisterApi: gridApi => {
-                gridApi.pagination.on.paginationChanged(null, function (newPage, pageSize) {
+                gridApi.pagination.on.paginationChanged(null, function(
+                    newPage,
+                    pageSize
+                ) {
                     ctrl.paginationOptions.pageNumber = newPage;
                     ctrl.paginationOptions.pageSize = pageSize;
                     changePage(ctrl.paginationOptions);
                 });
                 gridApi.selection.setMultiSelect(false);
-                gridApi.selection.on.rowSelectionChanged(null, function (row) {
+                gridApi.selection.on.rowSelectionChanged(null, function(row) {
                     selectRow(row.isSelected ? row.entity : undefined);
                 });
-                gridApi.core.on.gridDimensionChanged(null, (oldGridHeight, oldGridWidth, newGridHeight, newGridWidth) => {
-                    if (oldGridWidth !== newGridWidth && ctrl.gridWidth !== newGridWidth) {
-                        let previousFooterHeight = ctrl.gridFooterHeight;
-                        ctrl.gridWidth = newGridWidth;
-                        ctrl.gridFooterHeight = ctrl.gridWidth < 575 ? 84 : 42;
-                        if (!previousFooterHeight) { return; }
-                        if (previousFooterHeight !== ctrl.gridFooterHeight) {
-                            if (ctrl.resizingTimeOut) { $timeout.cancel(ctrl.resizingTimeOut); }
-                            ctrl.isResizing = true;
-                            ctrl.resizingTimeOut = $timeout(setGridHeight, 500);
-
+                gridApi.core.on.gridDimensionChanged(
+                    null,
+                    (
+                        oldGridHeight,
+                        oldGridWidth,
+                        newGridHeight,
+                        newGridWidth
+                    ) => {
+                        if (
+                            ctrl.gridWidth === undefined ||
+                            (oldGridWidth !== newGridWidth &&
+                                ctrl.gridWidth !== newGridWidth)
+                        ) {
+                            let previousFooterHeight = ctrl.gridFooterHeight;
+                            ctrl.gridWidth = newGridWidth;
+                            ctrl.gridFooterHeight =
+                                ctrl.gridWidth < 575 ? 84 : 42;
+                            if (!previousFooterHeight) {
+                                ctrl.resizingTimeOut = $timeout(
+                                    setGridHeight,
+                                    500
+                                );
+                                return;
+                            }
+                            if (
+                                previousFooterHeight !== ctrl.gridFooterHeight
+                            ) {
+                                if (ctrl.resizingTimeOut) {
+                                    $timeout.cancel(ctrl.resizingTimeOut);
+                                }
+                                ctrl.isResizing = true;
+                                ctrl.resizingTimeOut = $timeout(
+                                    setGridHeight,
+                                    500
+                                );
+                            }
                         }
                     }
-                });
+                );
             }
         };
     };
@@ -72,27 +100,30 @@ function gridController($translate, $timeout) {
             ctrl.gridHeight = 0;
             return;
         } else {
-            ctrl.gridHeight = (ctrl.data.length * 30) + 32 + (ctrl.gridFooterHeight || 42);
+            ctrl.gridHeight =
+                ctrl.data.length * 30 + 32 + (ctrl.gridFooterHeight || 42);
         }
         ctrl.isResizing = false;
     };
 
-    function setDefCols(fields) {
+    const setDefCols = fields => {
         if (!fields) {
             return;
         }
-        ctrl.columnDefs = fields.map(function (obj) {
+        ctrl.columnDefs = fields.map(function(obj) {
             var rObj = {};
             rObj['field'] = obj.nomCampo;
             rObj['displayName'] = obj.txEtiqueta;
             rObj['minWidth'] = getMinWidth(obj.cveTamanoCampo);
-            $translate(obj.cveForma + '.' + obj.cveEtiqueta).then(trans => rObj['displayName'] = trans).catch(() => rObj['displayName'] = obj.txEtiqueta);
+            $translate(obj.cveForma + '.' + obj.cveEtiqueta)
+                .then(trans => (rObj['displayName'] = trans))
+                .catch(() => (rObj['displayName'] = obj.txEtiqueta));
             return rObj;
         });
         if (ctrl.gridConfig) {
             ctrl.gridConfig.columnDefs = ctrl.columnDefs;
         }
-    }
+    };
 
     const getMinWidth = sizeKey => {
         switch (sizeKey) {
@@ -106,23 +137,21 @@ function gridController($translate, $timeout) {
         }
     };
 
-    function selectRow(entity) {
+    const selectRow = entity => {
         ctrl.onRowSelection({
             $event: {
                 entity: entity
             }
         });
-    }
+    };
 
-    function changePage(params) {
+    const changePage = params => {
         ctrl.onPageChanged({
             $event: {
                 params: params
             }
         });
-    }
+    };
 }
 
-angular
-    .module('components.crud')
-    .controller('gridController', gridController);
+angular.module('components.crud').controller('gridController', gridController);
