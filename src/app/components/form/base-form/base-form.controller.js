@@ -4,18 +4,36 @@ function baseFormController() {
     ctrl.$onChanges = changes => {
         if (changes.fields) {
             ctrl.fields = angular.copy(ctrl.fields);
-            if (ctrl.fields) { setRowGroups(); }
+            if (ctrl.fields) {
+                setRowGroups();
+            }
         }
         if (changes.model) {
             ctrl.model = angular.copy(ctrl.model);
         }
     };
 
-    function setRowGroups() {
+    ctrl.updateModel = event => {
+        ctrl.model[event.name] = event.value;
+        if (event.entityName) {
+            ctrl.model[event.entityName] = event.entity;
+        }
+        ctrl.onChange({
+            $event: {
+                model: ctrl.model,
+                invalid: ctrl.formName.$invalid
+            }
+        });
+    };
+
+    const setRowGroups = () => {
         let row = [];
         let colCounter = 0;
         ctrl.rowGroups = [];
         ctrl.fields.forEach(field => {
+            if (field.cveTipoComponente === 'SECCION') {
+                field.cveTamanoCampo = 'XL';
+            }
             const size = getSize(field.cveTamanoCampo);
             field.sizeClass = 'col-md-' + size;
             colCounter += size;
@@ -27,12 +45,14 @@ function baseFormController() {
             row.push(field);
         });
         if (row.length > 0) ctrl.rowGroups.push(row);
-    }
+    };
 
-    function getSize(size) {
-        switch(size) {
-            case 'LG':
+    const getSize = size => {
+        switch (size) {
+            case 'XL':
                 return 12;
+            case 'LG':
+                return 9;
             case 'SM':
                 return 4;
             case 'XS':
@@ -40,16 +60,6 @@ function baseFormController() {
             default:
                 return 6;
         }
-    }
-
-    ctrl.updateModel = function(event) {
-        ctrl.model[event.name] = event.value;
-        ctrl.onChange({
-            $event: {
-                model: ctrl.model,
-                invalid: ctrl.formName.$invalid
-            }
-        });
     };
 }
 

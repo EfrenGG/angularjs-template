@@ -3,13 +3,11 @@ const formField = {
     templateUrl: './form-field.html',
     bindings: {
         formParent: '=',
-        parentModel: '=',
         metadata: '<',
+        parentModel: '<',
         model: '<',
         onChange: '&'
     }
 };
 
-angular
-    .module('components.form')
-    .component('formField', formField);
+angular.module('components.form').component('formField', formField);

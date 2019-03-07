@@ -9,6 +9,4 @@ const baseForm = {
     }
 };
 
-angular
-    .module('components.form')
-    .component('baseForm', baseForm);
+angular.module('components.form').component('baseForm', baseForm);
