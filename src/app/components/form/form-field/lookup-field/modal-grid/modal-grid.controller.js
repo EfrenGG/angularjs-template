@@ -119,7 +119,7 @@ function modalGridController(
     const getData = () => {
         ctrl.isLoading = true;
         httpCommonsService
-            .obtenRegistros(
+            .search(
                 ctrl.modalMetadata.urlApiForma,
                 ctrl.filterParams || {},
                 ctrl.gridPaginationOpts.pageNumber,

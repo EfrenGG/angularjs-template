@@ -39,19 +39,24 @@ function selectFieldController($log, $translate, $timeout, httpCommonsService) {
 
     ctrl.loadData = () => {
         ctrl.isLoading = true;
-        $timeout(() => httpCommonsService.obtenRegistros(ctrl.metadata.urlApi)
-            .then(response => ctrl.selectData = response.data)
-            .catch(error => $log.error(error))
-            .finally(() => ctrl.isLoading = false), 500);
+        $timeout(
+            () =>
+                httpCommonsService
+                    .search(ctrl.metadata.urlApi)
+                    .then(response => (ctrl.selectData = response.data))
+                    .catch(error => $log.error(error))
+                    .finally(() => (ctrl.isLoading = false)),
+            500
+        );
     };
 
     const loadTranslations = () => {
         $translate('APP.DEF_SELECT_TEXT')
-            .then(translation => ctrl.defaultText = translation)
-            .catch(id => ctrl.defaultText = id);
+            .then(translation => (ctrl.defaultText = translation))
+            .catch(id => (ctrl.defaultText = id));
         $translate('APP.BTN_RELOAD')
-            .then(translation => ctrl.txBtnReload = translation)
-            .catch(id => ctrl.txBtnReload = id);
+            .then(translation => (ctrl.txBtnReload = translation))
+            .catch(id => (ctrl.txBtnReload = id));
     };
 }
 

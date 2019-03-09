@@ -47,7 +47,7 @@ function lookupFieldController(
         }
         ctrl.loading = true;
         httpCommonsService
-            .obtenRegistros(
+            .search(
                 ctrl.relatedFormMetadata.urlApiForma,
                 { [ctrl.dependantField]: ctrl.viewModel },
                 1,
@@ -112,10 +112,15 @@ function lookupFieldController(
 
     const setRelatedFormMetadata = relatedFormKey => {
         httpCommonsService
-            .obtenRegistro('infForma', {
-                cveAplicacion: CVE_APLICACION,
-                cveForma: relatedFormKey
-            })
+            .getByKey(
+                'infForma',
+                {
+                    cveAplicacion: CVE_APLICACION,
+                    cveForma: relatedFormKey
+                },
+                true,
+                true
+            )
             .then(function(response) {
                 ctrl.relatedFormMetadata = response;
                 ctrl.dependantField = ctrl.metadata.nomCampoDependiente;

@@ -1,115 +1,99 @@
-function httpCommonsService($http, $q, $translate, API_URL) {
+function httpCommonsService($http, $q, $translate, INFRA_BASE_URL, API_URL) {
+    const getUrl = (url, isInfra) =>
+        `${isInfra ? INFRA_BASE_URL : API_URL}${url}`;
 
-    var getUrl = url => API_URL + url;
-
-    function obten(url, params) {
-        url = getUrl(url);
-        var deferred = $q.defer();
-        $http.get(url, {
-            params: params
-        })
-            .then(function (response) {
-                deferred.resolve(response.data);
-            }, function (response) {
-                deferred.reject(response);
-            });
-        return deferred.promise;
-    }
-
-    function obtenRegistro(url, params) {
-        url = getUrl(url);
-        var deferred = $q.defer();
-        $http.get(url + '/getByKey', {
-            params: params,
-            cache: true
-        })
-            .then(function (response) {
-                deferred.resolve(response.data);
-            }, function (response) {
-                deferred.reject(response);
-            });
-        return deferred.promise;
-    }
-
-    function obtenRegistros(url, params, pageNumber, pageSize) {
-        url = getUrl(url);
-        var deferred = $q.defer();
-        if (params) {
-            url = url + '/search';
+    const get = (url, params, saveCache = false) => {
+        let deferred = $q.defer();
+        if (params === undefined) {
+            params = {};
         }
-        if (pageNumber && pageSize) {
-            params.pageNumber = pageNumber;
-            params.pageSize = pageSize;
+        $http
+            .get(url, {
+                params: params,
+                cache: saveCache
+            })
+            .then(
+                response => deferred.resolve(response.data),
+                response => deferred.reject(response)
+            );
+        return deferred.promise;
+    };
+
+    const getByKey = (url, params, isInfra = false, saveCache = false) => {
+        const absoluteUrl = `${getUrl(url, isInfra)}/getByKey`;
+        return get(absoluteUrl, params, saveCache);
+    };
+
+    const search = (
+        url,
+        params,
+        pageNumber = 0,
+        pageSize = 0,
+        isInfra = false,
+        saveCache = false
+    ) => {
+        let absoluteUrl = getUrl(url, isInfra);
+        if (params && !angular.equals({}, params)) {
+            absoluteUrl = `${absoluteUrl}/search`;
+        } else {
+            params = {};
         }
+        params.pageNumber = pageNumber;
+        params.pageSize = pageSize;
+        return get(absoluteUrl, params, saveCache);
+    };
 
-        $http.get(url, {
-            params: params
-        })
-            .then(function (response) {
-                deferred.resolve(response.data);
-            }, function (response) {
-                deferred.reject(response);
-            });
-        return deferred.promise;
-    }
-
-    function save(url, registro) {
-        url = getUrl(url);
-        if ($translate.use())
-            url = url + '?lang=' + $translate.use();
+    const save = (url, registro, isInfra) => {
+        url = getUrl(url, isInfra);
+        if ($translate.use()) url = url + '?lang=' + $translate.use();
         var deferred = $q.defer();
-        $http.post(url, registro)
-            .then(function (response) {
-                deferred.resolve(response.data);
-            }, function(error) {
-                deferred.reject(error);
-            });
+        $http
+            .post(url, registro)
+            .then(
+                response => deferred.resolve(response.data),
+                error => deferred.reject(error)
+            );
         return deferred.promise;
-    }
+    };
 
-    function update(url, registro) {
-        url = getUrl(url);
-        if ($translate.use())
-            url = url + '?lang=' + $translate.use();
+    const update = (url, registro, isInfra) => {
+        url = getUrl(url, isInfra);
+        if ($translate.use()) url = url + '?lang=' + $translate.use();
         var deferred = $q.defer();
-        $http.put(url, registro)
-            .then(function (response) {
-                deferred.resolve(response.data);
-            }, function(error) {
-                deferred.reject(error);
-            });
+        $http
+            .put(url, registro)
+            .then(
+                response => deferred.resolve(response.data),
+                error => deferred.reject(error)
+            );
         return deferred.promise;
-    }
+    };
 
-    function remove(url, registro) {
-        url = getUrl(url);
-        if ($translate.use())
-            url = url + '?lang=' + $translate.use();
+    const remove = (url, registro, isInfra) => {
+        url = getUrl(url, isInfra);
+        if ($translate.use()) url = url + '?lang=' + $translate.use();
         var deferred = $q.defer();
-        $http.delete(url, {
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data: registro
-        })
-            .then(function (response) {
-                deferred.resolve(response.data);
-            }, function(error) {
-                deferred.reject(error);
-            });
+        $http
+            .delete(url, {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: registro
+            })
+            .then(
+                response => deferred.resolve(response.data),
+                error => deferred.reject(error)
+            );
         return deferred.promise;
-    }
+    };
 
     return {
-        obten: obten,
-        obtenRegistro: obtenRegistro,
-        obtenRegistros: obtenRegistros,
+        getByKey: getByKey,
+        search: search,
         save: save,
         update: update,
         remove: remove
     };
 }
 
-angular
-    .module('common')
-    .factory('httpCommonsService', httpCommonsService);
+angular.module('common').factory('httpCommonsService', httpCommonsService);

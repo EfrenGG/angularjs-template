@@ -1,27 +1,57 @@
-<note
-  ng-if="!$ctrl.metadata"
-  type="'WARN'"
-  description="$ctrl.txNoMetadata">
+<note ng-if="!$ctrl.metadata" type="'WARN'" description="$ctrl.txNoMetadata">
 </note>
 
 <div ng-if="$ctrl.metadata">
   <div class="page-header">
     <div class="row">
       <div class="col-md-6 text-xs-center text-md-left text-nowrap">
-        <h1>{{$ctrl.txTitForm}}</h1>
+        <h1>{{ $ctrl.txTitForm }}</h1>
       </div>
       <div ng-if="$ctrl.metadata.bCrud">
-        <hr class="page-wide-block visible-xs visible-sm">
-        <div class="col-xs-12 width-md-auto width-lg-auto width-xl-auto pull-md-right" ng-if="$ctrl.metadata.bCrea">
-          <button class="btn btn-sm btn-primary btn-block" ng-click="$ctrl.openModal('CREATE')"><span class="btn-label-icon left fas fa-plus"></span>{{$ctrl.txBtnAdd}}</button>
+        <hr class="page-wide-block visible-xs visible-sm" />
+        <div
+          class="col-xs-12 width-md-auto width-lg-auto width-xl-auto pull-md-right"
+          ng-if="$ctrl.metadata.bCrea"
+        >
+          <button
+            class="btn btn-sm btn-primary btn-block"
+            ng-click="$ctrl.openModal('CREATE')"
+          >
+            <span class="btn-label-icon left fas fa-plus"></span
+            >{{ $ctrl.txBtnAdd }}
+          </button>
         </div>
-        <div class="m-b-2 visible-xs visible-sm clearfix" ng-if="$ctrl.metadata.bEdita && $ctrl.selectedEntity"></div>
-        <div class="col-xs-12 width-md-auto width-lg-auto width-xl-auto pull-md-right" ng-if="$ctrl.metadata.bEdita && $ctrl.selectedEntity">
-          <button class="btn btn-sm btn-info btn-block" ng-click="$ctrl.openModal('UPDATE')"><span class="btn-label-icon left fas fa-edit"></span>{{$ctrl.txBtnEdit}}</button>
+        <div
+          class="m-b-2 visible-xs visible-sm clearfix"
+          ng-show="$ctrl.metadata.bEdita && $ctrl.selectedEntity"
+        ></div>
+        <div
+          class="col-xs-12 width-md-auto width-lg-auto width-xl-auto pull-md-right"
+          ng-show="$ctrl.metadata.bEdita && $ctrl.selectedEntity"
+        >
+          <button
+            class="btn btn-sm btn-info btn-block"
+            ng-click="$ctrl.openModal('UPDATE')"
+          >
+            <span class="btn-label-icon left fas fa-edit"></span
+            >{{ $ctrl.txBtnEdit }}
+          </button>
         </div>
-        <div class="m-b-2 visible-xs visible-sm clearfix" ng-if="$ctrl.metadata.bBorra && $ctrl.selectedEntity"></div>
-        <div class="col-xs-12 width-md-auto width-lg-auto width-xl-auto pull-md-right" ng-if="$ctrl.metadata.bBorra && $ctrl.selectedEntity">
-          <button class="btn btn-sm btn-danger btn-block" ng-click="$ctrl.openModal('DELETE')"><span class="btn-label-icon left fas fa-trash-alt"></span>{{$ctrl.txBtnDelete}}</button>
+        <div
+          class="m-b-2 visible-xs visible-sm clearfix"
+          ng-show="$ctrl.metadata.bBorra && $ctrl.selectedEntity"
+        ></div>
+        <div
+          class="col-xs-12 width-md-auto width-lg-auto width-xl-auto pull-md-right"
+          ng-show="$ctrl.metadata.bBorra && $ctrl.selectedEntity"
+        >
+          <button
+            class="btn btn-sm btn-danger btn-block"
+            ng-click="$ctrl.openModal('DELETE')"
+          >
+            <span class="btn-label-icon left fas fa-trash-alt"></span
+            >{{ $ctrl.txBtnDelete }}
+          </button>
         </div>
       </div>
     </div>
@@ -43,6 +73,7 @@
       data="$ctrl.gridData"
       total="$ctrl.gridTotal"
       on-row-selection="$ctrl.setEntity($event)"
-      on-page-changed="$ctrl.setPage($event)"></grid>
+      on-page-changed="$ctrl.setPage($event)"
+    ></grid>
   </div>
 </div>

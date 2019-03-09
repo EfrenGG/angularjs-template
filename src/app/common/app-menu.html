@@ -1,18 +1,35 @@
 <ul class="px-nav-content">
-
   <li class="px-nav-box p-a-3 b-b-1">
-    <img src="img/avatar.jpg" alt="" class="pull-xs-left m-r-2 border-round" style="width: 54px; height: 54px;">
-    <div class="font-size-16"><span class="font-weight-light">{{ $ctrl.welcomeMsg }}, </span><strong>Efren</strong></div>
+    <img
+      src="img/avatar.jpg"
+      alt=""
+      class="pull-xs-left m-r-2 border-round"
+      style="width: 54px; height: 54px;"
+    />
+    <div class="font-size-16">
+      <span class="font-weight-light">{{ $ctrl.welcomeMsg }}, </span
+      ><strong>Efren</strong>
+    </div>
     <div class="btn-group" style="margin-top: 4px;">
-      <a href="#" class="btn btn-xs btn-primary btn-outline"><i class="fas fa-envelope"></i></a>
-      <a href="#" class="btn btn-xs btn-primary btn-outline"><i class="fas fa-user"></i></a>
-      <a href="#" class="btn btn-xs btn-primary btn-outline"><i class="fas fa-cog"></i></a>
-      <a href="#" class="btn btn-xs btn-danger btn-outline"><i class="fas fa-power-off"></i></a>
+      <a href="#" class="btn btn-xs btn-primary btn-outline"
+        ><i class="fas fa-envelope"></i
+      ></a>
+      <a href="#" class="btn btn-xs btn-primary btn-outline"
+        ><i class="fas fa-user"></i
+      ></a>
+      <a href="#" class="btn btn-xs btn-primary btn-outline"
+        ><i class="fas fa-cog"></i
+      ></a>
+      <a href="#" class="btn btn-xs btn-danger btn-outline"
+        ><i class="fas fa-power-off"></i
+      ></a>
     </div>
   </li>
 
   <li class="px-nav-box p-y-2 p-x-3 b-b-1">
-    <span class="font-size-16 font-weight-light"><strong>{{$ctrl.menuTitle}}</strong></span>
+    <span class="font-size-16 font-weight-light"
+      ><strong>{{ $ctrl.menuTitle }}</strong></span
+    >
   </li>
 
   <app-menu-opt
@@ -21,5 +38,4 @@
     class="px-nav-item"
     ng-class="!child.bHoja ? 'px-nav-dropdown' : ''"
   ></app-menu-opt>
-
 </ul>

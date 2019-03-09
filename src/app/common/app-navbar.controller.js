@@ -1,19 +1,26 @@
-function appNavbarController($translate, $route, httpCommonsService, toastrService, CVE_APLICACION) {
+function appNavbarController(
+    $translate,
+    $route,
+    httpCommonsService,
+    toastrService,
+    CVE_APLICACION
+) {
     var ctrl = this;
 
     ctrl.$onInit = () => {
         loadTranslations();
-        httpCommonsService.obtenRegistros('infCatCatalogo', {
-            cveAplicacion: CVE_APLICACION,
-            cveCatalogo: 'IDIOMA'
-        })
+        httpCommonsService
+            .search('infCatCatalogo', {
+                cveAplicacion: CVE_APLICACION,
+                cveCatalogo: 'IDIOMA'
+            })
             .then(response => {
                 ctrl.langOptions = response.data.map(obj => ({
                     key: obj.cveCampo,
                     desc: `${obj.txCampo} (${obj.cveCampo})`
                 }));
             })
-            .catch(() => ctrl.langOptions = []);
+            .catch(() => (ctrl.langOptions = []));
     };
 
     ctrl.$onChanges = changes => {
@@ -24,21 +31,20 @@ function appNavbarController($translate, $route, httpCommonsService, toastrServi
     };
 
     ctrl.changeLang = option => {
-        $translate.use(option.key)
+        $translate
+            .use(option.key)
             .then(() => $route.reload())
             .catch(() => toastrService.error(ctrl.txMsgUnexpectedError));
     };
 
     const loadTranslations = () => {
         $translate('APP.BTN_LANG')
-            .then(trans => ctrl.txBtnLang = trans)
-            .catch(id => ctrl.txBtnLang = id);
+            .then(trans => (ctrl.txBtnLang = trans))
+            .catch(id => (ctrl.txBtnLang = id));
         $translate('APP.MSG_UNEX_ERR')
-            .then(trans => ctrl.txMsgUnexpectedError = trans)
-            .catch(id => ctrl.txMsgUnexpectedError = id);
+            .then(trans => (ctrl.txMsgUnexpectedError = trans))
+            .catch(id => (ctrl.txMsgUnexpectedError = id));
     };
 }
 
-angular
-    .module('common')
-    .controller('appNavbarController', appNavbarController);
+angular.module('common').controller('appNavbarController', appNavbarController);
