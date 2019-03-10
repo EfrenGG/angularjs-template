@@ -8,6 +8,4 @@ const selectField = {
     }
 };
 
-angular
-    .module('components.form')
-    .component('selectField', selectField);
+angular.module('components.form').component('selectField', selectField);

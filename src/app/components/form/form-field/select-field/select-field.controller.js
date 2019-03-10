@@ -13,7 +13,7 @@ function selectFieldController($log, $translate, $timeout, httpCommonsService) {
         if (changes.model) {
             ctrl.model = angular.copy(ctrl.model);
             if (ctrl.model && !ctrl.modelUpdated) {
-                ctrl.loadData();
+                ctrl.loadData(true);
             }
         }
     };
@@ -21,7 +21,7 @@ function selectFieldController($log, $translate, $timeout, httpCommonsService) {
     ctrl.toggleFocus = isFocused => {
         ctrl.isFocused = isFocused;
         if (ctrl.isFocused && !ctrl.selectData) {
-            ctrl.loadData();
+            ctrl.loadData(true);
         }
         ctrl.updateModel();
     };
@@ -37,14 +37,19 @@ function selectFieldController($log, $translate, $timeout, httpCommonsService) {
         });
     };
 
-    ctrl.loadData = () => {
+    ctrl.loadData = saveCache => {
         ctrl.isLoading = true;
         $timeout(
             () =>
                 httpCommonsService
-                    .search(ctrl.metadata.urlApi)
+                    .search(ctrl.metadata.urlApi, {}, 0, 0, false, saveCache)
                     .then(response => (ctrl.selectData = response.data))
-                    .catch(error => $log.error(error))
+                    .catch(error =>
+                        $log.error(
+                            'An error ocurred on the combo data loading...',
+                            error
+                        )
+                    )
                     .finally(() => (ctrl.isLoading = false)),
             500
         );
