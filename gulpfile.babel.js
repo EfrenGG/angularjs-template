@@ -1,3 +1,4 @@
+/*eslint-env node*/
 const gulp = require('gulp');
 const del = require('del');
 const htmlmin = require('gulp-htmlmin');
@@ -46,15 +47,14 @@ const paths = {
     fonts: [
         { src: 'angular-ui-grid/fonts/**/*', dest: 'css/fonts/' },
         { src: 'bootstrap/dist/fonts/**/*', dest: 'fonts/' },
-        { src: '@fortawesome/fontawesome-free/webfonts/**/*', dest: 'webfonts/' },
+        {
+            src: '@fortawesome/fontawesome-free/webfonts/**/*',
+            dest: 'webfonts/'
+        }
     ],
     pixeladmin_theme: 'clean',
-    static: [
-        'index.html',
-        'img/**/*',
-    ]
+    static: ['index.html', 'img/**/*']
 };
-
 
 server.create();
 
@@ -62,89 +62,105 @@ gulp.task('clean', done => del(`${paths.dist}/**/*`, done));
 
 gulp.task('fonts', ['clean'], () => {
     paths.fonts.forEach(font => {
-        gulp.src(`node_modules/${font.src}`)
-            .pipe(gulp.dest(`${paths.dist}/${font.dest}`));
+        gulp.src(`node_modules/${font.src}`).pipe(
+            gulp.dest(`${paths.dist}/${font.dest}`)
+        );
     });
 });
 
-gulp.task('vendor-css', ['fonts'], () => gulp.src([
-    ...paths.css_modules.map(item => 'node_modules/' + item),
-    `${root}/pixeladmin/css/*.css`,
-    `${root}/pixeladmin/css/themes/${paths.pixeladmin_theme}.min.css`])
-    .pipe(concat('vendor.css'))
-    .pipe(gulp.dest(`${paths.dist}/css/`))
+gulp.task('vendor-css', ['fonts'], () =>
+    gulp
+        .src([
+            ...paths.css_modules.map(item => 'node_modules/' + item),
+            `${root}/pixeladmin/css/*.css`,
+            `${root}/pixeladmin/css/themes/${paths.pixeladmin_theme}.min.css`
+        ])
+        .pipe(concat('vendor.css'))
+        .pipe(gulp.dest(`${paths.dist}/css/`))
 );
 
 gulp.task('copy', ['vendor-css'], () =>
-    gulp.src(paths.static.map(item => `${root}/${item}`), { base: 'src' })
+    gulp
+        .src(paths.static.map(item => `${root}/${item}`), { base: 'src' })
         .pipe(gulp.dest(paths.dist))
 );
 
 gulp.task('modules', ['copy'], () =>
-    gulp.src([
-        ...paths.modules.map(item => `node_modules/${item}`),
-        `${root}/pixeladmin/js/**/*.js`])
-        .pipe(gulpif(argv.deploy, babel({
-            presets: ['env']
-        })))
+    gulp
+        .src([
+            ...paths.modules.map(item => `node_modules/${item}`),
+            `${root}/pixeladmin/js/**/*.js`
+        ])
+        .pipe(
+            gulpif(
+                argv.deploy,
+                babel({
+                    presets: ['@babel/env']
+                })
+            )
+        )
         .pipe(concat('vendor.js'))
         .pipe(gulpif(argv.deploy, uglify()))
         .pipe(gulp.dest(`${paths.dist}/js/`))
 );
 
-gulp.task('styles', () => gulp.src(paths.styles)
-    .pipe(sass({outputStyle: 'compressed'}))
-    .pipe(gulp.dest(`${paths.dist}/css/`))
+gulp.task('styles', () =>
+    gulp
+        .src(paths.styles)
+        .pipe(sass({ outputStyle: 'compressed' }))
+        .pipe(gulp.dest(`${paths.dist}/css/`))
 );
 
 gulp.task('templates', () =>
-    gulp.src(paths.templates)
+    gulp
+        .src(paths.templates)
         .pipe(htmlmin({ collapseWhitespace: true }))
-        .pipe(templateCache({
-            root: 'app',
-            standalone: true,
-            transformUrl: url => url.replace(path.dirname(url), '.')
-        }))
+        .pipe(
+            templateCache({
+                root: 'app',
+                standalone: true,
+                transformUrl: url => url.replace(path.dirname(url), '.')
+            })
+        )
         .pipe(gulp.dest(`${root}/app/`))
 );
 
 gulp.task('scripts', ['templates'], () =>
-    gulp.src([
-        `!${root}/app/**/*.spec.js`,
-        `${root}/app/**/*.module.js`,
-        ...paths.scripts
-    ])
+    gulp
+        .src([
+            `!${root}/app/**/*.spec.js`,
+            `${root}/app/**/*.module.js`,
+            ...paths.scripts
+        ])
         .pipe(gulpif(!argv.deploy, sourcemaps.init()))
-        .pipe(babel({
-            presets: ['env']
-        }))
+        .pipe(
+            babel({
+                presets: ['@babel/env']
+            })
+        )
         .pipe(wrap('(function(angular){\n<%= contents %>})(window.angular);'))
         .pipe(concat('app.js'))
         .pipe(ngAnnotate())
         .pipe(gulpif(argv.deploy, uglify()))
         .pipe(gulpif(!argv.deploy, sourcemaps.write('./')))
-        .pipe(gulp.dest(`${paths.dist}/js/`)));
+        .pipe(gulp.dest(`${paths.dist}/js/`))
+);
 
-gulp.task('serve', ['scripts', 'styles'], () => server.init({
-    files: [`${paths.dist}/**`],
-    port: 4000,
-    server: {
-        baseDir: paths.dist
-    }
-}));
+gulp.task('serve', ['scripts', 'styles'], () =>
+    server.init({
+        files: [`${paths.dist}/**`],
+        port: 4000,
+        server: {
+            baseDir: paths.dist
+        }
+    })
+);
 
 gulp.task('watch', ['serve'], () => {
     gulp.watch([paths.scripts, paths.templates], ['scripts']);
     gulp.watch(paths.styles, ['styles']);
 });
 
-gulp.task('default', [
-    'modules',
-    'watch',
-]);
+gulp.task('default', ['modules', 'watch']);
 
-gulp.task('bundle', [
-    'modules',
-    'scripts',
-    'styles',
-]);
+gulp.task('bundle', ['modules', 'scripts', 'styles']);

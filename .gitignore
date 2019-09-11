@@ -6,6 +6,7 @@ node_modules
 *.sublime-*
 .jekyll-metadata
 .idea
+.vscode
 npm-debug.log
 templates.js
 package-lock.json
