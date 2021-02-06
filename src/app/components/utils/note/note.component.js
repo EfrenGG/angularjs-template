@@ -1,13 +1,11 @@
 const note = {
-    templateUrl: './note.html',
-    controller: 'noteController',
-    bindings: {
-        type: '<',
-        title: '<',
-        description: '<',
-    }
+  templateUrl: './note.html',
+  controller: 'noteController',
+  bindings: {
+    type: '<',
+    title: '<',
+    description: '<',
+  },
 };
 
-angular
-    .module('components.utils')
-    .component('note', note);
+angular.module('components.utils').component('note', note);

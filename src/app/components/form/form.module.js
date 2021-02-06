@@ -1,7 +1,6 @@
-angular
-    .module('components.form', [
-        'ui.bootstrap',
-        'ngAnimate',
-        'ngMessages',
-        'ngSanitize',
-    ]);
+angular.module('components.form', [
+  'ui.bootstrap',
+  'ngAnimate',
+  'ngMessages',
+  'ngSanitize',
+]);

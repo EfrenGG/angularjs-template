@@ -1,11 +1,9 @@
 const formSection = {
-    templateUrl: './form-section.html',
-    bindings: {
-        title: '<',
-        subtitle: '<',
-    }
+  templateUrl: './form-section.html',
+  bindings: {
+    title: '<',
+    subtitle: '<',
+  },
 };
 
-angular
-    .module('components.form')
-    .component('formSection', formSection);
+angular.module('components.form').component('formSection', formSection);

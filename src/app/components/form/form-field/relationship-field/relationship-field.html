@@ -1,43 +1,48 @@
 <div class="panel">
   <div class="panel-heading">
-    <span class="panel-title">
-      {{$ctrl.metadata.labelText}}
-    </span>
+    <span class="panel-title"> {{$ctrl.metadata.labelText}} </span>
     <div
       ng-if="$ctrl.subformMetadata.bCrud"
       ng-show="!$ctrl.isFormActive"
-      class="panel-heading-controls">
+      class="panel-heading-controls"
+    >
       <button
         ng-if="$ctrl.subformMetadata.bCrea"
         class="btn btn-xs btn-primary"
-        ng-click="$ctrl.showForm('CREATE')">
-        <span class="btn-label-icon left fas fa-plus"></span>{{$ctrl.txBtnAdd}}</button>
+        ng-click="$ctrl.showForm('CREATE')"
+      >
+        <span class="btn-label-icon left fas fa-plus"></span>{{$ctrl.txBtnAdd}}
+      </button>
       <button
         ng-if="$ctrl.subformMetadata.bEdita && $ctrl.selectedEntity"
         class="btn btn-xs btn-info"
-        ng-click="$ctrl.showForm('UPDATE')">
-        <span class="btn-label-icon left fas fa-edit"></span>{{$ctrl.txBtnEdit}}</button>
+        ng-click="$ctrl.showForm('UPDATE')"
+      >
+        <span class="btn-label-icon left fas fa-edit"></span>{{$ctrl.txBtnEdit}}
+      </button>
       <button
         ng-if="$ctrl.subformMetadata.bBorra && $ctrl.selectedEntity"
         class="btn btn-xs btn-danger"
-        ng-click="$ctrl.showForm('DELETE')">
-        <span class="btn-label-icon left fas fa-trash-alt"></span>{{$ctrl.txBtnDelete}}</button>
+        ng-click="$ctrl.showForm('DELETE')"
+      >
+        <span class="btn-label-icon left fas fa-trash-alt"></span
+        >{{$ctrl.txBtnDelete}}
+      </button>
     </div>
-    <div
-      ng-show="$ctrl.isFormActive"
-      class="panel-heading-controls">
-      <button
-        class="btn btn-xs btn-default"
-        ng-click="$ctrl.cancel()">
-        <span class="btn-label-icon left fas fa-ban"></span>{{$ctrl.txBtnCancel}}</button>
+    <div ng-show="$ctrl.isFormActive" class="panel-heading-controls">
+      <button class="btn btn-xs btn-default" ng-click="$ctrl.cancel()">
+        <span class="btn-label-icon left fas fa-ban"></span
+        >{{$ctrl.txBtnCancel}}
       </button>
 
       <button
         class="btn btn-xs"
         ng-class="$ctrl.btnSubmitClass"
         ng-disabled="$ctrl.isBtnsDisabled"
-        ng-click="$ctrl.submit()">
-        <span class="btn-label-icon left fas fa-save"></span>{{$ctrl.txBtnSubmit}}</button>
+        ng-click="$ctrl.submit()"
+      >
+        <span class="btn-label-icon left fas fa-save"></span
+        >{{$ctrl.txBtnSubmit}}
       </button>
     </div>
   </div>
@@ -49,7 +54,8 @@
       fields="$ctrl.formFields"
       model="$ctrl.model"
       is-disabled="$ctrl.disableForm"
-      on-change="$ctrl.updateModel($event)">
+      on-change="$ctrl.updateModel($event)"
+    >
     </base-form>
 
     <!-- Grid -->
@@ -61,7 +67,8 @@
       data="$ctrl.gridData"
       total="$ctrl.gridTotal"
       on-row-selection="$ctrl.setEntity($event)"
-      on-page-changed="$ctrl.setPage($event)">
+      on-page-changed="$ctrl.setPage($event)"
+    >
     </grid>
   </div>
 </div>

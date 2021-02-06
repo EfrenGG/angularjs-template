@@ -1,5 +1,1 @@
-angular
-    .module('components', [
-        'components.crud',
-        'components.utils',
-    ]);
+angular.module('components', ['components.crud', 'components.utils']);

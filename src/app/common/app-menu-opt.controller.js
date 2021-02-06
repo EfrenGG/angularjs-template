@@ -1,19 +1,20 @@
 function appMenuOptController() {
-    var ctrl = this;
+  var ctrl = this;
 
-    ctrl.$onInit = function () {
-    };
+  ctrl.$onInit = function () {};
 
-    ctrl.$onChanges = function (changes) {
-        if (changes.option) {
-            ctrl.option = angular.copy(ctrl.option);
-            if (!ctrl.option.iconoCls) {
-                ctrl.option.iconoCls = ctrl.option.bHoja ? 'fas fa-dot-circle' : 'fas fa-folder';
-            }
-        }
-    };
+  ctrl.$onChanges = function (changes) {
+    if (changes.option) {
+      ctrl.option = angular.copy(ctrl.option);
+      if (!ctrl.option.iconoCls) {
+        ctrl.option.iconoCls = ctrl.option.bHoja
+          ? 'fas fa-dot-circle'
+          : 'fas fa-folder';
+      }
+    }
+  };
 }
 
 angular
-    .module('common')
-    .controller('appMenuOptController', appMenuOptController);
+  .module('common')
+  .controller('appMenuOptController', appMenuOptController);
