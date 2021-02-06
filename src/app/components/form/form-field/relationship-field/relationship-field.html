@@ -1,23 +1,25 @@
 <div class="panel">
   <div class="panel-heading">
-    <span class="panel-title">{{$ctrl.metadata.labelText}}</span>
+    <span class="panel-title">
+      {{$ctrl.metadata.labelText}}
+    </span>
     <div
       ng-if="$ctrl.subformMetadata.bCrud"
       ng-show="!$ctrl.isFormActive"
       class="panel-heading-controls">
       <button
         ng-if="$ctrl.subformMetadata.bCrea"
-        class="btn btn-xs btn-outline btn-outline-colorless btn-primary"
+        class="btn btn-xs btn-primary"
         ng-click="$ctrl.showForm('CREATE')">
         <span class="btn-label-icon left fas fa-plus"></span>{{$ctrl.txBtnAdd}}</button>
       <button
         ng-if="$ctrl.subformMetadata.bEdita && $ctrl.selectedEntity"
-        class="btn btn-xs btn-outline btn-outline-colorless btn-info"
+        class="btn btn-xs btn-info"
         ng-click="$ctrl.showForm('UPDATE')">
         <span class="btn-label-icon left fas fa-edit"></span>{{$ctrl.txBtnEdit}}</button>
       <button
         ng-if="$ctrl.subformMetadata.bBorra && $ctrl.selectedEntity"
-        class="btn btn-xs btn-outline btn-outline-colorless btn-danger"
+        class="btn btn-xs btn-danger"
         ng-click="$ctrl.showForm('DELETE')">
         <span class="btn-label-icon left fas fa-trash-alt"></span>{{$ctrl.txBtnDelete}}</button>
     </div>
@@ -25,17 +27,17 @@
       ng-show="$ctrl.isFormActive"
       class="panel-heading-controls">
       <button
-        class="btn btn-xs btn-outline btn-outline-colorless"
+        class="btn btn-xs btn-default"
         ng-click="$ctrl.cancel()">
-        {{$ctrl.txBtnCancel}}
+        <span class="btn-label-icon left fas fa-ban"></span>{{$ctrl.txBtnCancel}}</button>
       </button>
 
       <button
-        class="btn btn-xs btn-outline btn-outline-colorless"
+        class="btn btn-xs"
         ng-class="$ctrl.btnSubmitClass"
         ng-disabled="$ctrl.isBtnsDisabled"
         ng-click="$ctrl.submit()">
-        {{$ctrl.txBtnSubmit}} <i class="far fa-save"></i>
+        <span class="btn-label-icon left fas fa-save"></span>{{$ctrl.txBtnSubmit}}</button>
       </button>
     </div>
   </div>
@@ -54,6 +56,7 @@
     <grid
       ng-show="!$ctrl.isFormActive"
       fields="$ctrl.visibleGridFields"
+      is-loading="$ctrl.isLoading"
       pagination-options="$ctrl.gridPaginationOpts"
       data="$ctrl.gridData"
       total="$ctrl.gridTotal"

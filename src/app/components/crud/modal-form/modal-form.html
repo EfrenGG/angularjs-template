@@ -1,6 +1,6 @@
 <div class="modal-header">
   <button type="button" class="close" ng-click="$ctrl.cancel()">×</button>
-  <h4 class="modal-title">{{$ctrl.txModalTitle}}</h4>
+  <h4 class="modal-title">{{ $ctrl.txModalTitle }}</h4>
 </div>
 
 <!-- Delete Windows-->
@@ -8,9 +8,10 @@
   <base-form
     fields="$ctrl.fields"
     model="$ctrl.model"
-    on-change="$ctrl.updateModel($event)">
+    on-change="$ctrl.updateModel($event)"
+  >
   </base-form>
-  <p ng-if="$ctrl.txDeleteMsg">{{$ctrl.txDeleteMsg}}</p>
+  <p ng-if="$ctrl.txDeleteMsg">{{ $ctrl.txDeleteMsg }}</p>
 </div>
 
 <!-- Window -->
@@ -18,46 +19,50 @@
   <base-form
     fields="$ctrl.fields"
     model="$ctrl.model"
-    on-change="$ctrl.updateModel($event)">
+    on-change="$ctrl.updateModel($event)"
+  >
   </base-form>
 </div>
 
 <!-- Wizard -->
 <wizard-form
   ng-if="$ctrl.formType === 'ASISTENTE' && $ctrl.action !== 'DELETE'"
-  fields="$ctrl.fields"
+  groups="$ctrl.groups"
   model="$ctrl.model"
   action="$ctrl.action"
   on-change="$ctrl.updateModel($event)"
-  on-finish="$ctrl.submit()">
+  on-finish="$ctrl.submit()"
+>
 </wizard-form>
 
 <!-- Tabs -->
 <tab-form
   ng-if="$ctrl.formType === 'TABS' && $ctrl.action !== 'DELETE'"
-  fields="$ctrl.fields"
+  groups="$ctrl.groups"
   model="$ctrl.model"
   action="$ctrl.action"
-  on-change="$ctrl.updateModel($event)">
+  on-change="$ctrl.updateModel($event)"
+>
 </tab-form>
 
-
 <div class="modal-footer">
-
   <button
     type="button"
     class="btn"
     ng-class="$ctrl.btnCancelClass"
-    ng-click="$ctrl.cancel()">
-    {{$ctrl.txBtnCancel}}
+    ng-click="$ctrl.cancel()"
+  >
+    {{ $ctrl.txBtnCancel }}
   </button>
 
   <button
     ng-if="$ctrl.formType === 'VENTANA' || $ctrl.formType === 'TABS' || $ctrl.action === 'DELETE'"
-    type="button" class="btn"
+    type="button"
+    class="btn"
     ng-class="$ctrl.btnSubmitClass"
     ng-click="$ctrl.submit()"
-    ng-disabled="$ctrl.isBtnsDisabled">
-    {{$ctrl.txBtnSubmit}}
+    ng-disabled="$ctrl.isBtnsDisabled"
+  >
+    {{ $ctrl.txBtnSubmit }}
   </button>
 </div>

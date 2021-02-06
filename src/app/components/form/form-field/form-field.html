@@ -1,8 +1,7 @@
 <div
-  ng-if="$ctrl.metadata.hasLabel"
+  ng-if="$ctrl.metadata.hasLabel && $ctrl.show"
   ng-switch="$ctrl.metadata.cveTipoComponente"
   ng-class="[$ctrl.metadata.sizeClass, {'has-error' : $ctrl.metadata.hasValidation && $ctrl.formParent[$ctrl.metadata.nomCampo].$invalid}]"
-  ng-show="$ctrl.show"
   class="form-group form-group-sm"
 >
   <label class="control-label" for="{{ $ctrl.metadata.elementId }}">

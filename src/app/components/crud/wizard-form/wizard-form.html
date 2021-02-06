@@ -1,24 +1,35 @@
 <px-wizard class="wizard">
   <div class="wizard-wrapper">
     <ul class="wizard-steps">
-      <li ng-repeat="(i, key) in $ctrl.groupKeys" data-target="#wizard-step-{{i + 1}}">
-          <span ng-if="$ctrl.groups[key].iconClass" class="wizard-step-number">
-            <i class="{{$ctrl.groups[key].iconClass}}"></i>
-          </span>
-        <span ng-if="!$ctrl.groups[key].iconClass" class="wizard-step-number">{{key}}</span>
-        <span class="wizard-step-complete border-success"><i class="fa fa-check text-success"></i></span>
-        <span class="wizard-step-caption">{{$ctrl.groups[key].txGroupName}}</span>
+      <li
+        ng-repeat="group in $ctrl.groups"
+        data-target="#wizard-step-{{ group.cveGpo }}"
+      >
+        <span ng-if="group.iconoCls" class="wizard-step-number">
+          <i class="{{ group.iconoCls }}"></i>
+        </span>
+        <span ng-if="!group.iconoCls" class="wizard-step-number"
+          >{{ key }}</span
+        >
+        <span class="wizard-step-complete border-success"
+          ><i class="fa fa-check text-success"></i
+        ></span>
+        <span class="wizard-step-caption">{{ group.txNombreGrupo }}</span>
       </li>
     </ul>
   </div>
   <div class="wizard-content">
-    <div ng-repeat="(i, key) in $ctrl.groupKeys" class="wizard-pane" id="wizard-step-{{i + 1}}">
-
+    <div
+      ng-repeat="group in $ctrl.groups"
+      class="wizard-pane"
+      id="wizard-step-{{ group.cveGpo }}"
+    >
       <base-form
-        fields="$ctrl.groups[key].fields"
+        fields="group.fields"
         model="$ctrl.model"
         is-disabled="$ctrl.isFinished"
-        on-change="$ctrl.updateModel($event)">
+        on-change="$ctrl.updateModel($event)"
+      >
       </base-form>
 
       <div ng-show="!$ctrl.isFinished">
@@ -26,9 +37,10 @@
           ng-if="!$first"
           type="button"
           class="btn btn-outline btn-rounded"
-          data-wizard-action="prev">
+          data-wizard-action="prev"
+        >
           <span class="btn-label-icon left fas fa-chevron-left"></span>
-          {{$ctrl.txBtnPrevious}}
+          {{ $ctrl.txBtnPrevious }}
         </button>
 
         <button
@@ -36,9 +48,10 @@
           ng-disabled="!$ctrl.isValid"
           type="button"
           class="btn btn-outline btn-rounded"
-          data-wizard-action="next">
+          data-wizard-action="next"
+        >
           <span class="btn-label-icon right fas fa-chevron-right"></span>
-          {{$ctrl.txBtnNext}}
+          {{ $ctrl.txBtnNext }}
         </button>
 
         <button
@@ -48,9 +61,10 @@
           class="btn btn-rounded"
           ng-class="$ctrl.btnSubmitClass"
           data-wizard-action="finish"
-          ng-click="$ctrl.finished();">
+          ng-click="$ctrl.finished();"
+        >
           <span class="btn-label-icon right fas fa-check"></span>
-          {{$ctrl.txBtnFinish}}
+          {{ $ctrl.txBtnFinish }}
         </button>
       </div>
     </div>
