@@ -3,7 +3,7 @@ angular.module('app').config(function ($routeProvider, $locationProvider) {
   $routeProvider.when('/', {
     template: '<app-home></app-home>',
   });
-  $routeProvider.when('/forma/:cveForma', {
+  $routeProvider.when('/crud/:cveForma', {
     template: '<crud-window></crud-window>',
   });
   $routeProvider.otherwise({
