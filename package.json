@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Template para generar aplicaciones con AngularJS y Bootstrap",
   "scripts": {
-    "start": "gulp serve",
+    "start": "gulp",
     "test": "echo \"Error: no test specified\" && exit 1",
     "develop": "gulp watch",
     "bundle": "gulp bundle --deploy"
