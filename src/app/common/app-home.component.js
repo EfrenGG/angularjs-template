@@ -1,8 +1,6 @@
 const appHome = {
-    templateUrl: './app-home.html',
-    controller: 'appHomeController'
+  templateUrl: './app-home.html',
+  controller: 'appHomeController',
 };
 
-angular
-    .module('common')
-    .component('appHome', appHome);
+angular.module('common').component('appHome', appHome);

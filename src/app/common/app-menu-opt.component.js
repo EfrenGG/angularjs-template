@@ -1,11 +1,9 @@
 const appMenuOpt = {
-    templateUrl: './app-menu-opt.html',
-    controller: 'appMenuOptController',
-    bindings: {
-        option: '<'
-    }
+  templateUrl: './app-menu-opt.html',
+  controller: 'appMenuOptController',
+  bindings: {
+    option: '<',
+  },
 };
 
-angular
-    .module('common')
-    .component('appMenuOpt', appMenuOpt);
+angular.module('common').component('appMenuOpt', appMenuOpt);

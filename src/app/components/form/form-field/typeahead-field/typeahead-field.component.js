@@ -1,13 +1,11 @@
 const typeaheadField = {
-    controller: 'typeaheadFieldController',
-    templateUrl: './typeahead-field.html',
-    bindings: {
-        metadata: '<',
-        model: '<',
-        onChange: '&'
-    }
+  controller: 'typeaheadFieldController',
+  templateUrl: './typeahead-field.html',
+  bindings: {
+    metadata: '<',
+    model: '<',
+    onChange: '&',
+  },
 };
 
-angular
-    .module('components.form')
-    .component('typeaheadField', typeaheadField);
+angular.module('components.form').component('typeaheadField', typeaheadField);

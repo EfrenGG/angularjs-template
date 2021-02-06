@@ -2,7 +2,7 @@
   <input
     name="{{$ctrl.metadata.nomCampo}}"
     class="form-control"
-    placeholder={{$ctrl.dateFormat}}
+    placeholder="{{$ctrl.dateFormat}}"
     uib-datepicker-popup="{{$ctrl.dateFormat}}"
     is-open="$ctrl.isCalendarOpen"
     clear-text="{{$ctrl.clearText}}"
@@ -13,9 +13,14 @@
     ng-change="$ctrl.updateModel()"
     ng-focus="$ctrl.toggleFocus(true)"
     ng-blur="$ctrl.toggleFocus(false)"
-    ng-disabled="$ctrl.metadata.isDisabled">
+    ng-disabled="$ctrl.metadata.isDisabled"
+  />
   <div class="input-group-btn">
-    <button type="button" class="btn btn-default" ng-click="$ctrl.openCalendar();">
+    <button
+      type="button"
+      class="btn btn-default"
+      ng-click="$ctrl.openCalendar();"
+    >
       <i class="far fa-calendar-alt"></i>
     </button>
   </div>

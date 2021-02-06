@@ -1,8 +1,6 @@
 const appContent = {
-    templateUrl: './app-content.html',
-    controller: 'appContentController'
+  templateUrl: './app-content.html',
+  controller: 'appContentController',
 };
 
-angular
-    .module('common')
-    .component('appContent', appContent);
+angular.module('common').component('appContent', appContent);

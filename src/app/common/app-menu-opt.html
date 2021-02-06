@@ -3,6 +3,14 @@
   <span class="px-nav-label">{{$ctrl.option.descMenu}}</span>
 </a>
 
-<ul ng-if="!$ctrl.option.bHoja && $ctrl.option.menusHijo.length > 0" class="px-nav-dropdown-menu">
-  <app-menu-opt ng-repeat="child in $ctrl.option.menusHijo" option="child" class="px-nav-item" ng-class="!child.bHoja ? 'px-nav-dropdown' : ''"></app-menu-opt>
+<ul
+  ng-if="!$ctrl.option.bHoja && $ctrl.option.menusHijo.length > 0"
+  class="px-nav-dropdown-menu"
+>
+  <app-menu-opt
+    ng-repeat="child in $ctrl.option.menusHijo"
+    option="child"
+    class="px-nav-item"
+    ng-class="!child.bHoja ? 'px-nav-dropdown' : ''"
+  ></app-menu-opt>
 </ul>

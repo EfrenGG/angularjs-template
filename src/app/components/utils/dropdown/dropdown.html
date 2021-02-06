@@ -1,10 +1,12 @@
 <li uib-dropdown on-toggle="$ctrl.toggle(open)">
-  <a ng-if="$ctrl.type === 'NAV'"
+  <a
+    ng-if="$ctrl.type === 'NAV'"
     href
     uib-dropdown-toggle
     uib-tooltip="{{$ctrl.labelText}}"
     tooltip-enable="$ctrl.icon"
-    tooltip-placement="bottom">
+    tooltip-placement="bottom"
+  >
     <i ng-if="$ctrl.icon" class="px-navbar-icon {{$ctrl.icon}}"></i>
     <span class="{{$ctrl.labelClass}}">{{$ctrl.labelText}}</span>
   </a>

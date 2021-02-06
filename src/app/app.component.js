@@ -1,8 +1,6 @@
 var app = {
-    templateUrl: './app.html',
-    controller: 'appController'
+  templateUrl: './app.html',
+  controller: 'appController',
 };
 
-angular
-    .module('app')
-    .component('app', app);
+angular.module('app').component('app', app);

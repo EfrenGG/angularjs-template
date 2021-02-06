@@ -1,6 +1,5 @@
-function appContentController() {
-}
+function appContentController() {}
 
 angular
-    .module('common')
-    .controller('appContentController', appContentController);
+  .module('common')
+  .controller('appContentController', appContentController);

@@ -1,15 +1,13 @@
 const tabForm = {
-    templateUrl: './tab-form.html',
-    controller: 'tabFormController',
-    bindings: {
-        fields: '<',
-        model: '<',
-        action: '<',
-        onChange: '&',
-        onFinish: '&'
-    }
+  templateUrl: './tab-form.html',
+  controller: 'tabFormController',
+  bindings: {
+    groups: '<',
+    model: '<',
+    action: '<',
+    onChange: '&',
+    onFinish: '&',
+  },
 };
 
-angular
-    .module('components.crud')
-    .component('tabForm', tabForm);
+angular.module('components.crud').component('tabForm', tabForm);

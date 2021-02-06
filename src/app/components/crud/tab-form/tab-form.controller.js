@@ -1,72 +1,60 @@
 function tabFormController($translate) {
+  var ctrl = this;
 
-    var ctrl = this;
+  ctrl.$onInit = () => {
+    ctrl.isValid = false;
+    $translate('APP.MSG_ERROR')
+      .then((trans) => (ctrl.txErrorMessage = trans))
+      .catch((id) => (ctrl.txErrorMessage = id));
+  };
 
-    ctrl.$onInit = () => {
-        ctrl.isValid = false;
-        $translate('APP.MSG_ERROR')
-            .then(trans => ctrl.txErrorMessage = trans)
-            .catch(id => ctrl.txErrorMessage = id);
-    };
+  ctrl.$onChanges = (changes) => {
+    if (changes.groups) {
+      ctrl.groups = [...ctrl.groups];
+      newGroup(ctrl.groups);
+    }
+    if (changes.model) {
+      ctrl.model = angular.copy(ctrl.model);
+    }
+    if (changes.action) {
+      ctrl.isValid = ctrl.action === 'UPDATE' ? true : false;
+      ctrl.btnSubmitClass =
+        ctrl.action === 'UPDATE' ? 'btn-info' : 'btn-success';
+    }
+  };
 
-    ctrl.$onChanges = changes => {
-        if (changes.fields) {
-            ctrl.fields = angular.copy(ctrl.fields);
-            setGroups(ctrl.fields);
-            ctrl.groupKeys = Object.keys(ctrl.groups).map(e => Number(e)).sort();
-        }
-        if (changes.model) {
-            ctrl.model = angular.copy(ctrl.model);
-        }
-        if (changes.action) {
-            ctrl.isValid = ctrl.action === 'UPDATE' ? true : false;
-            ctrl.btnSubmitClass = ctrl.action === 'UPDATE' ? 'btn-info' : 'btn-success';
-            setGroups(ctrl.fields);
-        }
-    };
+  ctrl.updateModel = (event, groupKey) => {
+    ctrl.model = event.model;
+    let invalidGroups = 0;
+    ctrl.groups.forEach((group) => {
+      if (group.cveGpo === groupKey) {
+        group.isValid = !event.invalid;
+      }
+      if (!group.isValid) {
+        invalidGroups++;
+      }
+    });
+    ctrl.isValid = invalidGroups === 0;
+    ctrl.onChange({
+      $event: {
+        model: ctrl.model,
+        invalid: !ctrl.isValid,
+      },
+    });
+  };
 
-    ctrl.updateModel = (event, key) => {
-        ctrl.model = event.model;
-        ctrl.groups[key].isValid = !event.invalid;
-        for (let subformKey of ctrl.groupKeys) {
-            if (!ctrl.groups[subformKey].isValid) {
-                ctrl.isValid = false;
-                break;
-            }
-            ctrl.isValid = true;
-        }
-        ctrl.onChange({
-            $event: {
-                model: ctrl.model,
-                invalid: !ctrl.isValid
-            }
-        });
-    };
-
-    const setGroups = fields => {
-        let groups = {};
-        ctrl.txGroupName = {};
-        fields.forEach(field => {
-            let groupName = field.numGrupo || 1;
-            if (!groups[groupName]) {
-                $translate(`${field.cveForma}.${field.cveNomGrupo}`)
-                    .then(trans => ctrl.txGroupName[groupName] = trans)
-                    .catch(() => ctrl.txGroupName[groupName] = field.txNomGrupo || groupName);
-                groups[groupName] = {
-                    fields: [],
-                    iconClass: field.iconoClsGrupo,
-                    isValid: ctrl.isValid
-                };
-                $translate(`${field.cveForma}.${field.cveNomGrupo}`)
-                    .then(trans => groups[groupName].txGroupName = trans)
-                    .catch(() => groups[groupName].txGroupName = field.txNomGrupo || groupName);
-            }
-            groups[groupName].fields.push(field);
-        });
-        ctrl.groups = groups;
-    };
+  const newGroup = (groups) => {
+    groups.forEach((group) => {
+      $translate(`${group.cveForma}.${group.cveEtiqueta}`)
+        .then((trans) => (group.txNombreGrupo = trans))
+        .catch(
+          (transId) => (group.txNombreGrupo = group.txEtiqueta || transId)
+        );
+      group.isValid = ctrl.action === 'UPDATE' ? true : false;
+    });
+  };
 }
 
 angular
-    .module('components.crud')
-    .controller('tabFormController', tabFormController);
+  .module('components.crud')
+  .controller('tabFormController', tabFormController);

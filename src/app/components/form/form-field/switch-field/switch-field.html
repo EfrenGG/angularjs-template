@@ -1,15 +1,19 @@
-<label for="{{$ctrl.metadata.elementId}}" class="switcher switcher-blank switcher-primary">
-    <input
-        type="checkbox"
-        name="{{$ctrl.metadata.nomCampo}}"
-        id="{{$ctrl.metadata.elementId}}"
-        ng-model="$ctrl.model"
-        ng-change="$ctrl.updateModel()"
-        ng-focus="$ctrl.toggleFocus(true)"
-        ng-blur="$ctrl.toggleFocus(false)"
-        ng-disabled="$ctrl.metadata.isDisabled">
-    <div class="switcher-indicator">
-        <div class="switcher-yes"><i class="fas fa-check"></i></div>
-        <div class="switcher-no"><i class="fas fa-times"></i></div>
-    </div>
+<label
+  for="{{$ctrl.metadata.elementId}}"
+  class="switcher switcher-blank switcher-primary"
+>
+  <input
+    type="checkbox"
+    name="{{$ctrl.metadata.nomCampo}}"
+    id="{{$ctrl.metadata.elementId}}"
+    ng-model="$ctrl.model"
+    ng-change="$ctrl.updateModel()"
+    ng-focus="$ctrl.toggleFocus(true)"
+    ng-blur="$ctrl.toggleFocus(false)"
+    ng-disabled="$ctrl.metadata.isDisabled"
+  />
+  <div class="switcher-indicator">
+    <div class="switcher-yes"><i class="fas fa-check"></i></div>
+    <div class="switcher-no"><i class="fas fa-times"></i></div>
+  </div>
 </label>
